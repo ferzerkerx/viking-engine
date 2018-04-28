@@ -8,7 +8,7 @@
 
 
 #include "Perlin.h"
-#include "..\framework.h"
+#include "../Framework.h"
 
 
 /**

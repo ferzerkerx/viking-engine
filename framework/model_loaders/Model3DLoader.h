@@ -6,7 +6,7 @@
 #ifndef __MODEL3DLOADER__H__
 #define __MODEL3DLOADER__H__
 
-#include "..\textura.h"
+#include "../Textura.h"
 #include "Model3D.h"
 
 class Model3D;

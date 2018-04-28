@@ -7,7 +7,7 @@
 #define __CLOUDS_ACT_H__
 
 #include "Clouds.h"
-#include "..\timer.h"
+#include "../Timer.h"
 
 /**
 * @class CloudsActualizables

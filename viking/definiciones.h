@@ -4,18 +4,7 @@
 #define WIN32_LEAN_AND_MEAN
 #define VC_LEANMEAN    
 
-#pragma comment(linker,"/entry:WinMainCRTStartup")
-#pragma comment(linker,"/subsystem:console")
-
-// Cargamos librerias necesarias
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glu32.lib")
-#pragma comment(lib, "glaux.lib")
-
-#include <windows.h>		// Header para Windows
-#include <gl\gl.h>			// Header para OpenGL32
-#include <gl\glu.h>			// Header para GLU32
-#include <gl\glaux.h>		// Header para Glaux
+#include <GL/glut.h>
 #include <math.h>			// Header para pow, sqrt
 #include <sstream>			// Header para salida de texto
 

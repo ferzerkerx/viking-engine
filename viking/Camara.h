@@ -12,7 +12,7 @@
 #define _CAMERA_H
 
 #include "definiciones.h"
-#include "..\framework\framework.h"
+#include "../framework/Framework.h"
 
 
 class Camara {

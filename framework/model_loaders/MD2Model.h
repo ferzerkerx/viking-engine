@@ -7,8 +7,8 @@
 #define __MD2MODEL__H__
 
 #include <vector>
-#include "..\math\vector.h"
-#include "..\Timer.h"
+#include "../math/vector.h"
+#include "../Timer.h"
 #include "Model3D.h"
 
 /**

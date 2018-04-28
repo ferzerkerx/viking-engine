@@ -12,12 +12,8 @@
 #ifndef TEXTURA_H
 #define TEXTURA_H
 
-#include <windows.h>		// Header para Windows
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "OGLInit.h"
-
 
 #define TGA_RGB		 2		// RGB normal (realmnte BGR)
 #define TGA_A		 3		// ALPHA 
@@ -41,13 +37,13 @@ class Textura {
 		Textura();
 		~Textura(){};
 
-        void CrearTextura(UINT textureArray[], LPSTR strFileName, int textureID);
+        void CrearTextura(unsigned int textureArray[], char * strFileName, int textureID);
 
         //////////////////////// BMP //////////////////////////////////////
-        void CreaBMP(UINT textureArray[], LPSTR strFileName, int textureID);
+        void CreaBMP(unsigned int textureArray[], char * strFileName, int textureID);
 		
         //////////////////////// TGA //////////////////////////////////////
-        void CreaTGA(UINT textureArray[], LPSTR strFileName, int textureID);
+        void CreaTGA(unsigned int textureArray[], char * strFileName, int textureID);
         tImageTGA *CargaTGA(const char *filename);
 };
 

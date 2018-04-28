@@ -6,9 +6,9 @@
 #ifndef __VKSKYDOME_H__
 #define __VKSKYDOME_H__
 
-#include "..\framework\sky\TexturedSkyDome.h"
-#include "..\framework\sky\TexturedSkyPlane.h"
-#include "..\framework\sky\CloudsActualizables.h"
+#include "../framework/sky/TexturedSkyDome.h"
+#include "../framework/sky/TexturedSkyPlane.h"
+#include "../framework/sky/CloudsActualizables.h"
 
 
 /**

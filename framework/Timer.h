@@ -6,14 +6,13 @@
 #ifndef __TIMER__
 #define __TIMER__
 
-#include <windows.h>
 
 class Timer {
 	private:
 
-        DWORD ahora;//tiempo registrado en el reset
-		DWORD despues;//tiempo actual
-		DWORD ultima;//usado en funciones Lastcall
+		unsigned int ahora;//tiempo registrado en el reset
+		unsigned int despues;//tiempo actual
+		unsigned int ultima;//usado en funciones Lastcall
 	public:
 		Timer();
 		~Timer();

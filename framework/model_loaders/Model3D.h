@@ -7,7 +7,7 @@
 #define __MODEL3D_H__
 
 #include <vector>
-#include "..\math\vector.h"
+#include "../math/vector.h"
 #include "Model3DLoader.h"
 
 struct Face{

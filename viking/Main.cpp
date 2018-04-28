@@ -6,11 +6,11 @@
  * 
 */
 
-#include "../framework/OGLInit.h"
 #include "../framework/Framework.h"
 #include "Camara.h" 
 #include "../framework/math/Matrix.h"
 #include <vector>
+#include <cstring>
 #include "VKSkyDome.h"
 #include "../framework/sky/SkyBox.h"
 #include "../framework/loggers/ConsoleEventLogger.h"
@@ -18,6 +18,8 @@
 #include "../framework/loggers/HTMLEventLogger.h"
 #include "../framework/math/Quaternion.h"
 #include "../framework/model_loaders/MD2Model.h"
+
+#include <GL/glut.h>
 
 
 using namespace std;
@@ -37,12 +39,11 @@ void testQuaternion();
 void initViking();
 void shutdownViking();
 
-HINSTANCE	hInstance;		// Instancia de la aplicacin
 
 bool	keys[256];			// Arreglo usado para el Teclado
-bool	active = TRUE;		// Bandera de actividad de la ventana 
-bool	fullscreen = TRUE;	// Bandera de Fullscreen
-bool    done = FALSE;       // Bandera para salir dl ciclo principal
+bool	active = true;		// Bandera de actividad de la ventana
+bool	fullscreen = true;	// Bandera de Fullscreen
+bool    done = false;       // Bandera para salir dl ciclo principal
 
 
 
@@ -56,7 +57,6 @@ unsigned int sky[1];
 unsigned int sun[1];
 char fps[20], *bbStr="No Billboarding";
 
-OglInit oi;                 // Objeto para inicializar Opengl
 CIRCULO circulo;
 Timer *timer;
 Textura te;
@@ -67,14 +67,13 @@ SkyBox *sb;
 EventLogger *g_Log;
 MD2Model *knight;
 
-LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaracin de WndProc
 
 int leeConfig() {
 	
 	config = fopen("config.ini", "r");	 //Abrimos el archivo
 	printf("---> config.ini \n");
 	if(!config) {
-		MessageBox(NULL, "Imposible encontrar o abrir el archivo config.ini", "Error", MB_OK);
+		printf("Imposible encontrar o abrir el archivo config.ini");
 		return -1;
 	}
 	char strWord[255] = {0};
@@ -108,6 +107,14 @@ int leeConfig() {
 	fclose(config);
 
 	return 1;
+}
+
+double GetTickCount(void)
+{
+	struct timespec now;
+	if (clock_gettime(CLOCK_MONOTONIC, &now))
+		return 0;
+	return now.tv_sec * 1000.0 + now.tv_nsec / 1000000.0;
 }
 
 //	Define el frame rate de la escena
@@ -283,245 +290,11 @@ void manejaTeclado() {
 }
 
 
-/*	Este cdigo crea una ventana OpenGL.  Parametros:   					*
- *	title			- Titulo que aparece en la ventana      				*
- *	width			- Ancho de la ventana									*
- *	height			- Alto de la ventana									*
- *	bits			- Nmero de bits de color (8/16/24/32)					*
- *	fullscreenflag	- Usar modo Fullscreen (TRUE) or Ventana (FALSE)	    */
-BOOL CreateGLWindow(char* title, int width, int height, int bits, bool fullscreenflag) {
-
-	WNDCLASS	wc;						// Estructura de Windows Class
-	DWORD		dwExStyle;				// Estilo de Ventana Extendida
-	DWORD		dwStyle;				// Estilo de Ventana
-	RECT		WindowRect;				// Jala valores de la ventana
-	WindowRect.left = (long)0;			// Valor izquierdo en 0
-	WindowRect.right = (long)width;		// Valor derecho como Width (Ancho)
-	WindowRect.top = (long)0;			// Valor superior en 0
-	WindowRect.bottom = (long)height;	// Valor inferior como Height (Alto)
-
-	fullscreen = fullscreenflag;		// Asignamos Fullscreen global
-
-	hInstance		 = GetModuleHandle(NULL);				// Jala Instancia para nuestra Ventana
-	wc.style		 = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	// Redibuja Size y DC
-	wc.lpfnWndProc	 = (WNDPROC) WndProc;					// WndProc Handles Messages
-	wc.cbClsExtra	 = 0;									// No datos de Ventana Extra
-	wc.cbWndExtra	 = 0;									// No datos de Ventana Extra
-	wc.hInstance	 = hInstance;							// Asignar Instancia
-	wc.hIcon		 = LoadIcon(NULL, IDI_WINLOGO);			// Carga el Icono default
-	wc.hCursor		 = LoadCursor(NULL, IDC_ARROW);			// Carga cursor de flecha
-	wc.hbrBackground = NULL;								// No se requiere Background
-	wc.lpszMenuName	 = NULL;								// No se requiere Menu
-	wc.lpszClassName = "OpenGL";							// Asignar el nombre de la Clase
-
-	if(!RegisterClass(&wc)) {			// Checar el registro de la Clase
-		MessageBox(NULL,"Failed To Register The Window Class.",
-			       "ERROR",MB_OK|MB_ICONEXCLAMATION);
-		return FALSE;					
-	}
-	
-	if(fullscreen) {											// Fullscreen Mode?
-		DEVMODE dmScreenSettings;								// Device Mode
-		memset(&dmScreenSettings,0,sizeof(dmScreenSettings));	// Asegurar memoria
-		dmScreenSettings.dmSize = sizeof(dmScreenSettings);		// Tamao de Devmode
-		dmScreenSettings.dmPelsWidth	= width;				// Selecciona Width
-		dmScreenSettings.dmPelsHeight	= height;				// Selecciona Height
-		dmScreenSettings.dmBitsPerPel	= bits;					// Selecciona Bits Per Pixel
-		dmScreenSettings.dmFields = DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
-
-		// Asignar el modo y aplicarlo. 
-		if(ChangeDisplaySettings(&dmScreenSettings,CDS_FULLSCREEN)!= DISP_CHANGE_SUCCESSFUL) {
-			// Si falla modo, dar 2 opciones.  Quitar o usar modo ventana.
-			if(MessageBox(NULL,"The Requested Fullscreen Mode Is Not Supported By\nYour Video Card. Use Windowed Mode Instead?",
-				          "OpenGL",MB_YESNO|MB_ICONEXCLAMATION)==IDYES) {
-				fullscreen = FALSE;		// Modo ventana
-			}
-			else {
-				// Mensaje de cerrar programa 
-				MessageBox(NULL,"Program Will Now Close.","ERROR",MB_OK|MB_ICONSTOP);
-				return FALSE;									
-			}
-		}
-	}
-
-	if(fullscreen) {							// Estamos en Fullscreen Mode?
-		dwExStyle = WS_EX_APPWINDOW;			// Estilo Window Extended
-		dwStyle = WS_POPUP;						// Estilo Windows
-		//ShowCursor(FALSE);			    		// Ocultar Mouse Pointer
-	}
-	else {
-		dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;		// Estilo Window Extended
-		dwStyle = WS_OVERLAPPEDWINDOW;						// Estilo Windows
-	}
-
-	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);	// Ajustar tamao ventana
-
-	// Crear la Ventana 
-	if(!(oi.hWnd=CreateWindowEx(dwExStyle,						// Estilo Extended
- 							 "OpenGL",							// Nombre de la Clase
-							 title,								// Ttulo de la Ventana
-							 dwStyle |							// Estilo de Ventana definido
-							 WS_CLIPSIBLINGS |					// Estilo de Ventana requerido
-							 WS_CLIPCHILDREN,					// Estilo de Ventana requerido
-							 0, 0,								// Posicin de Ventana
-							 WindowRect.right-WindowRect.left,	// Calcula Ancho de Ventana
-							 WindowRect.bottom-WindowRect.top,	// Calcula Alto de Ventana
-							 NULL,								// No Parent Window
-							 NULL,								// No Menu
-							 hInstance,							// Instancia
-							 NULL)))							// No pasar nada a WM_CREATE
-	{
-		oi.KillGLWin();
-		MessageBox(NULL,"Window Creation Error.","ERROR",MB_OK|MB_ICONEXCLAMATION);
-		return FALSE;								
-	}
-
-	oi.Init(width,height,bits);                 // Inicializacin de Opengl
-	return TRUE;								
-}
 
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	/*
-	 * HWND	hWnd	    // Manejador de esta Ventana
-	 * UINT	uMsg	    // Mensaje para esta Ventana
-	 * WPARAM wParam	// Informacin de Mensaje adicional
-	 * LPARAM lParam    // Informacin de Mensaje adicional
-	 */
-	//PAINTSTRUCT ps;
-	
-	switch(uMsg) {									// Checa Mensajes de la Ventana
-		case WM_ACTIVATE: {   						// Checa Mensaje de Ventana activa
-			if(!HIWORD(wParam)) {					// Checa estado de minimizacin
-				active = TRUE;						// El programa esta activo 
-			}
-			else {
-				active = FALSE;						// El programa no esta activo
-			}
-
-			return 0;								// Regresa al ciclo del mensaje
-		}
-
-		case WM_SYSCOMMAND: {
-			switch(wParam) {
-				case SC_SCREENSAVE:
-				case SC_MONITORPOWER:
-					return 0;
-			}
-			break;
-		}
-
-		case WM_CLOSE: {							// Recibimos mensaje de Cerrar?
-			PostQuitMessage(0);						// Mandar mensaje de Quit
-			return 0;								
-		}
-
-		case WM_KEYDOWN: {							// Ha sido presionada una tecla?
-			keys[wParam] = TRUE;					// Marcala como TRUE
-			return 0;								
-		}
-
-		case WM_KEYUP: {							// Ha sido liberada una tecla?
-			keys[wParam] = FALSE;					// Marcala como FALSE
-			return 0;								
-		}
-
-		case WM_SIZE: {								// Redimensionar la ventana OGL
-			oi.ResizeGLScene(LOWORD(lParam),HIWORD(lParam));
-			return 0;								
-		}
-        
-		case WM_MOUSEMOVE: {
-			int flags = (int)wParam; // "flags" contains flags that say whether certain
-		   					    // virtual keys (such as the CTRL key) are being pushed or not
-			//xPos = LOWORD(lParam);  // horizontal (the X position) of the cursor
-			//yPos = HIWORD(lParam);  // vertical (the Y position) of the cursor
-			
-			return 0;
-		}
-						   
-		case WM_LBUTTONDOWN: {
-			
-            return 0;
-		}
-
-		case WM_LBUTTONUP: {
-			
-            return 0;
-
-		}
-	}
-
-	// Pasamos todos los mensajes no manejados a DefWindowProc
-	return DefWindowProc(hWnd,uMsg,wParam,lParam);
-}
 
 bool b_acabo = false;
 bool flag = false;
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-	
-	/*
-	 * HINSTANCE hInstance			// Instancia
-	 * HINSTANCE hPrevInstance		// Instancia previa 
-	 * LPSTR lpCmdLine  			// Parmetros de Command Line
-	 * int nCmdShow     			// Window Show State
-	 */
-	MSG		msg;					// Estructura de Mensajes de Windows
-	
-	
-	// Preguntar si queremos fullscreen
-	if(MessageBox(NULL,"Quieres desplegar Pantalla Completa (Fullscreen)?",
-		          "Pantalla Completa?",MB_YESNO|MB_ICONQUESTION)==IDNO) {
-		fullscreen = FALSE;				
-	}
-
-	// Creamos nuestra ventana OpenGL
-	if(!CreateGLWindow("OpenGL Base",ANCHO,ALTO,32,fullscreen)) {
-		return 0;				    // Cerrar si la ventana no fue creada
-	}
-	
-	initViking();
-	
-	while(!done) {									// Ciclo principal (done = FALSE)
-		if(PeekMessage(&msg,NULL,0,0,PM_REMOVE)) {	// Hay mensaje esperando?
-			if(msg.message == WM_QUIT) {			// Recibimos mensaje de Quit?
-				done = TRUE;					    // Si?, entonces done = TRUE
-			}
-			else {									// Si no, manejar los Window Messages
-    			TranslateMessage(&msg);				// Translate The Message
-				DispatchMessage(&msg);				// Dispatch The Message
-			}
-		}
-		else {										// Si no hay mensajes
-
-			// Dibujamos la escena. Checar ESC y Quit Messages de DrawGLScene()
-			if((active && !DrawGLScene()) || keys[VK_ESCAPE]) {	
-				done = TRUE;					    // ESC o Quit de DrawGLScene
-			}
-			// Dibujamos la escena. Checar ESC y Quit Messages de DrawGLScene()
-			if(keys[VK_ESCAPE]) {	
-				done = TRUE;					    // ESC o Quit de DrawGLScene	
-			}
-			else {									// Actualizar pantalla				
-				manejaTeclado();
-
-				if(FrameRate(60)) {
-					if(camara)
-						cam.Actualizar();
-					
-					SwapBuffers(oi.hDC);				// Swap Buffers (Double Buffering)
-				}
-			}
-		}
-
-	LOG_UPDATE();
-	}
-
-	
-	shutdownViking();
-    oi.KillGLWin();									// Matar la ventana
-	return (int)(msg.wParam);							// Salir del programa
-}
 
 void testMatrix(){
 	
