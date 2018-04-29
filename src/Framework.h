@@ -8,7 +8,7 @@
 #define __FRAMEWORK__H__
 
 #include "math/vector.h"
-//#include "math\Matrix.h"
+#include "math/Matrix.h"
 #include "Fuente.h"
 #include "Textura.h"
 #include "Timer.h"
