@@ -11,22 +11,18 @@
 
 
 MD2Loader::MD2Loader(MD2Model *model) : Model3DLoader(model) {
-    m_pSkins = NULL;
-    m_pTexCoords = NULL;
-    m_pTriangles = NULL;
-    m_pFrames = NULL;
+    m_pSkins = nullptr;
+    m_pTexCoords = nullptr;
+    m_pTriangles = nullptr;
+    m_pFrames = nullptr;
 
-    m_file = NULL;
-
-
+    m_file = nullptr;
 }
 
-MD2Loader::~MD2Loader() {
-
-}
+MD2Loader::~MD2Loader() = default;
 
 void MD2Loader::importar(const char *modelo) {
-    importar(modelo, NULL);
+    importar(modelo, nullptr);
 }
 
 void MD2Loader::importar(const char *modelo, const char *textura) {
@@ -39,7 +35,7 @@ void MD2Loader::importar(const char *modelo, const char *textura) {
         LOG("No existe el archivo: %s", modelo);
         return;
     }
-    struct md2_header m_header;
+    struct md2_header m_header{};
 
     fread(&m_header, 1, sizeof(struct md2_header), m_file);
     LOG("ident = %d", m_header.ident);
@@ -75,18 +71,19 @@ void MD2Loader::importar(const char *modelo, const char *textura) {
         unsigned int tex[1];
         t.CrearTextura(tex, textura, 0);
         texture.texture_id = tex[0];
-        texture.u_tile = texture.u_tile = 1;
+        texture.u_tile = 1;
+        texture.v_tile = 1;
 
         m_mdl->addMaterial(texture);
     }
 
     fclose(m_file);
-    m_file = NULL;
-    if (m_pSkins) { delete[] m_pSkins; }
-    if (m_pTexCoords) { delete m_pTexCoords; }
-    if (m_pTriangles) { delete m_pTriangles; }
-    if (m_pFrames) { delete m_pFrames; }
-    if (m_glCommands) { delete m_glCommands; }
+    m_file = nullptr;
+    delete[] m_pSkins;
+    delete m_pTexCoords;
+    delete m_pTriangles;
+    delete m_pFrames;
+    delete m_glCommands;
 }
 
 
@@ -103,24 +100,24 @@ void MD2Loader::leeMD2Data(md2_header &m_header) {
 
 
     fseek(m_file, m_header.offset_skins, SEEK_SET);
-    fread(m_pSkins, sizeof(tMd2Skin), m_header.num_skins, m_file);
+    fread(m_pSkins, sizeof(tMd2Skin), static_cast<size_t>(m_header.num_skins), m_file);
 
 
     fseek(m_file, m_header.offset_st, SEEK_SET);
-    fread(m_pTexCoords, sizeof(tMd2TexCoord), m_header.num_st, m_file);
+    fread(m_pTexCoords, sizeof(tMd2TexCoord), static_cast<size_t>(m_header.num_st), m_file);
 
 
     fseek(m_file, m_header.offset_tris, SEEK_SET);
-    fread(m_pTriangles, sizeof(tMd2Face), m_header.num_tris, m_file);
+    fread(m_pTriangles, sizeof(tMd2Face), static_cast<size_t>(m_header.num_tris), m_file);
 
     fseek(m_file, m_header.offset_frames, SEEK_SET);
-    tMd2AliasFrame *pFrame = (tMd2AliasFrame *) buffer;
+    auto *pFrame = (tMd2AliasFrame *) buffer;
 
     int i = 0;
     for (i = 0; i < m_header.num_frames; i++) {
 
         m_pFrames[i].pVertices = new tMd2Triangle[m_header.num_vertices];
-        fread(pFrame, 1, m_header.framesize, m_file);
+        fread(pFrame, 1, static_cast<size_t>(m_header.framesize), m_file);
         strcpy(m_pFrames[i].strName, pFrame->name);
 
 
@@ -136,7 +133,7 @@ void MD2Loader::leeMD2Data(md2_header &m_header) {
 
     m_glCommands = new int[m_header.num_glcmds];
     fseek(m_file, m_header.offset_glcmds, SEEK_SET);
-    fread(m_glCommands, m_header.num_glcmds, sizeof(int), m_file);
+    fread(m_glCommands, static_cast<size_t>(m_header.num_glcmds), sizeof(int), m_file);
 
 
 }
@@ -214,17 +211,17 @@ void MD2Loader::parseAnimations(md2_header &m_header) {
     for (i = 0; i < m_header.num_frames; i++) {
         if (i == 0) {
             strcpy(nombre, m_pFrames[i].strName);
-            longitud = strlen(nombre);
+            longitud = static_cast<int>(strlen(nombre));
             dameNombreFrame(nombre, longitud);
             start = i;
             continue;
         }
 
-        if ((longitud != strlen(m_pFrames[i].strName) || (strstr(m_pFrames[i].strName, nombre) == NULL))) {
+        if ((longitud != strlen(m_pFrames[i].strName) || (strstr(m_pFrames[i].strName, nombre) == nullptr))) {
 
             agregaAnimacion(start, i - 1, nombre);
             strcpy(nombre, m_pFrames[i].strName);
-            longitud = strlen(nombre);
+            longitud = static_cast<int>(strlen(nombre));
             dameNombreFrame(nombre, longitud);
             start = i;
         }
