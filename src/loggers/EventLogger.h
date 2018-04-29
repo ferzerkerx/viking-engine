@@ -12,7 +12,7 @@
 * LOGGING Usada para habilitar/deshabilitar
 * el loggeo de eventos
 */
-//#define LOGGING
+#define LOGGING
 
 #ifdef LOGGING
 
