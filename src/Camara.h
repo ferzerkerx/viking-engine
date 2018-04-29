@@ -25,7 +25,7 @@ public:
 
     void RotarVista(float angulo, float X, float Y, float Z);
 
-    void VistaMouse();
+    void VistaMouse(int ancho, int alto, int mouseX, int mouseY);
 
     void StrafeCam(float vel);
 

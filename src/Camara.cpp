@@ -41,59 +41,56 @@ void Camara::PonCam(float posX, float posY, float posZ,
 }
 
 // Mover vista con el mouse
-void Camara::VistaMouse() {
-//    POINT mousePos;					 // Guarda pos X y Y del mouse
-//	int mitX = ancho  >> 1;	     // Corrimiento binario para obtener la mitad de ancho
-//	int mitY = alto >> 1;	     // Corrimiento binario para obtener la mitad de alto
-//	float anguloY = 0.0f;			 // Direccion vista arriba o abajo
-//	float anguloZ = 0.0f;			 // Rotacin en Y (Izquierda y Derecha)
-//	static float currentRotX = 0.0f;
-//
-//	GetCursorPos(&mousePos); // Obtener pos actual del mouse
-//
-//	// Si el cursor esta en la mitad no nos movemos
-//	if((mousePos.x == mitX) && (mousePos.y == mitY)) return;
-//
+void Camara::VistaMouse(int ancho, int alto, int mouseX, int mouseY) {
+	int mitX = ancho  >> 1;	     // Corrimiento binario para obtener la mitad de ancho
+	int mitY = alto >> 1;	     // Corrimiento binario para obtener la mitad de alto
+	float anguloY = 0.0f;			 // Direccion vista arriba o abajo
+	float anguloZ = 0.0f;			 // Rotacin en Y (Izquierda y Derecha)
+	static float currentRotX = 0.0f;
+
+	// Si el cursor esta en la mitad no nos movemos
+	if((mouseX == mitX) && (mouseY == mitY)) return;
+
 //	SetCursorPos(mitX, mitY); // Poner cursor enmedio de la pantalla
-//
-//	// Obtener la direccion del mov del mouse, decrementar el numero bastante (/1000)
-//	anguloY = (float)((mitX - mousePos.x)) / 1000.0f;
-//	anguloZ = (float)((mitY - mousePos.y)) / 1000.0f;
-//
-//    static float lastRotX = 0.0f;
-// 	lastRotX = currentRotX; // Guardamos currentRotX
-//
-//	currentRotX += anguloZ;	// Rotation actual, restringimos vuelta de 360 en camara
-//
-//	// Si la rotacion actual (radianes) es mayor a 1.0, la mantenemos (cap it).
-//	if(currentRotX > 1.0f) {
-//        currentRotX = 1.0f;
-//		if(lastRotX != 1.0f) {	// Rotar por el angulo restante
-//            // Obtenemos eje de rotacion
-//			vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
-//			vAxis = Normalizar(vAxis);
-//			// Rotamos camara por el angulo restante (1.0f - lastRotX)
-//			RotarVista(1.0f - lastRotX, vAxis.x, vAxis.y, vAxis.z);
-//		}
-//	}
-//	// Si la rotacion es menor a -1.0, no continuar
-//	else if(currentRotX < -1.0f) {
-//        currentRotX = -1.0f;
-//		if(lastRotX != -1.0f) {	// Rotar por el angulo restante
-//			vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
-//			vAxis = Normalizar(vAxis);
-//			// Rotamos ( -1.0f - lastRotX)
-//			RotarVista(-1.0f - lastRotX, vAxis.x, vAxis.y, vAxis.z);
-//		}
-//	}
-//	else { // Rotamos en cualquier direccin
-//        vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
-//		vAxis = Normalizar(vAxis);
-//		// Rotar sobre el eje perpendicular
-//		RotarVista(anguloZ, vAxis.x, vAxis.y, vAxis.z);
-//	}
-//	// Siempre rotamos sobre eje Y
-//	RotarVista(anguloY, 0, 1, 0);
+
+	// Obtener la direccion del mov del mouse, decrementar el numero bastante (/1000)
+	anguloY = (float)((mitX - mouseX)) / 1000.0f;
+	anguloZ = (float)((mitY - mouseY)) / 1000.0f;
+
+    static float lastRotX = 0.0f;
+ 	lastRotX = currentRotX; // Guardamos currentRotX
+
+	currentRotX += anguloZ;	// Rotation actual, restringimos vuelta de 360 en camara
+
+	// Si la rotacion actual (radianes) es mayor a 1.0, la mantenemos (cap it).
+	if(currentRotX > 1.0f) {
+        currentRotX = 1.0f;
+		if(lastRotX != 1.0f) {	// Rotar por el angulo restante
+            // Obtenemos eje de rotacion
+			vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
+			vAxis = Normalizar(vAxis);
+			// Rotamos camara por el angulo restante (1.0f - lastRotX)
+			RotarVista(1.0f - lastRotX, vAxis.x, vAxis.y, vAxis.z);
+		}
+	}
+	// Si la rotacion es menor a -1.0, no continuar
+	else if(currentRotX < -1.0f) {
+        currentRotX = -1.0f;
+		if(lastRotX != -1.0f) {	// Rotar por el angulo restante
+			vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
+			vAxis = Normalizar(vAxis);
+			// Rotamos ( -1.0f - lastRotX)
+			RotarVista(-1.0f - lastRotX, vAxis.x, vAxis.y, vAxis.z);
+		}
+	}
+	else { // Rotamos en cualquier direccin
+        vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
+		vAxis = Normalizar(vAxis);
+		// Rotar sobre el eje perpendicular
+		RotarVista(anguloZ, vAxis.x, vAxis.y, vAxis.z);
+	}
+	// Siempre rotamos sobre eje Y
+	RotarVista(anguloY, 0, 1, 0);
 }
 
 //	Rotar la vista 
@@ -168,8 +165,6 @@ void Camara::ChecarMov(int key) {
 void Camara::Actualizar() {
     vector3f vCruz = Cruzado(m_vView - m_vPos, m_vUpVec);
     m_vStrafe = Normalizar(vCruz); // Normalizamos el vector strafe
-
-    VistaMouse();
 }
 
 // Posicionamos la camara en opengl

@@ -23,6 +23,7 @@ using namespace std;
 int alto = 768;
 int ancho = 1024;
 bool wireframe = false;
+bool useCamera = false;
 bool useSkyDome = true;
 bool useSkybox = false;
 float currentRotation = 0.0;
@@ -53,6 +54,8 @@ void processNonAsciiKeyEvents(int key, int mouseX, int mouseY);
 
 void processAsciiKeyEvents(unsigned char key, int mouseX, int mouseY);
 
+void handleMouseMovement(int button, int state, int mouseX, int mouseY);
+
 void myTimer(int i);
 
 void updateScene();
@@ -69,6 +72,8 @@ int main(int argc, char **argv) {
     glutDisplayFunc(renderScene);
     glutSpecialFunc(processNonAsciiKeyEvents);
     glutKeyboardUpFunc(processAsciiKeyEvents);
+    glutKeyboardUpFunc(processAsciiKeyEvents);
+    glutMouseFunc(handleMouseMovement);
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -80,6 +85,8 @@ int main(int argc, char **argv) {
 
 
 void resize(int width, int height) {
+    ancho = width;
+    alto = height;
     const float aspectRatio = (float) width / (float) height;
 
     glViewport(0, 0, width, height);
@@ -114,22 +121,20 @@ void processAsciiKeyEvents(unsigned char key, int mouseX, int mouseY) {
                 vkSkyDome->escribeImagenDeNubes();
             }
             break;
-            //	//*** Activar camara
-//	if(GetKeyState('C') & 0x80) {
-//
-//		if(camara) {
-//			ShowCursor(true);
-//			camara = false;
-//		} else {
-//			ShowCursor(false);
-//			camara = true;
-//		}
-//	}
-
+        case 'c':
+            useCamera = !useCamera;
+            break;
     }
 
     glutPostRedisplay();
 }
+
+void handleMouseMovement(int button, int state, int mouseX, int mouseY) {
+    if (useCamera) {
+        camara.VistaMouse(ancho, alto, mouseX, mouseY);
+    }
+}
+
 
 void processNonAsciiKeyEvents(int key, int mouseX, int mouseY) {
     FN("processNonAsciiKeyEvents()");

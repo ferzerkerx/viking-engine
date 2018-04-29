@@ -2,9 +2,12 @@
 
 ## Description
 Viking engine is a very simple game engine for opengl, based on the nehe tutorials and done as a project 
-for academic purposes. I found the project (originally for windows) and migrated it to unix.
+for academic purposes. I found the project (originally for windows) and migrated it to Linux.
 
 ## Features
+- Supports Quaternions operations
+- Supports Matrix operations
+- Supports Simple logging
 - Supports to import .bmp, .tga images
 - Supports .md2, .md3 models (no animation)
 - Supports 2d text render 
