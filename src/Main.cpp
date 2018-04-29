@@ -14,6 +14,7 @@
 #include "definiciones.h"
 #include "Camara.h"
 #include "sky/SkyBox.h"
+#include "model_loaders/MD2Model.h"
 
 #include <GL/glut.h>
 
@@ -53,7 +54,7 @@ Fuente *fuente;
 //VKSkyDome *vksd;
 SkyBox *sb;
 EventLogger *g_Log;
-//MD2Model *knight;
+MD2Model *knight;
 
 
 void DrawGLScene();
@@ -104,47 +105,6 @@ int main(int argc, char **argv) {
 
     glutMainLoop();
     shutdownViking();
-}
-
-int leeConfig() {
-
-	config = fopen("config.ini", "r");	 //Abrimos el archivo
-	printf("---> config.ini \n");
-	if(!config) {
-		printf("Imposible encontrar o abrir el archivo config.ini");
-		return -1;
-	}
-	char strWord[255] = {0};
-	while(!feof(config)) {
-		fscanf(config, "%s", &strWord);	// Obtener cada palabra del archvio
-		if(!strcmp(strWord, "Ancho")) {
-			fgets(strWord,50,config);
-			ancho = atoi(strWord);
-			printf("Ancho: %d \n",ancho);
-		}
-		if(!strcmp(strWord, "Alto")) {
-			fgets(strWord,50,config);
-			alto = atoi(strWord);
-			printf("Alto: %d \n",alto);
-		}
-		if(!strcmp(strWord, "Bits")) {
-			fgets(strWord,50,config);
-			bits = atoi(strWord);
-			printf("Bits: %d \n",bits);
-		}
-		if(!strcmp(strWord, "Fullscreen")) {
-			fgets(strWord,50,config);
-			fs = atoi(strWord);
-			if(fs == 0)
-				fullscreen = false;
-			else
-				fullscreen = true;
-			printf("Fullscreen: %d \n",fullscreen);
-		}
-	}
-	fclose(config);
-
-	return 1;
 }
 
 double GetTickCount(void)
@@ -344,33 +304,33 @@ void initViking(){
 	cam.PonCam(0.0,1.0,10.0,0.0,1.0,9.0,0.0,1.0,0.0);
 //
 	te.CrearTextura(piso,"data/piso.bmp",0);
-//	te.CrearTextura(fText,"data/Fuente/fuente.bmp",0);
-//	te.CrearTextura(sky,"data/skydome/image5.bmp",0);
-//	te.CrearTextura(sun,"data/sol_mixteco.tga",0);
+	te.CrearTextura(fText,"data/Fuente/fuente.bmp",0);
+	te.CrearTextura(sky,"data/skydome/image5.bmp",0);
+	te.CrearTextura(sun,"data/sol_mixteco.tga",0);
 
 	unsigned int skybox_text[6];//FRONT,BACK,LEFT,RIGHT,UP,DOWN
-	//te.CrearTextura(skybox_text,"data/skydome/image1.bmp",0);
-	//te.CrearTextura(skybox_text,"data/skydome/image2.bmp",1);
-	//te.CrearTextura(skybox_text,"data/skydome/image3.bmp",2);
-	//te.CrearTextura(skybox_text,"data/skydome/image4.bmp",3);
-	//te.CrearTextura(skybox_text,"data/skydome/image5.bmp",4);
-	//te.CrearTextura(skybox_text,"data/skydome/image6.bmp",5);
+	te.CrearTextura(skybox_text,"data/skydome/image1.bmp",0);
+	te.CrearTextura(skybox_text,"data/skydome/image2.bmp",1);
+	te.CrearTextura(skybox_text,"data/skydome/image3.bmp",2);
+	te.CrearTextura(skybox_text,"data/skydome/image4.bmp",3);
+	te.CrearTextura(skybox_text,"data/skydome/image5.bmp",4);
+	te.CrearTextura(skybox_text,"data/skydome/image6.bmp",5);
 
 	sb = new SkyBox(50.0f,100.0f,120.0f, skybox_text);
 
 	fuente = new Fuente(fText);
 	timer = new Timer();
 
-//    knight = new MD2Model("data/modelos/knight.md2", "data/modelos/knight.bmp");
+    knight = new MD2Model("data/modelos/knight.md2", "data/modelos/knight.bmp");
 
 //	vksd = new VKSkyDome(15,15,70,sky[0]);
 //	vksd->setSunTexture(sun[0]);
 
-    //glClearColor(0.35f,0.53f,0.7f,1.0f);
-    glClearColor(0.0f,0.0f,0.0f,1.0f);
+    glClearColor(0.35f,0.53f,0.7f,1.0f);
+//    glClearColor(0.0f,0.0f,0.0f,1.0f);
 
     glShadeModel(GL_SMOOTH);				// Habilita Smooth Shading
-    //glEnable(GL_CULL_FACE);
+//    glEnable(GL_CULL_FACE);
 
     glClearDepth(1.0f);							// Depth Buffer
     glEnable(GL_DEPTH_TEST);					// Habilita Depth Testing
@@ -388,7 +348,7 @@ void shutdownViking(){
 	delete timer;
 //	if (vksd!=NULL){delete vksd;}
 	if (sb!=NULL){delete sb;}
-//	if (knight!=NULL){delete knight;}
+	if (knight!=NULL){delete knight;}
 	LOG_TERM();
 	if(g_Log!=NULL){delete g_Log;}
 }

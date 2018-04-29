@@ -5,7 +5,24 @@ set(CMAKE_CXX_STANDARD 11)
 
 #file(GLOB_RECURSE sources **/*.cpp **/*.h)
 #add_executable(viking_engine ${sources})
-add_executable(viking_engine src/Main.cpp src/Camara.h src/Camara.cpp src/sky/SkyBox.h src/sky/SkyBox.cpp src/Fuente.h src/Fuente.cpp src/Timer.h src/Timer.cpp src/Textura.h src/Textura.cpp)
+add_executable(viking_engine src/Main.cpp
+        src/Camara.h
+        src/Camara.cpp
+        src/sky/SkyBox.h
+        src/sky/SkyBox.cpp
+        src/Fuente.h
+        src/Fuente.cpp
+        src/Timer.h
+        src/Timer.cpp
+        src/Textura.h
+        src/Textura.cpp
+        src/model_loaders/Model3D.h
+        src/model_loaders/Model3D.cpp
+        src/model_loaders/MD2Model.h
+        src/model_loaders/MD2Model.cpp
+        src/model_loaders/MD2Loader.h
+        src/model_loaders/MD2Loader.cpp
+        )
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

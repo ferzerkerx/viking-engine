@@ -91,7 +91,7 @@ void Textura::CreaTGA(unsigned int textureArray[], char * strFileName, int textu
 	tImageTGA *pImage = CargaTGA(strFileName);	// Carga imagen y guarda los datos
 
 	if(pImage == NULL)		// Checamos que se cargue la imagen
-		exit(0);
+		return
 
 	// Generate la textura conforme a OpenGL
 	glGenTextures(1, &textureArray[textureID]);
