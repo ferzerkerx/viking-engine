@@ -18,9 +18,13 @@ for academic purposes. I found the project (originally for windows) and migrated
 
 ## Camera movement
 -  Press key up,down,right,left to move around
--  Press key c and then use the mouse to look around
+-  Press key c and then use the mouse to click around and look around
+-  Press key f to render in wireframe
 -  n to play the next animation on the model
 -  p to play the previous animation on the model
 
 
-![alt tag](https://raw.githubusercontent.com/ferzerkerx/tweezer-gl-animation/master/screenshots/tweezer.png)
+![alt tag](https://raw.githubusercontent.com/ferzerkerx/viking-engine/master/screenshots/viking1.png)
+![alt tag](https://raw.githubusercontent.com/ferzerkerx/viking-engine/master/screenshots/viking2.png)
+![alt tag](https://raw.githubusercontent.com/ferzerkerx/viking-engine/master/screenshots/viking3.png)
+![alt tag](https://raw.githubusercontent.com/ferzerkerx/viking-engine/master/screenshots/viking4.png)

@@ -24,6 +24,7 @@ int alto = 768;
 int ancho = 1024;
 bool wireframe = false;
 bool useCamera = false;
+bool shouldRenderScreenText = false;
 bool useSkyDome = true;
 bool useSkybox = false;
 float currentRotation = 0.0;
@@ -59,6 +60,10 @@ void handleMouseMovement(int button, int state, int mouseX, int mouseY);
 void myTimer(int i);
 
 void updateScene();
+
+void renderScreenText();
+
+void renderFloor();
 
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
@@ -175,22 +180,7 @@ void renderScene() {
         glPopMatrix();
     }
 
-    glEnable(GL_TEXTURE_2D);
-
-    glPushMatrix();
-    glBindTexture(GL_TEXTURE_2D, floorTexture[0]);
-    glBegin(GL_POLYGON);
-    glTexCoord2f(0.0, 1.0);
-    glVertex3f(-5.0f, 0.0f, -5.0f);
-    glTexCoord2f(1.0, 1.0);
-    glVertex3f(45.0f, 0.0f, -5.0f);
-    glTexCoord2f(1.0, 0.0);
-    glVertex3f(45.0f, 0.0f, 45.0f);
-    glTexCoord2f(0.0, 0.0);
-    glVertex3f(-5.0f, 0.0f, 45.0f);
-    glEnd();
-    glPopMatrix();
-    glDisable(GL_TEXTURE_2D);
+    renderFloor();
 
     if (knight) {
         glPushMatrix();
@@ -200,7 +190,39 @@ void renderScene() {
         glPopMatrix();
     }
 
-    /**FUENTE**/
+    if (shouldRenderScreenText) {
+        renderScreenText();
+    }
+
+    if (wireframe) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    } else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+
+
+    glutSwapBuffers();
+}
+
+void renderFloor() {
+    glEnable(GL_TEXTURE_2D);
+    glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, floorTexture[0]);
+        glBegin(GL_POLYGON);
+            glTexCoord2f(0.0, 1.0);
+            glVertex3f(-5.0f, 0.0f, -5.0f);
+            glTexCoord2f(1.0, 1.0);
+            glVertex3f(45.0f, 0.0f, -5.0f);
+            glTexCoord2f(1.0, 0.0);
+            glVertex3f(45.0f, 0.0f, 45.0f);
+            glTexCoord2f(0.0, 0.0);
+            glVertex3f(-5.0f, 0.0f, 45.0f);
+        glEnd();
+    glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
+}
+
+void renderScreenText() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glEnable(GL_TEXTURE_2D);
     if (knight) {
@@ -212,15 +234,6 @@ void renderScene() {
     fuente->glPrint(20, 35, "'f' WireFrame (Toggle)", 1, ancho, alto);
     fuente->glPrint(20, 10, "'c' Camara", 1, ancho, alto);
     glDisable(GL_TEXTURE_2D);
-
-    if (wireframe) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    } else {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
-    /**FUENTE**/
-
-    glutSwapBuffers();
 }
 
 
