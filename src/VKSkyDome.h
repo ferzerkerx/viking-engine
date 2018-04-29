@@ -26,12 +26,6 @@ public:
 
     ~VKSkyDome();
 
-    float getCloudCover();
-
-    void incrementaCloudCover();
-
-    void decrementaCloudCover();
-
     void actualiza(vector3f poscam);
 
     void escribeImagenDeNubes();

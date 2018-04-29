@@ -25,37 +25,12 @@ VKSkyDome::VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura)
 }
 
 VKSkyDome::~VKSkyDome() {
-    if (m_ca != NULL) {
-        delete m_ca;
-        m_ca = NULL;
-    }
-    if (m_sp != NULL) {
-        delete m_sp;
-        m_sp = NULL;
-    }
+    delete m_ca;
+    delete m_sp;
+
     LOG(0, "VKSkyDome destruido");
 }
 
-/**
- * @brief regresa la cantidad de cloud cover que hay
- * @author Fernando Montes de Oca Cespedes 
- * @date Saturday, August 18, 2007 12:13:57 PM
- * @retval la cantidad de cloud cover que hay
- */
-float VKSkyDome::getCloudCover() {
-    return m_cloud_cover;
-}
-
-void VKSkyDome::incrementaCloudCover() {
-    FN("incrementaCloudCover()");
-    m_cloud_cover += 1.0f;
-    m_ca->setCover(m_cloud_cover);
-}
-
-void VKSkyDome::decrementaCloudCover() {
-    m_cloud_cover -= 1.0f;
-    m_ca->setCover(m_cloud_cover);
-}
 
 void VKSkyDome::render(vector3f poscam) {
     TexturedSkyDome::render(poscam);
@@ -63,7 +38,6 @@ void VKSkyDome::render(vector3f poscam) {
 
 void VKSkyDome::actualiza(vector3f poscam) {
     render(poscam);
-    m_ca->actualizaPorCoordenada();
     m_sp->actualiza(poscam);
 }
 

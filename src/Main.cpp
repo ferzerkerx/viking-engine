@@ -20,8 +20,8 @@
 
 using namespace std;
 
-int alto = 600;
-int ancho = 800;
+int alto = 768;
+int ancho = 1024;
 bool wireframe = false;
 bool useSkyDome = true;
 bool useSkybox = false;
@@ -107,16 +107,6 @@ void processAsciiKeyEvents(unsigned char key, int mouseX, int mouseY) {
             break;
         case 'f':
             wireframe = !wireframe;
-            break;
-        case 'z':
-            if (vkSkyDome) {
-                vkSkyDome->decrementaCloudCover();
-            }
-            break;
-        case 'x':
-            if (vkSkyDome) {
-                vkSkyDome->incrementaCloudCover();
-            }
             break;
         case 'g':
             if (vkSkyDome) {
@@ -212,9 +202,6 @@ void renderScene() {
         fuente->glPrint(20, 95, "'n' siguiente frame, 'p' frame anterior", 1, ancho, alto);
     }
     if (vkSkyDome) {
-        char buff[50];
-        sprintf(buff, "Cover(x aumenta, z decrementa): %f", vkSkyDome->getCloudCover());
-        fuente->glPrint(20, 55, buff, 1, ancho, alto);
         fuente->glPrint(20, 75, "'g' guardar (test.bmp) ", 1, ancho, alto);
     }
     fuente->glPrint(20, 35, "'f' WireFrame (Toggle)", 1, ancho, alto);
