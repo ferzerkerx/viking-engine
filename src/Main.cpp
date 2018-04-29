@@ -11,7 +11,6 @@
 #include <cstring>
 #include "loggers/ConsoleEventLogger.h"
 #include "math/Quaternion.h"
-#include "definiciones.h"
 #include "Camara.h"
 #include "sky/SkyBox.h"
 #include "VKSkyDome.h"
@@ -24,31 +23,21 @@ using namespace std;
 
 int alto = 600;
 int ancho = 800;
-float cov = 0.0f;
 
 
 void initViking();
 void shutdownViking();
 
-
-bool	keys[256];			// Arreglo usado para el Teclado
-bool	active = true;		// Bandera de actividad de la ventana
-bool	fullscreen = true;	// Bandera de Fullscreen
-bool    done = false;       // Bandera para salir dl ciclo principal
-
-
-bool camara, billB, lockFrames = false;
 bool wireframe = false;
+bool useSkyDome = true;
+bool useSkybox = false;
 float rot=0.0;
 
 unsigned int fText[1];
 unsigned int piso[1];
-unsigned int arbol[1];
 unsigned int sky[1];
 unsigned int sun[1];
-char fps[20], *bbStr="No Billboarding";
 
-CIRCULO circulo;
 Timer *timer;
 Textura te;
 Camara cam;
@@ -74,15 +63,57 @@ void resize(int width, int height) {
     glLoadIdentity();
 }
 
-void processKeyEvents(int key, int mouseX, int mouseY) {
-    cam.ChecarMov(key);
+void processAsciiKeyEvents(unsigned char key, int mouseX, int mouseY) {
+    FN("processAsciiKeyEvents()");
     switch (key) {
-        case GLUT_KEY_DOWN:
-        case GLUT_KEY_UP:
-        case GLUT_KEY_LEFT:
-        case GLUT_KEY_RIGHT:
+        case 'n':
+            if (knight) {
+                knight->nextAnimation();
+            }
             break;
+        case 'p':
+            if (knight) {
+                knight->previousAnimation();
+            }
+            break;
+        case 'f':
+            wireframe = !wireframe;
+            break;
+        case 'z':
+            if (vksd){
+			    vksd->decrementaCloudCover();
+		    }
+            break;
+        case 'x':
+            if (vksd){
+			    vksd->incrementaCloudCover();
+		    }
+            break;
+        case 'g':
+            if (vksd){
+			    LOG(0,"Guardando imagen de nubes");
+			    vksd->escribeImagenDeNubes();
+		    }
+            break;
+            //	//*** Activar camara
+//	if(GetKeyState('C') & 0x80) {
+//
+//		if(camara) {
+//			ShowCursor(true);
+//			camara = false;
+//		} else {
+//			ShowCursor(false);
+//			camara = true;
+//		}
+//	}
+
     }
+
+    glutPostRedisplay();
+}
+void processNonAsciiKeyEvents(int key, int mouseX, int mouseY) {
+    FN("processNonAsciiKeyEvents()");
+    cam.ChecarMov(key);
     glutPostRedisplay();
 }
 
@@ -103,13 +134,10 @@ int main(int argc, char **argv) {
 
     glutReshapeFunc(resize);
     glutDisplayFunc(DrawGLScene);
-    glutSpecialFunc(processKeyEvents);
+    glutSpecialFunc(processNonAsciiKeyEvents);
+    glutKeyboardUpFunc(processAsciiKeyEvents);
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-
-//    glutReshapeFunc(resize);
-//    glutSpecialFunc(processKeyEvents);
 
     glutTimerFunc(10, myTimer, 1);
 
@@ -117,53 +145,6 @@ int main(int argc, char **argv) {
     shutdownViking();
 }
 
-double GetTickCount(void)
-{
-	struct timespec now;
-	if (clock_gettime(CLOCK_MONOTONIC, &now))
-		return 0;
-	return now.tv_sec * 1000.0 + now.tv_nsec / 1000000.0;
-}
-
-//	Define el frame rate de la escena
-bool FrameRate(int frame_rate) {
-	static float framesPerSecond = 0.0f;
-    static float lastTime = 0.0f;
-	float currentTime = GetTickCount() * 0.001f; // Obtener segundos (ms * .001 = segs)
-
-	if(!lockFrames) {
-		++framesPerSecond;
-        if(currentTime - lastTime > 1.0f) {
-			lastTime = currentTime;
-			sprintf(fps, "Frames Per Second: %d", int(framesPerSecond));
-			framesPerSecond = 0;
-		}
-		return true;
-	} else {
-        // Obtenemos el tiempo transcurrido
-		if((currentTime - lastTime) > (1.0f / frame_rate)) {
-			sprintf(fps, "Frames Per Second: %d", frame_rate);
-			lastTime = currentTime;	// Reseteamos el lastTime
-			framesPerSecond = 0;
-			return true;
-		}
-        return false;
-	}
-}
-
-void crearCirculo(float k, float r, float h) {
-	glBegin(GL_LINES);
-		for(int i = 0;i < 180;i++) {
-            circulo.x = r * cos((float)i) - h;
-			circulo.y = r * sin((float)i) + k;
-			glVertex3f(circulo.x + k,circulo.y - h,0);
-
-			circulo.x = r * (float)cos(i + 0.1) - h;
-			circulo.y = r * (float)sin(i + 0.1) + k;
-			glVertex3f(circulo.x + k,circulo.y - h,0);
-		}
-	glEnd();
-}
 
 void DrawGLScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -173,7 +154,6 @@ void DrawGLScene() {
 
 	glTranslatef(0.0f,0.0f,-5.0f);
 
-	crearCirculo(10, 20, 40);
 	if (vksd!=NULL){
 		glPushMatrix();
 			glTranslatef(0.0f,-15.0f,0.0f);
@@ -205,11 +185,9 @@ void DrawGLScene() {
 		glPushMatrix();
 			glTranslatef(0.0f,3.6f,0.0f);
 			glScalef(0.15f,0.15f,0.15f);
-			//knight->render();
 			knight->renderWithOpenGlCommands();
 		glPopMatrix();
 	}
-
 
 
 	/**FUENTE**/
@@ -240,71 +218,6 @@ void DrawGLScene() {
 }
 
 
-void manejaTeclado() {
-	FN("manejaTeclado()");
-
-	//TODO
-//	if(GetKeyState('N') & 0x80) {
-//		knight->nextAnimation();
-//	}
-//	if(GetKeyState('P') & 0x80) {
-//		knight->previousAnimation();
-//	}
-//	//*** Activar camara
-//	if(GetKeyState('C') & 0x80) {
-//
-//		if(camara) {
-//			ShowCursor(true);
-//			camara = false;
-//		} else {
-//			ShowCursor(false);
-//			camara = true;
-//		}
-//	}
-//
-//	if(GetKeyState('F') & 0x80) {
-//		if (wireframe){
-//			wireframe = false;
-//		}
-//		else{
-//			wireframe = true;
-//		}
-//	}
-//
-//	if(GetKeyState('Z') & 0x80) {
-//		if (vksd){
-//			vksd->decrementaCloudCover();
-//		}
-//
-//	}
-//
-//	if(GetKeyState('X') & 0x80) {
-//		if (vksd){
-//			vksd->incrementaCloudCover();
-//		}
-//
-//	}
-//
-//	if(GetKeyState('G') & 0x80) {
-//		if (vksd){
-//			LOG(0,"Guardando imagen de nubes");
-//			vksd->escribeImagenDeNubes();
-//		}
-//
-//	}
-}
-
-
-
-
-
-bool b_acabo = false;
-bool flag = false;
-
-
-bool useSkyDome = true;
-bool useSkybox = false;
-
 void initViking(){
 	g_Log = new ConsoleEventLogger();
 	LOG_INIT("TestLog.html");
@@ -312,7 +225,7 @@ void initViking(){
 	LOG( "El log ha comenzado");
 
 	cam.PonCam(0.0,1.0,10.0,0.0,1.0,9.0,0.0,1.0,0.0);
-//
+
 	te.CrearTextura(piso,"data/piso.bmp",0);
 	te.CrearTextura(fText,"data/Fuente/fuente.bmp",0);
 	te.CrearTextura(sky,"data/skydome/image5.bmp",0);
@@ -340,18 +253,14 @@ void initViking(){
 
     knight = new MD2Model("data/modelos/knight.md2", "data/modelos/knight.bmp");
 
-//    glClearColor(0.35f,0.53f,0.7f,1.0f);
     glClearColor(0.0f,0.0f,0.0f,1.0f);
 
     glShadeModel(GL_SMOOTH);				// Habilita Smooth Shading
-//    glEnable(GL_CULL_FACE);
 
     glClearDepth(1.0f);							// Depth Buffer
     glEnable(GL_DEPTH_TEST);					// Habilita Depth Testing
     glDepthFunc(GL_LEQUAL);						// Tipo de Depth Testing
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Calculos de Perspectiva
-    //glHint(GL_POINT_SMOOTH_HINT,GL_NICEST);
-
 }
 
 
@@ -360,9 +269,9 @@ void shutdownViking(){
 	LOG( "Finalizando (destruyendo todo)");
 	delete fuente;
 	delete timer;
-//	if (vksd!=NULL){delete vksd;}
-	if (sb!=NULL){delete sb;}
-	if (knight!=NULL){delete knight;}
-	LOG_TERM();
-	if(g_Log!=NULL){delete g_Log;}
+    delete vksd;
+    delete sb;
+    delete knight;
+    LOG_TERM();
+    delete g_Log;
 }

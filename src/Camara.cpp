@@ -9,6 +9,7 @@
  ************************************************************************/
 
 #include "Camara.h"
+#include "GL/glut.h"
 
 // Vel. de camara 
 #define velCam	0.1f

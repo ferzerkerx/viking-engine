@@ -3,7 +3,7 @@
 \brief Implementacion de las funciones de la clase Fuente
 */
 #include "Fuente.h"
-#include <GL/freeglut.h>
+#include <GL/gl.h>
 #include <cstring>
 
 
@@ -52,7 +52,7 @@ Fuente::~Fuente(){
 	glDeleteLists(base,256);
 	textura = NULL;
 }
-void Fuente::glPrint(float x, float y, char * string, int set, int ancho, int alto){
+void Fuente::glPrint(float x, float y, const char * string, int set, int ancho, int alto){
 	/*Establecemos el color del alpha (todos menos el color de la fuente)*/
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_COLOR);
 	glEnable(GL_BLEND);

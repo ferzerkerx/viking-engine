@@ -47,7 +47,7 @@ class Fuente{
 		\param alto define el alto que se debe tomar para cambiar a modo ortogonal
 		\brief Imprime el String especificado en la posicion indicada usando un set de la fuente
 		*/
-        void glPrint(float , float , char *, int, int, int );
+        void glPrint(float , float , const char *, int, int, int );
 
 
 };

@@ -11,7 +11,7 @@
 
 #include <cstring>
 #include "Textura.h"
-#include "GL/freeglut.h"
+#include "GL/glut.h"
 
 
 Textura::Textura() {

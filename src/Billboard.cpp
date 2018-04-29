@@ -1,4 +1,4 @@
-#include "definiciones.h"
+#include "GL/gl.h"
 #include "Billboard.h"
 
 /**
