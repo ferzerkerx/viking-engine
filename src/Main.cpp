@@ -154,14 +154,14 @@ void DrawGLScene() {
 
 	glTranslatef(0.0f,0.0f,-5.0f);
 
-	if (vksd!=NULL){
+	if (vksd){
 		glPushMatrix();
 			glTranslatef(0.0f,-15.0f,0.0f);
 			vksd->actualiza(cam.getPos());
 		glPopMatrix();
 	}
 
-	if (sb!=NULL){
+	if (sb){
 		glPushMatrix();
 
 			sb->actualiza(cam.getPos());
@@ -173,10 +173,10 @@ void DrawGLScene() {
 	glPushMatrix();
 		glBindTexture(GL_TEXTURE_2D, piso[0]);
 		glBegin(GL_POLYGON);
-			glTexCoord2f(0.0,1.0); glVertex3f(-5.0, 0.0, -5.0);
-			glTexCoord2f(1.0,1.0); glVertex3f(45.0, 0.0, -5.0);
-			glTexCoord2f(1.0,0.0); glVertex3f(45.0, 0.0, 45.0);
-			glTexCoord2f(0.0,0.0); glVertex3f(-5.0, 0.0, 45.0);
+			glTexCoord2f(0.0,1.0); glVertex3f(-5.0f, 0.0f, -5.0f);
+			glTexCoord2f(1.0,1.0); glVertex3f(45.0f, 0.0f, -5.0f);
+			glTexCoord2f(1.0,0.0); glVertex3f(45.0f, 0.0f, 45.0f);
+			glTexCoord2f(0.0,0.0); glVertex3f(-5.0f, 0.0f, 45.0f);
 		glEnd();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
