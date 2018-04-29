@@ -6,6 +6,15 @@
 
 #include "Timer.h"
 
+
+static unsigned int Timer::getTickCount() {
+	struct timespec now;
+	if (clock_gettime(CLOCK_MONOTONIC, &now))
+		return 0;
+	return now.tv_sec * 1000.0 + now.tv_nsec / 1000000.0;
+}
+
+
 /**
  * @brief Constructor de la clase Timer
  * inicializa las 2 variables, el que se resetea manual
@@ -14,14 +23,14 @@
  * @date Saturday, August 11, 2007 10:15:01 PM
  */
 Timer::Timer(){
-	ahora = GetTickCount();
-	despues = GetTickCount();
-	ultima = GetTickCount();
+	ahora = Timer::getTickCount();
+	despues = Timer::getTickCount();
+	ultima = Timer::getTickCount();
 }
 
 /**
  * @brief Destructor de la clase Timer
- * @author Fernando Montes de Oca Cespedes 
+ * @author Fernando Montes de Oca Cespedes
  * @date Saturday, August 11, 2007 10:16:03 PM
  */
 Timer::~Timer(){
@@ -31,38 +40,38 @@ Timer::~Timer(){
 /**
  * @brief Regresa la cantidad de milisegundos transcurridos desde
  * el ltimo reset()
- * @author Fernando Montes de Oca Cespedes 
+ * @author Fernando Montes de Oca Cespedes
  * @date Saturday, August 11, 2007 10:16:26 PM
  * @retval Milisegundos transcurridos desde el reset()
  */
 int Timer::getMilliseconds(){
-	despues = GetTickCount();
+	despues = Timer::getTickCount();
 	return despues-ahora;
 }
 
 /**
  * @brief Regresa la cantidad de milisegundos transcurridos desde
  * la ltima llamada a esta funcin
- * @author Fernando Montes de Oca Cespedes 
+ * @author Fernando Montes de Oca Cespedes
  * @date Saturday, August 11, 2007 10:17:07 PM
  * @retval Milisegundos transcurridos desde la ltima llamada a esta funcin
  */
 int Timer::getMillisecondsFromLastCall(){
-	int res = ultima-GetTickCount(); 
-	ultima = GetTickCount();
-	return res; 
+	int res = ultima-Timer::getTickCount();
+	ultima = Timer::getTickCount();
+	return res;
 
 }
 
 /**
  * @brief Regresa los segundos transcurridos desde
  * el ltimo reset()
- * @author Fernando Montes de Oca Cespedes 
+ * @author Fernando Montes de Oca Cespedes
  * @date Saturday, August 11, 2007 10:18:21 PM
  * @retval Milisegundos transcurridos desde el ltimo reset()
  */
 int Timer::getSeconds(){
-	despues = GetTickCount();
+	despues = Timer::getTickCount();
 	return (despues-ahora)/1000;
 
 }
@@ -70,13 +79,13 @@ int Timer::getSeconds(){
 /**
  * @brief Regresa los segundos transcurridos desde
  * la ltima llamada a esta funcin
- * @author Fernando Montes de Oca Cespedes 
+ * @author Fernando Montes de Oca Cespedes
  * @date Saturday, August 11, 2007 10:18:21 PM
  * @retval Milisegundos transcurridos desde la ltima llamada a esta funcin
  */
 int Timer::getSecondsFromLastCall(){
-	int res = ultima-GetTickCount(); 
-	ultima = GetTickCount();
+	int res = ultima-Timer::getTickCount();
+	ultima = Timer::getTickCount();
 	return res/1000;
 }
 

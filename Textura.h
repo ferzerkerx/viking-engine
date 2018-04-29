@@ -39,11 +39,10 @@ class Textura {
 
         void CrearTextura(unsigned int textureArray[], char * strFileName, int textureID);
 
-        //////////////////////// BMP //////////////////////////////////////
         void CreaBMP(unsigned int textureArray[], char * strFileName, int textureID);
 		
-        //////////////////////// TGA //////////////////////////////////////
         void CreaTGA(unsigned int textureArray[], char * strFileName, int textureID);
+
         tImageTGA *CargaTGA(const char *filename);
 };
 

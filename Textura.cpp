@@ -9,15 +9,16 @@
  *
  ************************************************************************/
 
+#include <cstring>
 #include "Textura.h"
+#include "GL/freeglut.h"
 
 
 Textura::Textura() {
 	hasAlpha = false;
 }
 
-void Textura::CrearTextura(UINT textureArray[], LPSTR strFileName, int textureID) {
-
+void Textura::CrearTextura(unsigned int textureArray[], char * strFileName, int textureID) {
 	if(!strFileName)		// Sale si no es un nombre de archivo vlido
 		return;
 
@@ -39,11 +40,7 @@ void Textura::CrearTextura(UINT textureArray[], LPSTR strFileName, int textureID
 	}
 }
 
-
-////////////////////////////// Textura BMP  /////////////////////////////////
-
-void Textura::CreaBMP(UINT textureArray[], LPSTR strFileName, int textureID) {
-
+void Textura::CreaBMP(unsigned int textureArray[], char * strFileName, int textureID) {
 	AUX_RGBImageRec *pBitmap = NULL;
 	
 	pBitmap = auxDIBImageLoad(strFileName);			
@@ -70,10 +67,7 @@ void Textura::CreaBMP(UINT textureArray[], LPSTR strFileName, int textureID) {
 	}
 }
 
-
-///////////////////////////////// Textura TGA ///////////////////////////////////
-
-void Textura::CreaTGA(UINT textureArray[], LPSTR strFileName, int textureID) {
+void Textura::CreaTGA(unsigned int textureArray[], char * strFileName, int textureID) {
     
 	// Apuntador a datos de la imagen
 	tImageTGA *pImage = CargaTGA(strFileName);	// Carga imagen y guarda los datos
@@ -119,7 +113,6 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
 	int i = 0;							
 		
 	if((pFile = fopen(filename, "rb")) == NULL) {	// Abrimos archivo
-		MessageBox(NULL, "Imposible cargar imagen TGA!", "Error", MB_OK); //g_hWnd
 		printf("TGA: %s \n", filename);
 		return NULL;
 	}
