@@ -4,16 +4,16 @@
 * @date Saturday, August 11, 2007 10:14:52 PM
 */
 
+#include <time.h>
 #include "Timer.h"
 
 
-static unsigned int Timer::getTickCount() {
+static unsigned int getTickCount() {
 	struct timespec now;
 	if (clock_gettime(CLOCK_MONOTONIC, &now))
 		return 0;
 	return now.tv_sec * 1000.0 + now.tv_nsec / 1000000.0;
 }
-
 
 /**
  * @brief Constructor de la clase Timer
@@ -23,9 +23,9 @@ static unsigned int Timer::getTickCount() {
  * @date Saturday, August 11, 2007 10:15:01 PM
  */
 Timer::Timer(){
-	ahora = Timer::getTickCount();
-	despues = Timer::getTickCount();
-	ultima = Timer::getTickCount();
+	ahora = getTickCount();
+	despues = getTickCount();
+	ultima = getTickCount();
 }
 
 /**
@@ -45,7 +45,7 @@ Timer::~Timer(){
  * @retval Milisegundos transcurridos desde el reset()
  */
 int Timer::getMilliseconds(){
-	despues = Timer::getTickCount();
+	despues = getTickCount();
 	return despues-ahora;
 }
 
@@ -57,8 +57,8 @@ int Timer::getMilliseconds(){
  * @retval Milisegundos transcurridos desde la ltima llamada a esta funcin
  */
 int Timer::getMillisecondsFromLastCall(){
-	int res = ultima-Timer::getTickCount();
-	ultima = Timer::getTickCount();
+	int res = ultima-getTickCount();
+	ultima = getTickCount();
 	return res;
 
 }
@@ -71,7 +71,7 @@ int Timer::getMillisecondsFromLastCall(){
  * @retval Milisegundos transcurridos desde el ltimo reset()
  */
 int Timer::getSeconds(){
-	despues = Timer::getTickCount();
+	despues = getTickCount();
 	return (despues-ahora)/1000;
 
 }
@@ -84,8 +84,8 @@ int Timer::getSeconds(){
  * @retval Milisegundos transcurridos desde la ltima llamada a esta funcin
  */
 int Timer::getSecondsFromLastCall(){
-	int res = ultima-Timer::getTickCount();
-	ultima = Timer::getTickCount();
+	int res = ultima-getTickCount();
+	ultima = getTickCount();
 	return res/1000;
 }
 

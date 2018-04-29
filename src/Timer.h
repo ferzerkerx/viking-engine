@@ -12,7 +12,7 @@ class Timer {
 		unsigned int ahora;//tiempo registrado en el reset
 		unsigned int despues;//tiempo actual
 		unsigned int ultima;//usado en funciones Lastcall
-        static unsigned int getTickCount();
+
 	public:
 		Timer();
 		~Timer();

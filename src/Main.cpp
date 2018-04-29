@@ -13,7 +13,7 @@
 #include "math/Quaternion.h"
 #include "definiciones.h"
 #include "Camara.h"
-#include "Textura.h"
+#include "sky/SkyBox.h"
 
 #include <GL/glut.h>
 
@@ -36,7 +36,7 @@ bool    done = false;       // Bandera para salir dl ciclo principal
 
 
 bool camara, billB, lockFrames = false;
-bool wireframe = false;
+bool wireframe = true;
 
 unsigned int fText[1];
 unsigned int piso[1];
@@ -46,12 +46,12 @@ unsigned int sun[1];
 char fps[20], *bbStr="No Billboarding";
 
 CIRCULO circulo;
-//Timer *timer;
+Timer *timer;
 Textura te;
 Camara cam;
-//Fuente *fuente;
+Fuente *fuente;
 //VKSkyDome *vksd;
-//SkyBox *sb;
+SkyBox *sb;
 EventLogger *g_Log;
 //MD2Model *knight;
 
@@ -65,7 +65,7 @@ void resize(int width, int height) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    gluPerspective(30.0, ar, 1.0, 100.0);
+    gluPerspective(30.0, ar, 0.1f,1000.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -77,6 +77,7 @@ void processKeyEvents(int key, int mouseX, int mouseY) {
 
 void myTimer(int i) {
     DrawGLScene();
+    cam.Actualizar();
     glutTimerFunc(10, myTimer, 1);
     glutPostRedisplay();
 }
@@ -100,10 +101,6 @@ int main(int argc, char **argv) {
 //    glutSpecialFunc(processKeyEvents);
 
     glutTimerFunc(10, myTimer, 1);
-
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-//    glutTimerFunc(10, myTimer, 1);
 
     glutMainLoop();
     shutdownViking();
@@ -206,8 +203,9 @@ void DrawGLScene() {
 
 	cam.Vista();
 //
-//	glTranslatef(0.0f,0.0f,-5.0f);
+	glTranslatef(0.0f,0.0f,-5.0f);
 
+	crearCirculo(10, 20, 40);
 //	if (vksd!=NULL){
 //		glPushMatrix();
 //			glTranslatef(0.0f,-15.0f,0.0f);
@@ -215,12 +213,12 @@ void DrawGLScene() {
 //		glPopMatrix();
 //	}
 //
-//	if (sb!=NULL){
-//		glPushMatrix();
-//
-//			sb->actualiza(cam.getPos());
-//		glPopMatrix();
-//	}
+	if (sb!=NULL){
+		glPushMatrix();
+
+			sb->actualiza(cam.getPos());
+		glPopMatrix();
+	}
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -246,9 +244,9 @@ void DrawGLScene() {
 
 
 
-//	/**FUENTE**/
-//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-//	glEnable(GL_TEXTURE_2D);
+	/**FUENTE**/
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnable(GL_TEXTURE_2D);
 //	if (knight){
 //		fuente->glPrint(20,95,"'n' siguiente frame, 'p' frame anterior", 1, ancho, alto);
 //	}
@@ -258,16 +256,16 @@ void DrawGLScene() {
 //		fuente->glPrint(20,55,buff, 1, ancho, alto);
 //		fuente->glPrint(20,75,"'g' guardar (test.bmp) ", 1, ancho, alto);
 //	}
-//	fuente->glPrint(20,35,"'f' WireFrame (Toggle)", 1, ancho, alto);
-//	fuente->glPrint(20,10,"'c' Camara", 1, ancho, alto);
-//	glDisable(GL_TEXTURE_2D);
-//
-//	if (wireframe){
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-//	}
-//	else{
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-//	}
+	fuente->glPrint(20,35,"'f' WireFrame (Toggle)", 1, ancho, alto);
+	fuente->glPrint(20,10,"'c' Camara", 1, ancho, alto);
+	glDisable(GL_TEXTURE_2D);
+
+	if (wireframe){
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 //	/**FUENTE**/
 //
 //
@@ -350,7 +348,7 @@ void initViking(){
 //	te.CrearTextura(sky,"data/skydome/image5.bmp",0);
 //	te.CrearTextura(sun,"data/sol_mixteco.tga",0);
 
-	//unsigned int skybox_text[6];//FRONT,BACK,LEFT,RIGHT,UP,DOWN
+	unsigned int skybox_text[6];//FRONT,BACK,LEFT,RIGHT,UP,DOWN
 	//te.CrearTextura(skybox_text,"data/skydome/image1.bmp",0);
 	//te.CrearTextura(skybox_text,"data/skydome/image2.bmp",1);
 	//te.CrearTextura(skybox_text,"data/skydome/image3.bmp",2);
@@ -358,27 +356,38 @@ void initViking(){
 	//te.CrearTextura(skybox_text,"data/skydome/image5.bmp",4);
 	//te.CrearTextura(skybox_text,"data/skydome/image6.bmp",5);
 
-	//sb = new SkyBox(50.0f,100.0f,120.0f,skybox_text);
+	sb = new SkyBox(50.0f,100.0f,120.0f, skybox_text);
 
-//	fuente = new Fuente(fText);
-//	timer = new Timer();
-
-
+	fuente = new Fuente(fText);
+	timer = new Timer();
 
 //    knight = new MD2Model("data/modelos/knight.md2", "data/modelos/knight.bmp");
 
 //	vksd = new VKSkyDome(15,15,70,sky[0]);
 //	vksd->setSunTexture(sun[0]);
+
+    //glClearColor(0.35f,0.53f,0.7f,1.0f);
+    glClearColor(0.0f,0.0f,0.0f,1.0f);
+
+    glShadeModel(GL_SMOOTH);				// Habilita Smooth Shading
+    //glEnable(GL_CULL_FACE);
+
+    glClearDepth(1.0f);							// Depth Buffer
+    glEnable(GL_DEPTH_TEST);					// Habilita Depth Testing
+    glDepthFunc(GL_LEQUAL);						// Tipo de Depth Testing
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Calculos de Perspectiva
+    //glHint(GL_POINT_SMOOTH_HINT,GL_NICEST);
+
 }
 
 
 void shutdownViking(){
 	FN("shutdownViking()");
 	LOG( "Finalizando (destruyendo todo)");
-//	delete fuente;
-//	delete timer;
+	delete fuente;
+	delete timer;
 //	if (vksd!=NULL){delete vksd;}
-//	if (sb!=NULL){delete sb;}
+	if (sb!=NULL){delete sb;}
 //	if (knight!=NULL){delete knight;}
 	LOG_TERM();
 	if(g_Log!=NULL){delete g_Log;}

@@ -25,8 +25,6 @@ void Textura::CrearTextura(unsigned int textureArray[], char * strFileName, int 
 	char* pdest = strrchr(strFileName, '.' );		// encuentra '.'
 	if(pdest[0]!= NULL)		// Avanzamos uno mas que '.'
 		pdest++;
-	
-	strlwr(pdest);			// Convertimos a minsculas
 
 	if(!strcmp(pdest,"bmp")) {
 		CreaBMP(textureArray, strFileName, textureID);
@@ -41,29 +39,49 @@ void Textura::CrearTextura(unsigned int textureArray[], char * strFileName, int 
 }
 
 void Textura::CreaBMP(unsigned int textureArray[], char * strFileName, int textureID) {
-	AUX_RGBImageRec *pBitmap = NULL;
-	
-	pBitmap = auxDIBImageLoad(strFileName);			
-	
-	if(pBitmap == NULL)								
-		exit(0);
+    int width, height;
 
-	// Generamos texturas segun OpenGL
+    unsigned char * data;
+
+    FILE * file;
+
+    file = fopen( strFileName, "rb" );
+
+    if ( file == NULL ) {
+        printf("Could not open file: %s \n", strFileName);
+        return;
+    }
+    width = 256;
+    height = 256;
+    data = (unsigned char *)malloc( width * height * 3 );
+    //int size = fseek(file,);
+    fread( data, width * height * 3, 1, file );
+    fclose( file );
+
+    for(int i = 0; i < width * height ; ++i) {
+        int index = i*3;
+        unsigned char B,R;
+        B = data[index];
+        R = data[index+2];
+
+        data[index] = R;
+        data[index+2] = B;
+
+    }
+
+    // Generamos texturas segun OpenGL
 	glGenTextures(1, &textureArray[textureID]);
 	//glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, textureArray[textureID]);
-	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, pBitmap->sizeX, pBitmap->sizeY, GL_RGB, GL_UNSIGNED_BYTE, pBitmap->data);
+	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);   
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
 	
 	// Liberamos los datos de la imagen
-	if(pBitmap) {
-		if(pBitmap->data) {
-			free(pBitmap->data);
-		}
-		free(pBitmap);			
+	if(data) {
+	    free(data);
 	}
 }
 
@@ -103,10 +121,10 @@ void Textura::CreaTGA(unsigned int textureArray[], char * strFileName, int textu
 tImageTGA *Textura::CargaTGA(const char *filename) {
 
 	tImageTGA *pImageData = NULL;		// Datos de la imagen
-	WORD width = 0, height = 0;			// Dimensiones de la imagen
-	byte length = 0;					// Longitud en bytes de pixeles
-	byte imageType = 0;					// Tipo de imagen (RLE, RGB, Alpha...)
-	byte bits = 0;						// The bits per pixel for the image (16, 24, 32)
+	unsigned short width = 0, height = 0;			// Dimensiones de la imagen
+    unsigned char length = 0;					// Longitud en bytes de pixeles
+    unsigned char imageType = 0;					// Tipo de imagen (RLE, RGB, Alpha...)
+    unsigned char bits = 0;						// The bits per pixel for the image (16, 24, 32)
 	FILE *pFile = NULL;					
 	int channels = 0;					// Canales de la imagen (3 = RGA : 4 = RGBA)
 	int stride = 0;						// (channels * width)
@@ -119,15 +137,15 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
 		
 	pImageData = (tImageTGA*)malloc(sizeof(tImageTGA));	// Guardamos espacio a la estructura
 
-	fread(&length, sizeof(byte), 1, pFile);	// Leemos el header
+	fread(&length, sizeof(unsigned char), 1, pFile);	// Leemos el header
 	fseek(pFile,1,SEEK_CUR); 
-	fread(&imageType, sizeof(byte), 1, pFile);	// Leemos tipo de imagen (RLE, RGB, Alpha)
+	fread(&imageType, sizeof(unsigned char), 1, pFile);	// Leemos tipo de imagen (RLE, RGB, Alpha)
 	fseek(pFile, 9, SEEK_CUR);	// Nos saltamos info irrelevante 
 
 	// Leemos ancho, alto y bits por pixel (16, 24 o 32)
-	fread(&width,  sizeof(WORD), 1, pFile);
-	fread(&height, sizeof(WORD), 1, pFile);
-	fread(&bits,   sizeof(byte), 1, pFile);
+	fread(&width,  sizeof(unsigned short), 1, pFile);
+	fread(&height, sizeof(unsigned short), 1, pFile);
+	fread(&bits,   sizeof(unsigned char), 1, pFile);
 	
 	fseek(pFile, length + 1, SEEK_CUR);	// Nos movemos a los datos de pixel 
 
@@ -184,21 +202,21 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
 		// que solo leemos los siguientes pixeles. Si es mayor a 128, el siguiente color 
 		// esta optimizado necesitamos leer el mismo pixel para el color (colorCount - 127).
 		
-		byte rleID = 0;
+		unsigned char rleID = 0;
 		int colorsRead = 0;
 		channels = bits / 8;
 		stride = channels * width;
 
 		pImageData->data = new unsigned char[stride * height];
-		byte *pColors = new byte [channels];
+		unsigned char *pColors = new unsigned char [channels];
 
 		while(i < width*height) {
-			fread(&rleID, sizeof(byte), 1, pFile);	// Leemos color actual
+			fread(&rleID, sizeof(unsigned char), 1, pFile);	// Leemos color actual
 			
 			if(rleID < 128) {	// Checamos colores
 				rleID++;
 				while(rleID) {
-					fread(pColors, sizeof(byte) * channels, 1, pFile);
+					fread(pColors, sizeof(unsigned char) * channels, 1, pFile);
 
 					pImageData->data[colorsRead + 0] = pColors[2];
 					pImageData->data[colorsRead + 1] = pColors[1];
@@ -215,7 +233,7 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
 			else {	// Checamos colores optimizados
 				rleID -= 127;
 
-				fread(pColors, sizeof(byte) * channels, 1, pFile);
+				fread(pColors, sizeof(unsigned char) * channels, 1, pFile);
 
 				while(rleID) {
 					pImageData->data[colorsRead + 0] = pColors[2];

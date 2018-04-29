@@ -3,7 +3,8 @@
 \brief Implementacion de las funciones de la clase Fuente
 */
 #include "Fuente.h"
-#include <gl\glaux.h>
+#include <GL/freeglut.h>
+#include <cstring>
 
 
 /*Constructor*/
