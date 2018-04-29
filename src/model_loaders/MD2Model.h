@@ -29,8 +29,8 @@ typedef enum {STAND, RUN, ATTACK, PAIN_A, PAIN_B, PAIN_C, JUMP,
 
 class MD2Model : public Model3D {
 	public:
-		MD2Model(char * modelo);
-		MD2Model(char * modelo, char *text);
+		MD2Model(const char * modelo);
+		MD2Model(const char * modelo, const char *text);
 		~MD2Model();
 		void render();
 		void renderWithOpenGlCommands();

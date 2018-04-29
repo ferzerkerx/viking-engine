@@ -25,11 +25,11 @@ MD2Loader::~MD2Loader(){
 
 }
 
-void MD2Loader::importar(char* modelo){
-
+void MD2Loader::importar(const char* modelo){
+	importar(modelo, NULL);
 }
 
-void MD2Loader::importar(char* modelo, char* textura){
+void MD2Loader::importar(const char* modelo, const char* textura){
 	FN("MD2::readMD2File(char * modelo)");	
 	if(!modelo || !m_mdl){return;}
 	

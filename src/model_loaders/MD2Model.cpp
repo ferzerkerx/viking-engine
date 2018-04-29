@@ -14,7 +14,7 @@
 * @date Thursday, November 29, 2007 8:39:20 PM
 * @param modelo Ruta hacia el modelo
 */
-MD2Model::MD2Model(char * modelo){
+MD2Model::MD2Model(const char * modelo){
 	MD2Model(modelo,NULL);
 }
 
@@ -25,7 +25,7 @@ MD2Model::MD2Model(char * modelo){
 * @param modelo Ruta hacia el modelo
 * @param text Textura usada por el modelo
 */
-MD2Model::MD2Model(char * modelo, char * text){
+MD2Model::MD2Model(const char * modelo, const char * text){
 	m_b_hasAnimation = false;
 	m_glCommandBuffer = NULL;
 	num_glCommands = 0;

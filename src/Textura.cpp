@@ -18,11 +18,11 @@ Textura::Textura() {
 	hasAlpha = false;
 }
 
-void Textura::CrearTextura(unsigned int textureArray[], char * strFileName, int textureID) {
+void Textura::CrearTextura(unsigned int textureArray[], const char * strFileName, int textureID) {
 	if(!strFileName)		// Sale si no es un nombre de archivo vlido
 		return;
 
-	char* pdest = strrchr(strFileName, '.' );		// encuentra '.'
+	const char* pdest = strrchr(strFileName, '.' );		// encuentra '.'
 	if(pdest[0]!= NULL)		// Avanzamos uno mas que '.'
 		pdest++;
 
@@ -38,7 +38,7 @@ void Textura::CrearTextura(unsigned int textureArray[], char * strFileName, int 
 	}
 }
 
-void Textura::CreaBMP(unsigned int textureArray[], char * strFileName, int textureID) {
+void Textura::CreaBMP(unsigned int textureArray[], const char * strFileName, int textureID) {
     int width, height;
 
     unsigned char * data;
@@ -84,7 +84,7 @@ void Textura::CreaBMP(unsigned int textureArray[], char * strFileName, int textu
 	}
 }
 
-void Textura::CreaTGA(unsigned int textureArray[], char * strFileName, int textureID) {
+void Textura::CreaTGA(unsigned int textureArray[], const char * strFileName, int textureID) {
     
 	// Apuntador a datos de la imagen
 	tImageTGA *pImage = CargaTGA(strFileName);	// Carga imagen y guarda los datos

@@ -36,7 +36,7 @@ class Model3DLoader {
         * @date Friday, November 23, 2007 7:06:23 PM
         * @param modelo El path hacia el archivo que contiene el modelo
         */
-		virtual void importar(char * modelo) = 0;	
+		virtual void importar(const char * modelo) = 0;
 };
 
 /**

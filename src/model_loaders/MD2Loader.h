@@ -7,18 +7,13 @@
 #ifndef __MD2_H__
 #define __MD2_H__
 
-#include <stdio.h>
 #include "Model3DLoader.h"
 #include "MD2Model.h"
 
 #define IDENT 844121161
 #define VERSION 8
 
-#define MD2_MAX_TRIANGLES		4096
 #define MD2_MAX_VERTICES		2048
-#define MD2_MAX_TEXCOORDS		2048
-#define MD2_MAX_FRAMES			512
-#define MD2_MAX_SKINS			32
 #define MD2_MAX_FRAMESIZE		(MD2_MAX_VERTICES * 4 + 128)
 
 
@@ -34,8 +29,8 @@ class MD2Loader : public  Model3DLoader{
 	public:
 		MD2Loader(MD2Model * model);
 		~MD2Loader();
-		void importar(char * modelo, char* textura);
-		void importar(char * modelo);
+		void importar(const char * modelo, const char* textura);
+		void importar(const char * modelo);
 
 	private:
 		
