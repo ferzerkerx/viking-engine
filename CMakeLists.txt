@@ -16,6 +16,10 @@ add_executable(viking_engine src/Main.cpp
         src/Timer.cpp
         src/Textura.h
         src/Textura.cpp
+        src/loggers/EventLogger.h
+        src/loggers/EventLogger.cpp
+        src/loggers/ConsoleEventLogger.h
+        src/loggers/ConsoleEventLogger.cpp
         src/model_loaders/Model3D.h
         src/model_loaders/Model3D.cpp
         src/model_loaders/MD2Model.h
