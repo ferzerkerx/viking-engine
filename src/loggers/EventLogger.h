@@ -138,8 +138,8 @@ extern EventLogger *g_Log; //utilizada para los macros del logger
 
 class EventLogger{};
 
-#define LOG         printf
-#define FN(x)       printf("%s\n", x);
+#define LOG		0 &&
+#define FN(x)
 #define LOG_INIT(x)
 #define LOG_UPDATE()
 #define LOG_TERM()
