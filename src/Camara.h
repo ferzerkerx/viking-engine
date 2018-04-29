@@ -11,7 +11,7 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
-#include "Framework.h"
+#include "framework/Framework.h"
 
 
 class Camara {

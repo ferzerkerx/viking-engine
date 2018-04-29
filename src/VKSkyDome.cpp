@@ -5,15 +5,14 @@
 */
 
 #include "VKSkyDome.h"
-#include "loggers/EventLogger.h"
+#include "framework/Framework.h"
+#include "framework/BMPWriter.h"
 
 VKSkyDome::VKSkyDome(float r, unsigned int id_textura) : TexturedSkyDome(r, id_textura) {
     LOG(0, "VKSkyDome(float r, unsigned int id_textura)");
     m_cloud_cover = 45.0f;
     m_ca = new CloudsActualizables();
     m_sp = new TexturedSkyPlane(16, 50.0f, 90.0f, 1.0f, 1.0f, m_ca->getTextureId());
-
-    //m_c->setCover(m_cloud_cover);
 }
 
 VKSkyDome::VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura) : TexturedSkyDome(dphi, dtheta, r,
@@ -23,10 +22,6 @@ VKSkyDome::VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura)
     m_cloud_cover = 45.0f;
     m_ca = new CloudsActualizables();
     m_sp = new TexturedSkyPlane(16, 50.0f, 90.0f, 1.0f, 1.0f, m_ca->getTextureId());
-    //m_c->setCover(m_cloud_cover);
-    //m_c->setWindFactorX(0.002);
-    //m_c->setWindFactorY(0.0005);
-    //m_c->setTextureResolution(512,512);
 }
 
 VKSkyDome::~VKSkyDome() {
@@ -72,7 +67,6 @@ void VKSkyDome::actualiza(vector3f poscam) {
     m_sp->actualiza(poscam);
 }
 
-#include "BMPWriter.h"
 
 void VKSkyDome::escribeImagenDeNubes() {
     BMPWriter *bmpwr = new BMPWriter("test.bmp", m_ca->getTextureWidth(), m_ca->getTextureHeight(), 4, m_ca->getData());

@@ -8,42 +8,42 @@ set(CMAKE_CXX_STANDARD 11)
 add_executable(viking_engine src/Main.cpp
         src/Camara.h
         src/Camara.cpp
-        src/sky/SkyBox.h
-        src/sky/SkyBox.cpp
-        src/Fuente.h
-        src/Fuente.cpp
-        src/Timer.h
-        src/Timer.cpp
-        src/Textura.h
-        src/Textura.cpp
         src/VKSkyDome.h
         src/VKSkyDome.cpp
-        src/BMPWriter.h
-        src/BMPWriter.cpp
-        src/sky/SkyDome.h
-        src/sky/SkyDome.cpp
-        src/sky/TexturedSkyDome.h
-        src/sky/TexturedSkyDome.cpp
-        src/sky/Clouds.h
-        src/sky/Clouds.cpp
-        src/sky/CloudsActualizables.h
-        src/sky/CloudsActualizables.cpp
-        src/sky/TexturedSkyPlane.h
-        src/sky/TexturedSkyPlane.cpp
-        src/TextureWriter.h
-        src/TextureWriter.cpp
-        src/Billboard.h
-        src/Billboard.cpp
-        src/loggers/EventLogger.h
-        src/loggers/EventLogger.cpp
-        src/loggers/ConsoleEventLogger.h
-        src/loggers/ConsoleEventLogger.cpp
-        src/model_loaders/Model3D.h
-        src/model_loaders/Model3D.cpp
-        src/model_loaders/MD2Model.h
-        src/model_loaders/MD2Model.cpp
-        src/model_loaders/MD2Loader.h
-        src/model_loaders/MD2Loader.cpp
+        src/framework/sky/SkyBox.h
+        src/framework/sky/SkyBox.cpp
+        src/framework/Fuente.h
+        src/framework/Fuente.cpp
+        src/framework/Timer.h
+        src/framework/Timer.cpp
+        src/framework/Textura.h
+        src/framework/Textura.cpp
+        src/framework/BMPWriter.h
+        src/framework/BMPWriter.cpp
+        src/framework/sky/SkyDome.h
+        src/framework/sky/SkyDome.cpp
+        src/framework/sky/TexturedSkyDome.h
+        src/framework/sky/TexturedSkyDome.cpp
+        src/framework/sky/Clouds.h
+        src/framework/sky/Clouds.cpp
+        src/framework/sky/CloudsActualizables.h
+        src/framework/sky/CloudsActualizables.cpp
+        src/framework/sky/TexturedSkyPlane.h
+        src/framework/sky/TexturedSkyPlane.cpp
+        src/framework/TextureWriter.h
+        src/framework/TextureWriter.cpp
+        src/framework/Billboard.h
+        src/framework/Billboard.cpp
+        src/framework/loggers/EventLogger.h
+        src/framework/loggers/EventLogger.cpp
+        src/framework/loggers/ConsoleEventLogger.h
+        src/framework/loggers/ConsoleEventLogger.cpp
+        src/framework/model_loaders/Model3D.h
+        src/framework/model_loaders/Model3D.cpp
+        src/framework/model_loaders/MD2Model.h
+        src/framework/model_loaders/MD2Model.cpp
+        src/framework/model_loaders/MD2Loader.h
+        src/framework/model_loaders/MD2Loader.cpp
         )
 
 find_package(OpenGL REQUIRED)

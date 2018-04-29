@@ -13,5 +13,6 @@
 #include "Textura.h"
 #include "Timer.h"
 #include "Billboard.h"
+#include "loggers/EventLogger.h"
 
 #endif

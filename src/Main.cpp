@@ -6,15 +6,14 @@
  *
 */
 
-#include "Framework.h"
+#include "framework/Framework.h"
 #include <vector>
 #include <cstring>
-#include "loggers/ConsoleEventLogger.h"
-#include "math/Quaternion.h"
 #include "Camara.h"
-#include "sky/SkyBox.h"
 #include "VKSkyDome.h"
-#include "model_loaders/MD2Model.h"
+#include "framework/sky/SkyBox.h"
+#include "framework/model_loaders/MD2Model.h"
+#include "framework/loggers/ConsoleEventLogger.h"
 
 #include <GL/glut.h>
 
