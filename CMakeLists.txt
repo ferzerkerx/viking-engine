@@ -3,11 +3,11 @@ project(viking_engine)
 
 set(CMAKE_CXX_STANDARD 11)
 
+file(GLOB_RECURSE sources **/*.cpp **/*.h)
+add_executable(viking_engine ${sources})
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
 
-
-add_executable(viking_engine viking/Main.cpp)
-target_include_directories(viking_engine PRIVATE framework)
+target_link_libraries(viking_engine ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
