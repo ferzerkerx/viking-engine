@@ -26,7 +26,7 @@ class Camara {
 		void VistaMouse(); 
 		void StrafeCam(float vel);
 		void MovCam(float vel);
-		void ChecarMov();   // Checa el movimiento de camara con el teclado
+		void ChecarMov(int key);   // Checa el movimiento de camara con el teclado
 		void Actualizar();  // Se actualiza la camara cada frame
 		void Vista();	    // Implementa gluLookAt
 

@@ -54,7 +54,6 @@ void Textura::CreaBMP(unsigned int textureArray[], char * strFileName, int textu
     width = 256;
     height = 256;
     data = (unsigned char *)malloc( width * height * 3 );
-    //int size = fseek(file,);
     fread( data, width * height * 3, 1, file );
     fclose( file );
 

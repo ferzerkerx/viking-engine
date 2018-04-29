@@ -146,19 +146,21 @@ void Camara::MovCam(float vel) {
 }
 
 // Checamos movimiento con el teclado
-void Camara::ChecarMov() {
-//	if(GetKeyState(VK_UP) & 0x80 || GetKeyState('W') & 0x80) {
-//		MovCam(velCam);
-//	}
-//	if(GetKeyState(VK_DOWN) & 0x80 || GetKeyState('S') & 0x80) {
-//		MovCam(-velCam);
-//	}
-//	if(GetKeyState(VK_LEFT) & 0x80 || GetKeyState('A') & 0x80) {
-//		StrafeCam(-velCam);
-//	}
-//	if(GetKeyState(VK_RIGHT) & 0x80 || GetKeyState('D') & 0x80) {
-//		StrafeCam(velCam);
-//	}
+void Camara::ChecarMov(int key) {
+	switch (key) {
+		case GLUT_KEY_DOWN:
+			MovCam(-velCam);
+			break;
+		case GLUT_KEY_UP:
+			MovCam(velCam);
+			break;
+		case GLUT_KEY_LEFT:
+			StrafeCam(-velCam);
+			break;
+		case GLUT_KEY_RIGHT:
+			StrafeCam(velCam);
+			break;
+	}
 }
 
 // Actualizamos el movimiento de la camara 
@@ -167,8 +169,6 @@ void Camara::Actualizar() {
 	m_vStrafe = Normalizar(vCruz); // Normalizamos el vector strafe
 
 	VistaMouse();
-
-	ChecarMov();	// Checamos movimiento con el teclado
 }
 
 // Posicionamos la camara en opengl

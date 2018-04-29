@@ -39,6 +39,7 @@ bool    done = false;       // Bandera para salir dl ciclo principal
 
 bool camara, billB, lockFrames = false;
 bool wireframe = false;
+float rot=0.0;
 
 unsigned int fText[1];
 unsigned int piso[1];
@@ -74,12 +75,20 @@ void resize(int width, int height) {
 }
 
 void processKeyEvents(int key, int mouseX, int mouseY) {
+    cam.ChecarMov(key);
+    switch (key) {
+        case GLUT_KEY_DOWN:
+        case GLUT_KEY_UP:
+        case GLUT_KEY_LEFT:
+        case GLUT_KEY_RIGHT:
+            break;
+    }
     glutPostRedisplay();
 }
 
 void myTimer(int i) {
-    DrawGLScene();
     cam.Actualizar();
+    rot++;
     glutTimerFunc(10, myTimer, 1);
     glutPostRedisplay();
 }
@@ -156,8 +165,6 @@ void crearCirculo(float k, float r, float h) {
 	glEnd();
 }
 
-
-float rot=0.0;
 void DrawGLScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -229,7 +236,6 @@ void DrawGLScene() {
 	}
 	/**FUENTE**/
 
-	rot++;
     glutSwapBuffers();
 }
 
@@ -296,6 +302,9 @@ bool b_acabo = false;
 bool flag = false;
 
 
+bool useSkyDome = true;
+bool useSkybox = false;
+
 void initViking(){
 	g_Log = new ConsoleEventLogger();
 	LOG_INIT("TestLog.html");
@@ -309,23 +318,27 @@ void initViking(){
 	te.CrearTextura(sky,"data/skydome/image5.bmp",0);
 	te.CrearTextura(sun,"data/sol_mixteco.tga",0);
 
-	unsigned int skybox_text[6];//FRONT,BACK,LEFT,RIGHT,UP,DOWN
-	te.CrearTextura(skybox_text,"data/skydome/image1.bmp",0);
-	te.CrearTextura(skybox_text,"data/skydome/image2.bmp",1);
-	te.CrearTextura(skybox_text,"data/skydome/image3.bmp",2);
-	te.CrearTextura(skybox_text,"data/skydome/image4.bmp",3);
-	te.CrearTextura(skybox_text,"data/skydome/image5.bmp",4);
-	te.CrearTextura(skybox_text,"data/skydome/image6.bmp",5);
+	if (useSkybox) {
+        unsigned int skybox_text[6];//FRONT,BACK,LEFT,RIGHT,UP,DOWN
+        te.CrearTextura(skybox_text,"data/skydome/image1.bmp",0);
+        te.CrearTextura(skybox_text,"data/skydome/image2.bmp",1);
+        te.CrearTextura(skybox_text,"data/skydome/image3.bmp",2);
+        te.CrearTextura(skybox_text,"data/skydome/image4.bmp",3);
+        te.CrearTextura(skybox_text,"data/skydome/image5.bmp",4);
+        te.CrearTextura(skybox_text,"data/skydome/image6.bmp",5);
 
-	sb = new SkyBox(50.0f,100.0f,120.0f, skybox_text);
+        sb = new SkyBox(50.0f,100.0f,120.0f, skybox_text);
+    }
+
+    if (useSkyDome) {
+        vksd = new VKSkyDome(15,15,70,sky[0]);
+        vksd->setSunTexture(sun[0]);
+    }
 
 	fuente = new Fuente(fText);
 	timer = new Timer();
 
     knight = new MD2Model("data/modelos/knight.md2", "data/modelos/knight.bmp");
-
-	vksd = new VKSkyDome(15,15,70,sky[0]);
-	vksd->setSunTexture(sun[0]);
 
 //    glClearColor(0.35f,0.53f,0.7f,1.0f);
     glClearColor(0.0f,0.0f,0.0f,1.0f);
