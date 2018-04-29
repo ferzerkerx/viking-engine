@@ -16,23 +16,29 @@
 *	@brief Esta clase es un SkyDome texturizado
 */
 class TexturedSkyDome : public SkyDome {
-	protected:
+protected:
 
-		unsigned int m_textura; //guarda el identificador de la textura a ser usada en el domo
-		float m_h_tile;	//Tile horizontal
-		float m_v_tile;	//Tile vertical
-		void render(vector3f poscam);
-		void renderDome(vector3f poscam);
-        void calculaUV();
+    unsigned int m_textura; //guarda el identificador de la textura a ser usada en el domo
+    float m_h_tile;    //Tile horizontal
+    float m_v_tile;    //Tile vertical
+    void render(vector3f poscam);
 
-		
-	public:
-		TexturedSkyDome(float r, unsigned int id_textura);
-		TexturedSkyDome(float dphi, float dtheta, float r, unsigned int id_textura);
-		~TexturedSkyDome();
-		void actualiza(vector3f poscam);
-		void setTexture(unsigned int id);
-      			
+    void renderDome(vector3f poscam);
+
+    void calculaUV();
+
+
+public:
+    TexturedSkyDome(float r, unsigned int id_textura);
+
+    TexturedSkyDome(float dphi, float dtheta, float r, unsigned int id_textura);
+
+    ~TexturedSkyDome();
+
+    void actualiza(vector3f poscam);
+
+    void setTexture(unsigned int id);
+
 };
 
 /**

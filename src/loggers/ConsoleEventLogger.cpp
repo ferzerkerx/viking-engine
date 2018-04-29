@@ -16,8 +16,8 @@
 * @param flags Banderas para impresion
 * @warning Esta funcion ignora las banderas
 */
-void ConsoleEventLogger::lOutput(const char* buffer, unsigned int flags){
-	printf(" %s\n", buffer);
+void ConsoleEventLogger::lOutput(const char *buffer, unsigned int flags) {
+    printf(" %s\n", buffer);
 }
 
 /**
@@ -26,8 +26,8 @@ void ConsoleEventLogger::lOutput(const char* buffer, unsigned int flags){
 * @date Tuesday, October 23, 2007 4:07:57 PM
 * @param str nombre de la funcion
 */
-void ConsoleEventLogger::lStartCallStackLevel(const char * str){
-	printf("%s\n", str);
+void ConsoleEventLogger::lStartCallStackLevel(const char *str) {
+    printf("%s\n", str);
 }
 
 /**
@@ -35,8 +35,8 @@ void ConsoleEventLogger::lStartCallStackLevel(const char * str){
 * @author Fernando Montes de Oca Cspedes
 * @date Tuesday, October 23, 2007 4:12:12 PM
 */
-void ConsoleEventLogger::lEndStackCallLevel(){
-	printf("\n");
+void ConsoleEventLogger::lEndStackCallLevel() {
+    printf("\n");
 }
 
 /**
@@ -48,8 +48,9 @@ void ConsoleEventLogger::lEndStackCallLevel(){
 * @param seconds Segundos transcurridos
 * @param hundrethSeconds Centesimas de segundos transcurridos
 */
-void ConsoleEventLogger::lUpdate(int hours, int minutes, int seconds, int hundrethSeconds){
-	printf("Actualizacion = %d, Tiempo = %.2d:%.2d:%.2d.%.2d\n", m_updateCount, hours, minutes, seconds, hundrethSeconds);
+void ConsoleEventLogger::lUpdate(int hours, int minutes, int seconds, int hundrethSeconds) {
+    printf("Actualizacion = %d, Tiempo = %.2d:%.2d:%.2d.%.2d\n", m_updateCount, hours, minutes, seconds,
+           hundrethSeconds);
 }
 
 
@@ -58,7 +59,7 @@ void ConsoleEventLogger::lUpdate(int hours, int minutes, int seconds, int hundre
 * @author Fernando Montes de Oca Cspedes
 * @date Tuesday, October 23, 2007 4:12:12 PM
 */
-void ConsoleEventLogger::flush(){
+void ConsoleEventLogger::flush() {
 }
 
 #endif //logging

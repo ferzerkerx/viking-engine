@@ -13,8 +13,8 @@
 #define IDENT 844121161
 #define VERSION 8
 
-#define MD2_MAX_VERTICES		2048
-#define MD2_MAX_FRAMESIZE		(MD2_MAX_VERTICES * 4 + 128)
+#define MD2_MAX_VERTICES        2048
+#define MD2_MAX_FRAMESIZE        (MD2_MAX_VERTICES * 4 + 128)
 
 
 /**
@@ -24,83 +24,90 @@
 * @brief Clase que sabe leer y cargar un modelo .MD2
 * 
 */
-class MD2Loader : public  Model3DLoader{
+class MD2Loader : public Model3DLoader {
 
-	public:
-		MD2Loader(MD2Model * model);
-		~MD2Loader();
-		void importar(const char * modelo, const char* textura);
-		void importar(const char * modelo);
+public:
+    MD2Loader(MD2Model *model);
 
-	private:
-		
-		struct tMd2AliasTriangle {
-			unsigned char vertex [3]; //vertices de la cara comprimida
-			unsigned char lightNormalIndex;	//indice de la normal de la cara comprimida
-		};
+    ~MD2Loader();
 
-		struct tMd2Triangle{
-			float vertex [3]; //vertices
-			float normal [3]; //normales
-		};
+    void importar(const char *modelo, const char *textura);
 
-		struct tMd2Face{
-			short vertexIndices [3]; //indices de los vertices de la cara
-			short textureIndices [3]; //indices de las coordenadas de la textura
-		};
+    void importar(const char *modelo);
 
-		struct tMd2TexCoord{
-			short u; //coordenada u de la textura
-			short v; //coordenada v de la textura
-		};
+private:
 
-		struct tMd2AliasFrame{
-			float scale [3]; //escala del frame comprimido
-			float translate [3];	//translacion del frame comprimido
-			char name [16];	//nombre del frame comprimido
-			tMd2AliasTriangle aliasVertices [1]; //cara comprimido
-		};
+    struct tMd2AliasTriangle {
+        unsigned char vertex[3]; //vertices de la cara comprimida
+        unsigned char lightNormalIndex;    //indice de la normal de la cara comprimida
+    };
 
-		struct tMd2Frame{
-			char strName [16];	//nombre del frame
-			tMd2Triangle *pVertices;	//vertices del cuadro
-		};
+    struct tMd2Triangle {
+        float vertex[3]; //vertices
+        float normal[3]; //normales
+    };
 
-		
-		typedef char tMd2Skin[64]; //Guarda los nombres de las texturas
+    struct tMd2Face {
+        short vertexIndices[3]; //indices de los vertices de la cara
+        short textureIndices[3]; //indices de las coordenadas de la textura
+    };
 
-	struct md2_header{
-			int ident;             //numero magico: "IDP2"
-			int version;           //version: debe ser 8
-			int skinwidth;         //ancho de la textuta
-			int skinheight;        //alto de la textura
-			int framesize;         //tamao en bytes de un frame
-			int num_skins;         //numero de texturas
-			int num_vertices;      //numero de vertices por frame
-			int num_st;            //numero de cooredenadas de textura
-			int num_tris;          //numero de triangulos
-			int num_glcmds;        //numero de comandos de OpenGL
-			int num_frames;        //numero de frames
-			int offset_skins;      //offset skin (texturas)
-			int offset_st;         //offset cooredenadas de texturas
-			int offset_tris;       //offset vertices
-			int offset_frames;     //offset datos de cada frame
-			int offset_glcmds;     //offset comandos de OpenGL
-			int offset_end;        //offset EOF (final del archivo)
-		};		
+    struct tMd2TexCoord {
+        short u; //coordenada u de la textura
+        short v; //coordenada v de la textura
+    };
 
-		void leeMD2Data(md2_header & m_header);
-		void convertDataStructures(md2_header  & m_header);
-		void parseAnimations(md2_header  & m_header);
-		void dameNombreFrame(char * buff, int longitud);
-		void agregaAnimacion(int start, int end, char * name);
+    struct tMd2AliasFrame {
+        float scale[3]; //escala del frame comprimido
+        float translate[3];    //translacion del frame comprimido
+        char name[16];    //nombre del frame comprimido
+        tMd2AliasTriangle aliasVertices[1]; //cara comprimido
+    };
 
-		tMd2Skin * m_pSkins;			// texturas usadas por el modelo
-		tMd2TexCoord * m_pTexCoords;	// coordenadas de la textura
-		tMd2Face * m_pTriangles;		// caras del modelo
-		tMd2Frame * m_pFrames;		// The frames of animation (vertices)
-		int * m_glCommands;			//comandos de openGL
-		FILE * m_file;				//Apuntador al archivo
+    struct tMd2Frame {
+        char strName[16];    //nombre del frame
+        tMd2Triangle *pVertices;    //vertices del cuadro
+    };
+
+
+    typedef char tMd2Skin[64]; //Guarda los nombres de las texturas
+
+    struct md2_header {
+        int ident;             //numero magico: "IDP2"
+        int version;           //version: debe ser 8
+        int skinwidth;         //ancho de la textuta
+        int skinheight;        //alto de la textura
+        int framesize;         //tamao en bytes de un frame
+        int num_skins;         //numero de texturas
+        int num_vertices;      //numero de vertices por frame
+        int num_st;            //numero de cooredenadas de textura
+        int num_tris;          //numero de triangulos
+        int num_glcmds;        //numero de comandos de OpenGL
+        int num_frames;        //numero de frames
+        int offset_skins;      //offset skin (texturas)
+        int offset_st;         //offset cooredenadas de texturas
+        int offset_tris;       //offset vertices
+        int offset_frames;     //offset datos de cada frame
+        int offset_glcmds;     //offset comandos de OpenGL
+        int offset_end;        //offset EOF (final del archivo)
+    };
+
+    void leeMD2Data(md2_header &m_header);
+
+    void convertDataStructures(md2_header &m_header);
+
+    void parseAnimations(md2_header &m_header);
+
+    void dameNombreFrame(char *buff, int longitud);
+
+    void agregaAnimacion(int start, int end, char *name);
+
+    tMd2Skin *m_pSkins;            // texturas usadas por el modelo
+    tMd2TexCoord *m_pTexCoords;    // coordenadas de la textura
+    tMd2Face *m_pTriangles;        // caras del modelo
+    tMd2Frame *m_pFrames;        // The frames of animation (vertices)
+    int *m_glCommands;            //comandos de openGL
+    FILE *m_file;                //Apuntador al archivo
 };
 
 

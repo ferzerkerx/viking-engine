@@ -8,21 +8,20 @@
 #include "Clouds.h"
 
 
-
 /**
 *@brief Constructor de las nubes, inicializa los factores para generar la
 *textura de nubes(cobertura, delgadez, numero de octavos,tamao de la textura)
 * por default
 */
-Clouds::Clouds(){
-	m_cover = 45.0f;
-	m_sharpness =	0.987f;
-	m_num_octaves = 4;
-	m_texture = -1;
-    	
-	m_text_width = 384;
-	m_text_height = 384;
-	
+Clouds::Clouds() {
+    m_cover = 45.0f;
+    m_sharpness = 0.987f;
+    m_num_octaves = 4;
+    m_texture = -1;
+
+    m_text_width = 384;
+    m_text_height = 384;
+
 }
 
 
@@ -37,14 +36,14 @@ Clouds::Clouds(){
 * @param width Ancho de la textura
 * @param height Alto de la textura
 */
-Clouds::Clouds(float cover, float sharpness, int num_octavos, int width, int height){
-	m_cover = cover;
-	m_sharpness =	sharpness;
-	m_num_octaves = num_octavos;
-	m_texture = -1;
+Clouds::Clouds(float cover, float sharpness, int num_octavos, int width, int height) {
+    m_cover = cover;
+    m_sharpness = sharpness;
+    m_num_octaves = num_octavos;
+    m_texture = -1;
     m_text_width = width;
-	m_text_height = height;
-	
+    m_text_height = height;
+
 }
 
 
@@ -53,12 +52,12 @@ Clouds::Clouds(float cover, float sharpness, int num_octavos, int width, int hei
 *la textura sin alpha, la textura con alpha (tanto la generada por openGL como el arreglo), 
 *los octavos y los indices
 */
-Clouds::~Clouds(){
-	if (m_map != NULL){delete [] m_map;}
+Clouds::~Clouds() {
+    if (m_map != NULL) { delete[] m_map; }
 
-	if (m_RGBA_text != NULL){ delete [] m_RGBA_text;}
+    if (m_RGBA_text != NULL) { delete[] m_RGBA_text; }
 
-	if (m_texture != -1) {glDeleteTextures(1,&m_texture);}
+    if (m_texture != -1) { glDeleteTextures(1, &m_texture); }
 
 }
 
@@ -69,7 +68,7 @@ Clouds::~Clouds(){
  * @date Saturday, August 11, 2007 9:36:56 PM
  * @retval m_text_width
  */
-int Clouds::getTextureWidth(){
+int Clouds::getTextureWidth() {
     return m_text_width;
 }
 
@@ -80,8 +79,8 @@ int Clouds::getTextureWidth(){
  * @date Saturday, August 11, 2007 9:38:18 PM
  * @retval m_text_height
  */
-int Clouds::getTextureHeight(){
-	return m_text_height;
+int Clouds::getTextureHeight() {
+    return m_text_height;
 }
 
 
@@ -91,8 +90,8 @@ int Clouds::getTextureHeight(){
 * @date Friday, October 19, 2007 10:09:30 AM
 * @retval unsigned int Identificador de la textura generada
 */
-unsigned int Clouds::getTextureId(){
-	return m_texture;
+unsigned int Clouds::getTextureId() {
+    return m_texture;
 }
 
 /**
@@ -100,26 +99,25 @@ unsigned int Clouds::getTextureId(){
 * @author Fernando Montes de Oca Cspedes
 * @date Friday, October 19, 2007 5:01:40 PM
 */
-void Clouds::calculaAlpha(){
-	float color = 0.0;
-	int desplazamiento = 0 ;
-	int i, j = 0;
+void Clouds::calculaAlpha() {
+    float color = 0.0;
+    int desplazamiento = 0;
+    int i, j = 0;
 
-	for(i=0; i<m_text_width; i++)   {     
-		for(j=0; j<m_text_height; j++) {
-			color = m_map[i*m_text_width+j]; 
-			desplazamiento = i*(m_text_height*4)+(j*4);
-			m_RGBA_text[desplazamiento] = color;
-			m_RGBA_text[desplazamiento+1] = color;
-			m_RGBA_text[desplazamiento+2] = color;
-			if (color == 0.0f){
-				m_RGBA_text[desplazamiento+3] = 0;
-			}
-			else{
-				m_RGBA_text[desplazamiento+3] = 255;
-			}
-		}
-	}
+    for (i = 0; i < m_text_width; i++) {
+        for (j = 0; j < m_text_height; j++) {
+            color = m_map[i * m_text_width + j];
+            desplazamiento = i * (m_text_height * 4) + (j * 4);
+            m_RGBA_text[desplazamiento] = color;
+            m_RGBA_text[desplazamiento + 1] = color;
+            m_RGBA_text[desplazamiento + 2] = color;
+            if (color == 0.0f) {
+                m_RGBA_text[desplazamiento + 3] = 0;
+            } else {
+                m_RGBA_text[desplazamiento + 3] = 255;
+            }
+        }
+    }
 }
 
 /**
@@ -128,21 +126,21 @@ void Clouds::calculaAlpha(){
  * @author Fernando Montes de Oca Cespedes 
  * @date Saturday, August 11, 2007 9:40:02 PM
  */
-void Clouds::generaTexturaGL(){
-	
-	if (m_map != NULL && m_RGBA_text != NULL){
-		calculaAlpha();
+void Clouds::generaTexturaGL() {
 
-		glDeleteTextures(1,&m_texture);
-		glGenTextures(1, &m_texture);
-		glBindTexture(GL_TEXTURE_2D, m_texture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			
-		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, m_text_width, m_text_height, GL_RGBA, GL_UNSIGNED_BYTE, m_RGBA_text);	
-	}
+    if (m_map != NULL && m_RGBA_text != NULL) {
+        calculaAlpha();
+
+        glDeleteTextures(1, &m_texture);
+        glGenTextures(1, &m_texture);
+        glBindTexture(GL_TEXTURE_2D, m_texture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, m_text_width, m_text_height, GL_RGBA, GL_UNSIGNED_BYTE, m_RGBA_text);
+    }
 }
 
 /**
@@ -151,6 +149,6 @@ void Clouds::generaTexturaGL(){
 * @date Saturday, October 20, 2007 7:06:58 PM
 * @retval Apuntador a datos constantes de la imagen  
 */
-char * Clouds::getData(){
-	return m_RGBA_text;
+char *Clouds::getData() {
+    return m_RGBA_text;
 }

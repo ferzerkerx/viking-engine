@@ -13,11 +13,11 @@
 * @date Saturday, October 20, 2007 5:24:55 PM
 * @param file Es el nombre del archivo
 */
-TextureWriter::TextureWriter(const char * file){
-	m_out.open(file,std::ios::out | std::ios::binary);
-	if (!m_out){
-		printf("Error al abrir el archivo para escritura binaria\n");
-	}
+TextureWriter::TextureWriter(const char *file) {
+    m_out.open(file, std::ios::out | std::ios::binary);
+    if (!m_out) {
+        printf("Error al abrir el archivo para escritura binaria\n");
+    }
 }
 
 
@@ -26,6 +26,6 @@ TextureWriter::TextureWriter(const char * file){
 * @author Fernando Montes de Oca Cspedes
 * @date Saturday, October 20, 2007 5:24:55 PM
 */
-TextureWriter::~TextureWriter(){
-	if (m_out){ m_out.close();}
+TextureWriter::~TextureWriter() {
+    if (m_out) { m_out.close(); }
 }

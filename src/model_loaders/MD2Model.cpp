@@ -14,8 +14,8 @@
 * @date Thursday, November 29, 2007 8:39:20 PM
 * @param modelo Ruta hacia el modelo
 */
-MD2Model::MD2Model(const char * modelo){
-	MD2Model(modelo,NULL);
+MD2Model::MD2Model(const char *modelo) {
+    MD2Model(modelo, NULL);
 }
 
 /**
@@ -25,21 +25,21 @@ MD2Model::MD2Model(const char * modelo){
 * @param modelo Ruta hacia el modelo
 * @param text Textura usada por el modelo
 */
-MD2Model::MD2Model(const char * modelo, const char * text){
-	m_b_hasAnimation = false;
-	m_glCommandBuffer = NULL;
-	num_glCommands = 0;
+MD2Model::MD2Model(const char *modelo, const char *text) {
+    m_b_hasAnimation = false;
+    m_glCommandBuffer = NULL;
+    num_glCommands = 0;
 
-	m_ml = new MD2Loader(this);
-	((MD2Loader *)m_ml)->importar(modelo, text);
-	delete m_ml;
+    m_ml = new MD2Loader(this);
+    ((MD2Loader *) m_ml)->importar(modelo, text);
+    delete m_ml;
 
-	calculaNormales();
+    calculaNormales();
 
-	currentAnim = STAND;
-	currentFrame = 0;
-	nextFrame = 0;
-	m_animation_speed = 1.0f;
+    currentAnim = STAND;
+    currentFrame = 0;
+    nextFrame = 0;
+    m_animation_speed = 1.0f;
 }
 
 
@@ -48,11 +48,11 @@ MD2Model::MD2Model(const char * modelo, const char * text){
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:41:19 PM
 */
-MD2Model::~MD2Model(){
-	while(pAnimations.size() > 0){
-		pAnimations.pop_back();
-	}
-	if (m_glCommandBuffer) {delete m_glCommandBuffer;}
+MD2Model::~MD2Model() {
+    while (pAnimations.size() > 0) {
+        pAnimations.pop_back();
+    }
+    if (m_glCommandBuffer) { delete m_glCommandBuffer; }
 }
 
 
@@ -61,62 +61,61 @@ MD2Model::~MD2Model(){
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:41:44 PM
 */
-void MD2Model::render(){
-	if(m_objects.size() <= 0) return;
-	
-	float t = 0.0f;
-	int i = 0, j = 0, index = 0, index2 = 0;
+void MD2Model::render() {
+    if (m_objects.size() <= 0) return;
 
-	if (m_b_hasAnimation){
-		nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
-		if (nextFrame == 0){nextFrame = pAnimations[currentAnim].frame_inicial;}
-	}
+    float t = 0.0f;
+    int i = 0, j = 0, index = 0, index2 = 0;
 
-	Object3D *frame = &m_objects[currentFrame];
-	Object3D *next_frame = &m_objects[nextFrame];
-	Object3D *first_frame = &m_objects[0];
-	
-	if (m_b_hasAnimation){t = calculaFactorInterpolacion();}
-	
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
+    if (m_b_hasAnimation) {
+        nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
+        if (nextFrame == 0) { nextFrame = pAnimations[currentAnim].frame_inicial; }
+    }
 
-	if (m_materials.size() > 0){
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, m_materials[0].texture_id);
-	}
-	
-	glBegin(GL_TRIANGLES);
-	for(j = 0; j < frame->num_faces; j++){
-		for(i = 0; i < 3; i++){
-			index = first_frame->faces[j].vert_index[i];			
-			index2 = first_frame->faces[j].st_index[i];
+    Object3D *frame = &m_objects[currentFrame];
+    Object3D *next_frame = &m_objects[nextFrame];
+    Object3D *first_frame = &m_objects[0];
 
-				if (frame->normales){
-				glNormal3f(frame->normales[index].x, frame->normales[index].y, frame->normales[index].z);
-			}
+    if (m_b_hasAnimation) { t = calculaFactorInterpolacion(); }
 
-			if(first_frame->text_st && m_materials.size() > 0){
-				glTexCoord2f(first_frame->text_st[index2].s, first_frame->text_st[index2].t);
-			}
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
 
-			if (m_b_hasAnimation){
-			glVertex3f(frame->vertices[index].x + t * (next_frame->vertices[index].x - frame->vertices[index].x), 
-					   frame->vertices[index].y + t * (next_frame->vertices[index].y - frame->vertices[index].y), 
-					   frame->vertices[index].z + t * (next_frame->vertices[index].z - frame->vertices[index].z));
-			}
-			else{
-				glVertex3f(frame->vertices[index].x, frame->vertices[index].y, frame->vertices[index].z);
-			}
-		}
-	}
+    if (m_materials.size() > 0) {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, m_materials[0].texture_id);
+    }
 
-	glEnd();
+    glBegin(GL_TRIANGLES);
+    for (j = 0; j < frame->num_faces; j++) {
+        for (i = 0; i < 3; i++) {
+            index = first_frame->faces[j].vert_index[i];
+            index2 = first_frame->faces[j].st_index[i];
 
-	if (m_materials.size() > 0){
-		glDisable(GL_TEXTURE_2D);
-	}
-	glDisable(GL_CULL_FACE);
+            if (frame->normales) {
+                glNormal3f(frame->normales[index].x, frame->normales[index].y, frame->normales[index].z);
+            }
+
+            if (first_frame->text_st && m_materials.size() > 0) {
+                glTexCoord2f(first_frame->text_st[index2].s, first_frame->text_st[index2].t);
+            }
+
+            if (m_b_hasAnimation) {
+                glVertex3f(frame->vertices[index].x + t * (next_frame->vertices[index].x - frame->vertices[index].x),
+                           frame->vertices[index].y + t * (next_frame->vertices[index].y - frame->vertices[index].y),
+                           frame->vertices[index].z + t * (next_frame->vertices[index].z - frame->vertices[index].z));
+            } else {
+                glVertex3f(frame->vertices[index].x, frame->vertices[index].y, frame->vertices[index].z);
+            }
+        }
+    }
+
+    glEnd();
+
+    if (m_materials.size() > 0) {
+        glDisable(GL_TEXTURE_2D);
+    }
+    glDisable(GL_CULL_FACE);
 }
 
 /**
@@ -124,7 +123,7 @@ void MD2Model::render(){
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:42:57 PM
 */
-void MD2Model::actualiza(){
+void MD2Model::actualiza() {
 
 }
 
@@ -134,9 +133,9 @@ void MD2Model::actualiza(){
 * @date Thursday, November 29, 2007 8:43:20 PM
 * @param anim Animacion nueva
 */
-void MD2Model::addAnimation(Animacion anim){
-	pAnimations.push_back(anim);
-	m_b_hasAnimation = true;
+void MD2Model::addAnimation(Animacion anim) {
+    pAnimations.push_back(anim);
+    m_b_hasAnimation = true;
 }
 
 /**
@@ -145,13 +144,13 @@ void MD2Model::addAnimation(Animacion anim){
 * @date Thursday, November 29, 2007 8:43:46 PM
 * @param anim Animacion deseada
 */
-void MD2Model::setAnimation(MD2_anim anim){
-	currentAnim = anim;
-	if (currentAnim < STAND){currentAnim = (pAnimations.size() - 1);}
-	else if (currentAnim >= pAnimations.size()){currentAnim = STAND;}
+void MD2Model::setAnimation(MD2_anim anim) {
+    currentAnim = anim;
+    if (currentAnim < STAND) { currentAnim = (pAnimations.size() - 1); }
+    else if (currentAnim >= pAnimations.size()) { currentAnim = STAND; }
 
-	currentFrame = pAnimations[currentAnim].frame_inicial;
-	nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
+    currentFrame = pAnimations[currentAnim].frame_inicial;
+    nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
 }
 
 /**
@@ -160,8 +159,8 @@ void MD2Model::setAnimation(MD2_anim anim){
 * @date Thursday, November 29, 2007 8:44:19 PM
 * @retval MD2_anim La animacion actual
 */
-MD2_anim MD2Model::getCurrentAnimation(){
-	 return *((MD2_anim *) &currentAnim);;
+MD2_anim MD2Model::getCurrentAnimation() {
+    return *((MD2_anim *) &currentAnim);;
 }
 
 /**
@@ -170,9 +169,9 @@ MD2_anim MD2Model::getCurrentAnimation(){
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:44:47 PM
 */
-void MD2Model::nextAnimation(){
-	currentAnim++;
-	setAnimation(*((MD2_anim *) &currentAnim));
+void MD2Model::nextAnimation() {
+    currentAnim++;
+    setAnimation(*((MD2_anim *) &currentAnim));
 }
 
 /**
@@ -181,9 +180,9 @@ void MD2Model::nextAnimation(){
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:44:47 PM
 */
-void MD2Model::previousAnimation(){
-	currentAnim --;
-	setAnimation(*((MD2_anim *) &currentAnim));
+void MD2Model::previousAnimation() {
+    currentAnim--;
+    setAnimation(*((MD2_anim *) &currentAnim));
 }
 
 
@@ -195,16 +194,16 @@ void MD2Model::previousAnimation(){
 * @retval float Valor que va de 0.0f a 1.0f representando el factor
 * de interpolacion de un frame a otro
 */
-float MD2Model::calculaFactorInterpolacion(){
-	float t = m_timer.getMilliseconds() / (1000.0f / m_animation_speed);
+float MD2Model::calculaFactorInterpolacion() {
+    float t = m_timer.getMilliseconds() / (1000.0f / m_animation_speed);
 
-	if (m_timer.getMilliseconds() >= (1000.0f / m_animation_speed)){
-		currentFrame = nextFrame;
-		nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
-		m_timer.reset();
-	}
-	if (t > 1.0f){t= 1.0f;}	
-	return t;
+    if (m_timer.getMilliseconds() >= (1000.0f / m_animation_speed)) {
+        currentFrame = nextFrame;
+        nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
+        m_timer.reset();
+    }
+    if (t > 1.0f) { t = 1.0f; }
+    return t;
 }
 
 /**
@@ -213,9 +212,9 @@ float MD2Model::calculaFactorInterpolacion(){
 * @date Thursday, November 29, 2007 8:47:01 PM
 * @param speed Velocidad nueva
 */
-void MD2Model::setAnimationSpeed(float speed){
-	m_animation_speed = speed;
-	if (m_animation_speed < 0.0f){m_animation_speed = 0.0f;}
+void MD2Model::setAnimationSpeed(float speed) {
+    m_animation_speed = speed;
+    if (m_animation_speed < 0.0f) { m_animation_speed = 0.0f; }
 }
 
 
@@ -227,11 +226,11 @@ void MD2Model::setAnimationSpeed(float speed){
 * @param com Apuntador a los comandos de OpenGL
 * @param num Numero de comandos
 */
-void MD2Model::setGlCommands(int * com, int num){
-	if (num_glCommands > 0) {delete m_glCommandBuffer;}
-	m_glCommandBuffer = new int[num];
-	memcpy(m_glCommandBuffer,com,num*4);
-	num_glCommands = num;	
+void MD2Model::setGlCommands(int *com, int num) {
+    if (num_glCommands > 0) { delete m_glCommandBuffer; }
+    m_glCommandBuffer = new int[num];
+    memcpy(m_glCommandBuffer, com, num * 4);
+    num_glCommands = num;
 }
 
 /**
@@ -239,67 +238,70 @@ void MD2Model::setGlCommands(int * com, int num){
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:48:40 PM
 */
-void MD2Model::renderWithOpenGlCommands(){
+void MD2Model::renderWithOpenGlCommands() {
 
-	if(m_objects.size() <= 0 || !m_glCommandBuffer) return;
-	
-	int * ptricmds = m_glCommandBuffer;
-	float t = 0.0f;
-	if (m_b_hasAnimation){
-		nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
-		if (nextFrame == 0){nextFrame = pAnimations[currentAnim].frame_inicial;}
-	}
+    if (m_objects.size() <= 0 || !m_glCommandBuffer) return;
 
-	Object3D *frame = &m_objects[currentFrame];
-	Object3D *next_frame = &m_objects[nextFrame];
-	Object3D *first_frame = &m_objects[0];
-	
-	if (m_b_hasAnimation){t = calculaFactorInterpolacion();}
-	
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
+    int *ptricmds = m_glCommandBuffer;
+    float t = 0.0f;
+    if (m_b_hasAnimation) {
+        nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
+        if (nextFrame == 0) { nextFrame = pAnimations[currentAnim].frame_inicial; }
+    }
 
-	if (m_materials.size() > 0){
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, m_materials[0].texture_id);
-	}
-	
-	while( int i = *(ptricmds++)){
-        if( i < 0 ){
-            glBegin( GL_TRIANGLE_FAN );
+    Object3D *frame = &m_objects[currentFrame];
+    Object3D *next_frame = &m_objects[nextFrame];
+    Object3D *first_frame = &m_objects[0];
+
+    if (m_b_hasAnimation) { t = calculaFactorInterpolacion(); }
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+
+    if (m_materials.size() > 0) {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, m_materials[0].texture_id);
+    }
+
+    while (int i = *(ptricmds++)) {
+        if (i < 0) {
+            glBegin(GL_TRIANGLE_FAN);
             i = -i;
-        }
-        else{ glBegin( GL_TRIANGLE_STRIP ); }
+        } else { glBegin(GL_TRIANGLE_STRIP); }
 
 
-        for( ; i > 0; i--, ptricmds += 3){
+        for (; i > 0; i--, ptricmds += 3) {
             // ptricmds[0] : textura  s
             // ptricmds[1] : textura t
             // ptricmds[2] : indice del vertice
-           if(m_materials.size() > 0){
-				glTexCoord2f( ((float *)ptricmds)[0], 1.0f - ((float *)ptricmds)[1] );				
-		   }
-            
-            if (frame->normales){
-				glNormal3f(frame->normales[ptricmds[2]].x, frame->normales[ptricmds[2]].y, frame->normales[ptricmds[2]].z);
-			}
+            if (m_materials.size() > 0) {
+                glTexCoord2f(((float *) ptricmds)[0], 1.0f - ((float *) ptricmds)[1]);
+            }
 
-			if (m_b_hasAnimation){
-				glVertex3f(frame->vertices[ptricmds[2]].x + t * (next_frame->vertices[ptricmds[2]].x - frame->vertices[ptricmds[2]].x), 
-					   frame->vertices[ptricmds[2]].y + t * (next_frame->vertices[ptricmds[2]].y - frame->vertices[ptricmds[2]].y), 
-					   frame->vertices[ptricmds[2]].z + t * (next_frame->vertices[ptricmds[2]].z - frame->vertices[ptricmds[2]].z));
-			}
-			else{
-				glVertex3f(frame->vertices[ptricmds[2]].x,frame->vertices[ptricmds[2]].y,frame->vertices[ptricmds[2]].z);
-			}
+            if (frame->normales) {
+                glNormal3f(frame->normales[ptricmds[2]].x, frame->normales[ptricmds[2]].y,
+                           frame->normales[ptricmds[2]].z);
+            }
+
+            if (m_b_hasAnimation) {
+                glVertex3f(frame->vertices[ptricmds[2]].x +
+                           t * (next_frame->vertices[ptricmds[2]].x - frame->vertices[ptricmds[2]].x),
+                           frame->vertices[ptricmds[2]].y +
+                           t * (next_frame->vertices[ptricmds[2]].y - frame->vertices[ptricmds[2]].y),
+                           frame->vertices[ptricmds[2]].z +
+                           t * (next_frame->vertices[ptricmds[2]].z - frame->vertices[ptricmds[2]].z));
+            } else {
+                glVertex3f(frame->vertices[ptricmds[2]].x, frame->vertices[ptricmds[2]].y,
+                           frame->vertices[ptricmds[2]].z);
+            }
         }
 
         glEnd();
     }
-	if (m_materials.size() > 0){
-		glDisable(GL_TEXTURE_2D);
-	}
-	glDisable(GL_CULL_FACE);
+    if (m_materials.size() > 0) {
+        glDisable(GL_TEXTURE_2D);
+    }
+    glDisable(GL_CULL_FACE);
 }
 
 /**
@@ -308,64 +310,63 @@ void MD2Model::renderWithOpenGlCommands(){
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:50:12 PM
 */
-void MD2Model::calculaNormales(){
-	vector3f vVector1, vVector2, vNormal, vPoly[3];
+void MD2Model::calculaNormales() {
+    vector3f vVector1, vVector2, vNormal, vPoly[3];
 
-	
-	if(m_objects.size() <= 0) return;
 
-	Object3D *first = &(m_objects[0]);
-	
-	for(int index = 0; index < m_objects.size(); index++){
-	
-		Object3D *obj = &(m_objects[index]);
-		vector3f *normales		= new vector3f [obj->num_faces];
-		vector3f *pTempNormals	= new vector3f [obj->num_faces];
-        obj->normales	= new vector3f [obj->num_verts];
+    if (m_objects.size() <= 0) return;
 
-		for(int i=0; i < first->num_faces; i++)	{												
+    Object3D *first = &(m_objects[0]);
 
-			vPoly[0] = obj->vertices[first->faces[i].vert_index[0]];
-			vPoly[1] = obj->vertices[first->faces[i].vert_index[1]];
-			vPoly[2] = obj->vertices[first->faces[i].vert_index[2]];
+    for (int index = 0; index < m_objects.size(); index++) {
 
-			vVector1 = vPoly[0]- vPoly[2];
-			vVector2 = vPoly[2]- vPoly[1];
+        Object3D *obj = &(m_objects[index]);
+        vector3f *normales = new vector3f[obj->num_faces];
+        vector3f *pTempNormals = new vector3f[obj->num_faces];
+        obj->normales = new vector3f[obj->num_verts];
 
-			vNormal  = Cruzado(vVector1, vVector2);
-			pTempNormals[i] = vNormal;			
-			vNormal  = Normalizar(vNormal);		
+        for (int i = 0; i < first->num_faces; i++) {
 
-			normales[i] = vNormal;	
-		}
+            vPoly[0] = obj->vertices[first->faces[i].vert_index[0]];
+            vPoly[1] = obj->vertices[first->faces[i].vert_index[1]];
+            vPoly[2] = obj->vertices[first->faces[i].vert_index[2]];
 
-		
+            vVector1 = vPoly[0] - vPoly[2];
+            vVector2 = vPoly[2] - vPoly[1];
 
-		vector3f vSum(0.0f, 0.0f, 0.0f);
-		vector3f vZero = vSum;
-		int shared=0;
+            vNormal = Cruzado(vVector1, vVector2);
+            pTempNormals[i] = vNormal;
+            vNormal = Normalizar(vNormal);
 
-		for (int i = 0; i < obj->num_verts; i++){
-			for (int j = 0; j < first->num_faces; j++){
-													
-				if (first->faces[j].vert_index[0] == i || 
-					first->faces[j].vert_index[1] == i || 
-					first->faces[j].vert_index[2] == i){
+            normales[i] = vNormal;
+        }
 
-					vSum = vSum +pTempNormals[j];	
-					shared++;						
-				}
-			}      
-			
-			
-			obj->normales[i] = vSum /float(-shared);
-			obj->normales[i] = Normalizar(obj->normales[i]) * (-1.0f);	
 
-			vSum = vZero;
-			shared = 0;	
-		}
-	
-		delete [] pTempNormals;
-		delete [] normales;
-	}
+        vector3f vSum(0.0f, 0.0f, 0.0f);
+        vector3f vZero = vSum;
+        int shared = 0;
+
+        for (int i = 0; i < obj->num_verts; i++) {
+            for (int j = 0; j < first->num_faces; j++) {
+
+                if (first->faces[j].vert_index[0] == i ||
+                    first->faces[j].vert_index[1] == i ||
+                    first->faces[j].vert_index[2] == i) {
+
+                    vSum = vSum + pTempNormals[j];
+                    shared++;
+                }
+            }
+
+
+            obj->normales[i] = vSum / float(-shared);
+            obj->normales[i] = Normalizar(obj->normales[i]) * (-1.0f);
+
+            vSum = vZero;
+            shared = 0;
+        }
+
+        delete[] pTempNormals;
+        delete[] normales;
+    }
 }

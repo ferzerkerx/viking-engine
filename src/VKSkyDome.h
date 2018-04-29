@@ -16,24 +16,31 @@
 * @author Fernando Montes de Oca Cspedes
 * @date Friday, October 19, 2007 12:16:55 PM
 * @brief Domo del juego  
-*/ 
+*/
 
-class VKSkyDome : public TexturedSkyDome{
-	public:
-		VKSkyDome(float r, unsigned int id_textura);
-		VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura);
-		~VKSkyDome();
-		float getCloudCover();
-		void incrementaCloudCover();
-		void decrementaCloudCover();
-		void actualiza(vector3f poscam);
-		void escribeImagenDeNubes();
+class VKSkyDome : public TexturedSkyDome {
+public:
+    VKSkyDome(float r, unsigned int id_textura);
 
-	private:
-		CloudsActualizables *m_ca;	//apuntador a la instancia de Clouds
-		TexturedSkyPlane *m_sp;				//apuntador a la instancia de TexturedSkyPlane
-		float m_cloud_cover;		//guarda el cover de las nubes
-		void render(vector3f poscam);
+    VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura);
+
+    ~VKSkyDome();
+
+    float getCloudCover();
+
+    void incrementaCloudCover();
+
+    void decrementaCloudCover();
+
+    void actualiza(vector3f poscam);
+
+    void escribeImagenDeNubes();
+
+private:
+    CloudsActualizables *m_ca;    //apuntador a la instancia de Clouds
+    TexturedSkyPlane *m_sp;                //apuntador a la instancia de TexturedSkyPlane
+    float m_cloud_cover;        //guarda el cover de las nubes
+    void render(vector3f poscam);
 };
 
 /**

@@ -22,15 +22,17 @@
 
 
 class Billboard {
-							
-	public:
-		static void BBFalsoEsfera();
-		static void BBFalsoCilindro();
 
-		static void BBCilindro(vector3f camP, float objPosX, float objPosY, float objPosZ);
-		static void BBEsfera(vector3f camP, float objPosX, float objPosY, float objPosZ);
+public:
+    static void BBFalsoEsfera();
 
-		static void BBFin();		
+    static void BBFalsoCilindro();
+
+    static void BBCilindro(vector3f camP, float objPosX, float objPosY, float objPosZ);
+
+    static void BBEsfera(vector3f camP, float objPosX, float objPosY, float objPosZ);
+
+    static void BBFin();
 };
 
 #endif

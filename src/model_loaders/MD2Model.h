@@ -14,49 +14,64 @@
 /**
 *Enumeraciones que representan las animaciones estandard de un modelo MD2
 */
-typedef enum {STAND, RUN, ATTACK, PAIN_A, PAIN_B, PAIN_C, JUMP,
-			 FLIP,SALUTE, FALLBACK, WAVE, POINTING, CROUCH_STAND,
-             CROUCH_WALK, CROUCH_ATTACK, CROUCH_PAIN, CROUCH_DEATH,
-             DEATH_FALLBACK, DEATH_FALLFORWARD, DEATH_FALLBACKSLOW,
-			 BOOM} MD2_anim;
+typedef enum {
+    STAND, RUN, ATTACK, PAIN_A, PAIN_B, PAIN_C, JUMP,
+    FLIP, SALUTE, FALLBACK, WAVE, POINTING, CROUCH_STAND,
+    CROUCH_WALK, CROUCH_ATTACK, CROUCH_PAIN, CROUCH_DEATH,
+    DEATH_FALLBACK, DEATH_FALLFORWARD, DEATH_FALLBACKSLOW,
+    BOOM
+} MD2_anim;
 
 /**
 * @class class MD2Model
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:54:03 PM
 * @brief Representa un Modelo MD2
-*/ 
+*/
 
 class MD2Model : public Model3D {
-	public:
-		MD2Model(const char * modelo);
-		MD2Model(const char * modelo, const char *text);
-		~MD2Model();
-		void render();
-		void renderWithOpenGlCommands();
-        void actualiza();
-		void addAnimation(Animacion anim);
-		void setAnimation(MD2_anim anim);
-		MD2_anim getCurrentAnimation();
-		void nextAnimation();
-		void previousAnimation();
-		void setAnimationSpeed(float speed);
-		void setGlCommands(int * com, int num);
+public:
+    MD2Model(const char *modelo);
+
+    MD2Model(const char *modelo, const char *text);
+
+    ~MD2Model();
+
+    void render();
+
+    void renderWithOpenGlCommands();
+
+    void actualiza();
+
+    void addAnimation(Animacion anim);
+
+    void setAnimation(MD2_anim anim);
+
+    MD2_anim getCurrentAnimation();
+
+    void nextAnimation();
+
+    void previousAnimation();
+
+    void setAnimationSpeed(float speed);
+
+    void setGlCommands(int *com, int num);
 
 
-	private:
-		int	* m_glCommandBuffer;			//comandos de dibujo de openGL de MD2
-		int num_glCommands;					//numero de comandos de dibujo de openGL de MD2
-		int currentAnim;					// Indice la de animacion actual
-		int currentFrame;					// Frame actual de la animacion
-		int nextFrame;						// Siguiente frame de la animacion
-		float m_animation_speed;			// Velocidad de la animacion
-		std::vector<Animacion> pAnimations; // The list of animation
-		Timer m_timer;						//timer de la animacion para la interpolacion
-		bool m_b_hasAnimation;				//nos dice si el modelo tiene animacion
+private:
+    int *m_glCommandBuffer;            //comandos de dibujo de openGL de MD2
+    int num_glCommands;                    //numero de comandos de dibujo de openGL de MD2
+    int currentAnim;                    // Indice la de animacion actual
+    int currentFrame;                    // Frame actual de la animacion
+    int nextFrame;                        // Siguiente frame de la animacion
+    float m_animation_speed;            // Velocidad de la animacion
+    std::vector<Animacion> pAnimations; // The list of animation
+    Timer m_timer;                        //timer de la animacion para la interpolacion
+    bool m_b_hasAnimation;                //nos dice si el modelo tiene animacion
 
-		float calculaFactorInterpolacion();	
-		void calculaNormales();				
+    float calculaFactorInterpolacion();
+
+    void calculaNormales();
 };
 
 /**

@@ -24,48 +24,55 @@
 * @brief Es un TexturedSkyPlane texturizado, es similar
 * a un TexturedSkyDome con la diferencia que se usa un plano torcido
 * en lugar de una mitad de esfera
-*/ 
-class TexturedSkyPlane : public Sky{
-	private:
-		/**
-		*@struct vertx
-		*@brief Contiene datos necesarios de cada vertice del Skyplane
-		*/
-		typedef struct{
-			vector3f pos;				//posicion x,y,z del vertice
-			float u,v;					//usados para texturizacin
-		}vertx;							
+*/
+class TexturedSkyPlane : public Sky {
+private:
+    /**
+    *@struct vertx
+    *@brief Contiene datos necesarios de cada vertice del Skyplane
+    */
+    typedef struct {
+        vector3f pos;                //posicion x,y,z del vertice
+        float u, v;                    //usados para texturizacin
+    } vertx;
 
-		float m_h_tile;					//horizontal tile para texturizacion
-		float m_v_tile;					//vertical tile para texturizacion
-		unsigned int m_texture;			//textura del TexturedSkyPlane
-		unsigned int m_num_vertices;	//guarda el nmero de vertices
-		unsigned int m_num_indices;		//guarda el nmero de indices
-		unsigned int m_divisiones;		//contiene el nmero de divisiones
-		float m_atmosphere_radius;		//es el radio atmosfrico del TexturedSkyPlane
-		unsigned int * m_indices;		//guarda todos los indices (indica como deben ser dibujados los vertices)
-		vertx  * m_vertices;			//guarda todos los vertices
-		float m_planet_radius;			//radio planetario del TexturedSkyPlane
-		float m_roty_factor;			//factor de rotacin en y(delta)
-		float m_wind_factor_x;			//define el movimiento de la textura en x;
-		float m_wind_factor_y;			//define el movimiento de la textura en y;
-		unsigned int m_update_text_milli;//define cada cuando se debe actualizar la textura
-		unsigned int m_rot_text_milli; //define cada cuando se debe rotar
-		float m_desface_text_x;			//define la rotacin de la textura en x
-		float m_desface_text_y;			//define la rotacin de la textura en y
-		Timer m_mov_timer;				//Timer que controla el movimiento de las nubes
+    float m_h_tile;                    //horizontal tile para texturizacion
+    float m_v_tile;                    //vertical tile para texturizacion
+    unsigned int m_texture;            //textura del TexturedSkyPlane
+    unsigned int m_num_vertices;    //guarda el nmero de vertices
+    unsigned int m_num_indices;        //guarda el nmero de indices
+    unsigned int m_divisiones;        //contiene el nmero de divisiones
+    float m_atmosphere_radius;        //es el radio atmosfrico del TexturedSkyPlane
+    unsigned int *m_indices;        //guarda todos los indices (indica como deben ser dibujados los vertices)
+    vertx *m_vertices;            //guarda todos los vertices
+    float m_planet_radius;            //radio planetario del TexturedSkyPlane
+    float m_roty_factor;            //factor de rotacin en y(delta)
+    float m_wind_factor_x;            //define el movimiento de la textura en x;
+    float m_wind_factor_y;            //define el movimiento de la textura en y;
+    unsigned int m_update_text_milli;//define cada cuando se debe actualizar la textura
+    unsigned int m_rot_text_milli; //define cada cuando se debe rotar
+    float m_desface_text_x;            //define la rotacin de la textura en x
+    float m_desface_text_y;            //define la rotacin de la textura en y
+    Timer m_mov_timer;                //Timer que controla el movimiento de las nubes
 
-		void render(vector3f poscam);
-		void generaSkyPlane();
+    void render(vector3f poscam);
+
+    void generaSkyPlane();
 
 
-	public:
-		TexturedSkyPlane(int divisions, float planet_radius, float atmosphere_radius, float h_tile, float v_tile, unsigned int texture);
-		~TexturedSkyPlane();
-		void actualiza(vector3f poscam);
-		void setWindFactorX(float wfx);
-		void setWindFactorY(float wfy);
-		void setWindFactorXY(float wfx, float wfy);
+public:
+    TexturedSkyPlane(int divisions, float planet_radius, float atmosphere_radius, float h_tile, float v_tile,
+                     unsigned int texture);
+
+    ~TexturedSkyPlane();
+
+    void actualiza(vector3f poscam);
+
+    void setWindFactorX(float wfx);
+
+    void setWindFactorY(float wfy);
+
+    void setWindFactorXY(float wfx, float wfy);
 };
 
 /**

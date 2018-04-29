@@ -17,17 +17,19 @@
 *	@brief Esta clase genera una textura de nubes y no permite
 *	cambios de cover
 */
-class CloudsEstaticas : public Clouds{
-	public:
-		CloudsEstaticas();
-		CloudsEstaticas(float cover, float sharpness, int num_octavos, int width, int height);
-		~CloudsEstaticas();
+class CloudsEstaticas : public Clouds {
+public:
+    CloudsEstaticas();
 
-		void forceUpdate();
+    CloudsEstaticas(float cover, float sharpness, int num_octavos, int width, int height);
 
-	private:
-		void generaTextura();
-		
+    ~CloudsEstaticas();
+
+    void forceUpdate();
+
+private:
+    void generaTextura();
+
 };
 
 #endif

@@ -15,48 +15,68 @@
 * @brief Clase que maneja los Quaterniones, hace SLERP y 
 * rotacion de vectores
 * @todo quitar m_buff y toString para el release final
-*/ 
+*/
 class Quaternion {
-	public:
-		Quaternion();
-		Quaternion(float w, float x, float y, float z);
-		Quaternion(float theta, vector3f * eje);
-		Quaternion(float * matriz, int num_columnas);
+public:
+    Quaternion();
 
-		bool operator ==(const Quaternion & q);	
+    Quaternion(float w, float x, float y, float z);
 
-		Quaternion operator +(const Quaternion & q);
-		Quaternion operator -(const Quaternion & q);
-		Quaternion operator *(const Quaternion & q);
-		Quaternion operator *(float f);
-		vector3f operator *(vector3f p);
-		Quaternion operator /(float f);
+    Quaternion(float theta, vector3f *eje);
 
-		Quaternion & operator +=(const Quaternion & q);
-		Quaternion & operator -=(const Quaternion & q);
-		Quaternion & operator *=(const Quaternion & q);
-		Quaternion & operator *=(float f);
-		Quaternion & operator /=(float f);
-		
-		vector3f rotaVector(vector3f p);
-		Quaternion normaliza();
-		Quaternion getConjugado();
-		Quaternion getInversa();
-		Quaternion SLERP(const Quaternion &q1, const Quaternion &q2, float t);
+    Quaternion(float *matriz, int num_columnas);
 
-		inline float getMagnitud();
-		void to4x4Matriz(float * m4x4);
-		void to3x3Matriz(float * m3x3);
-		bool isUnitario();
-		char * toString();		
+    bool operator==(const Quaternion &q);
 
-		float w; //componente real del Quaternion
-		float x; //componente imaginario i del Quaternion
-		float y; //componente imaginario j del Quaternion
-		float z; //componente imaginario k del Quaternion
-		
-	private:
-		char m_buff[32]; //usada para debug
+    Quaternion operator+(const Quaternion &q);
+
+    Quaternion operator-(const Quaternion &q);
+
+    Quaternion operator*(const Quaternion &q);
+
+    Quaternion operator*(float f);
+
+    vector3f operator*(vector3f p);
+
+    Quaternion operator/(float f);
+
+    Quaternion &operator+=(const Quaternion &q);
+
+    Quaternion &operator-=(const Quaternion &q);
+
+    Quaternion &operator*=(const Quaternion &q);
+
+    Quaternion &operator*=(float f);
+
+    Quaternion &operator/=(float f);
+
+    vector3f rotaVector(vector3f p);
+
+    Quaternion normaliza();
+
+    Quaternion getConjugado();
+
+    Quaternion getInversa();
+
+    Quaternion SLERP(const Quaternion &q1, const Quaternion &q2, float t);
+
+    inline float getMagnitud();
+
+    void to4x4Matriz(float *m4x4);
+
+    void to3x3Matriz(float *m3x3);
+
+    bool isUnitario();
+
+    char *toString();
+
+    float w; //componente real del Quaternion
+    float x; //componente imaginario i del Quaternion
+    float y; //componente imaginario j del Quaternion
+    float z; //componente imaginario k del Quaternion
+
+private:
+    char m_buff[32]; //usada para debug
 
 };
 

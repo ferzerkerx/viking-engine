@@ -16,17 +16,20 @@
 * @date Tuesday, October 23, 2007 12:36:25 PM
 * @brief Clase que loggea los eventos en consola
 * 
-*/ 
-class ConsoleEventLogger : public EventLogger{
+*/
+class ConsoleEventLogger : public EventLogger {
 
-	private:
-		void lOutput(const char* buffer, unsigned int flags);
-		void lStartCallStackLevel(const char * str);
-		void lEndStackCallLevel();
-		void lUpdate(int hours, int minutes, int seconds, int hundrethSeconds);
-		
-	public:
-		void flush();
+private:
+    void lOutput(const char *buffer, unsigned int flags);
+
+    void lStartCallStackLevel(const char *str);
+
+    void lEndStackCallLevel();
+
+    void lUpdate(int hours, int minutes, int seconds, int hundrethSeconds);
+
+public:
+    void flush();
 };
 
 #else

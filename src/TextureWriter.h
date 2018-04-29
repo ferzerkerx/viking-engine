@@ -16,15 +16,17 @@
 * @brief Interfaz que define un escritor para texturas
 * decidi no ponerle atributos porque cada header de formato varia
 * abre un flujo binario y el destructor lo cierra
-*/ 
-class TextureWriter{
-	protected:
-		std::ofstream m_out;
-		
-	public:
-		virtual void writeTexture() = 0;
-		TextureWriter(const char *file);
-		~TextureWriter();
+*/
+class TextureWriter {
+protected:
+    std::ofstream m_out;
+
+public:
+    virtual void writeTexture() = 0;
+
+    TextureWriter(const char *file);
+
+    ~TextureWriter();
 
 };
 

@@ -3,7 +3,7 @@
 * @brief Encabezado de la clase SkyDome
 * @date Friday, October 19, 2007 9:07:11 PM
 */
-#ifndef	__SKYDOME__H__
+#ifndef    __SKYDOME__H__
 #define __SKYDOME__H__
 
 #include <math.h>
@@ -29,40 +29,45 @@
 *	@brief Esta clase genera la mitad de una esfera que va a ser 
 *	el domo del juego actualiza la posicion del sol
 */
-class SkyDome : public Sky{
+class SkyDome : public Sky {
 
-	protected:
-		float m_dphi;			//define el delta de phi (0-90) usado para las divisiones
-        float m_dtheta;			//define el delta de theta (0-360) usado para las divisiones
-	    float m_r;				//radio de la hemiesfera
-		int m_num_vert;			//guarda el numero de vertices
-		vector3f m_sun_vector;	//representa la posicion x,y,z del sol
-		polar3f m_sun_polar;	//representa la posicion del sol en coordenadas polares
-		unsigned int m_sun_text; //identificador de la textura del sol
-		bool m_has_sun_text;	//indica si tiene textura de sol
-		
-		/**
-		*@struct vertxDome
-		*@brief Contiene datos necesarios para cada vertice del domo
-		*/
-		typedef struct{
-			polar3f pol;		//coordenada polar del vertice
-			vector3f pos;		//posicion del vertice
-			vector3f uv;		//usados para texturizar el domo
-			color3f color;
-		}vertxDome;
+protected:
+    float m_dphi;            //define el delta de phi (0-90) usado para las divisiones
+    float m_dtheta;            //define el delta de theta (0-360) usado para las divisiones
+    float m_r;                //radio de la hemiesfera
+    int m_num_vert;            //guarda el numero de vertices
+    vector3f m_sun_vector;    //representa la posicion x,y,z del sol
+    polar3f m_sun_polar;    //representa la posicion del sol en coordenadas polares
+    unsigned int m_sun_text; //identificador de la textura del sol
+    bool m_has_sun_text;    //indica si tiene textura de sol
 
-		vertxDome * m_vrtx;		//guarda los vertices de nuestro domo
+    /**
+    *@struct vertxDome
+    *@brief Contiene datos necesarios para cada vertice del domo
+    */
+    typedef struct {
+        polar3f pol;        //coordenada polar del vertice
+        vector3f pos;        //posicion del vertice
+        vector3f uv;        //usados para texturizar el domo
+        color3f color;
+    } vertxDome;
 
-		void generaHemiEsfera();
-		virtual void renderDome(vector3f poscam) = 0;
-		void renderSun(vector3f poscam);
+    vertxDome *m_vrtx;        //guarda los vertices de nuestro domo
 
-	public:
-		SkyDome(float r);
-		SkyDome(float dphi, float dtheta, float r);
-		~SkyDome();
-		 void setSunTexture(unsigned int id);		
+    void generaHemiEsfera();
+
+    virtual void renderDome(vector3f poscam) = 0;
+
+    void renderSun(vector3f poscam);
+
+public:
+    SkyDome(float r);
+
+    SkyDome(float dphi, float dtheta, float r);
+
+    ~SkyDome();
+
+    void setSunTexture(unsigned int id);
 };
 
 /**

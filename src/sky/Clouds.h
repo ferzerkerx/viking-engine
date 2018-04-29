@@ -17,33 +17,42 @@
 * @date Friday, October 19, 2007 5:14:06 PM
 * @brief Define las estructuras bsicas para la generacion de texturas
 * es una interfaz para generadores de texturas de nubes ms especficos
-*/ 
+*/
 
 class Clouds {
-	public:
-		Clouds();
-		Clouds(float cover, float sharpness, int num_octavos, int width, int height);
-		~Clouds();
-		int getTextureWidth();
-		int getTextureHeight();
-		unsigned int getTextureId();
-		char * getData();
+public:
+    Clouds();
 
-	protected:
-		unsigned char m_num_octaves;	//define la cantidad de octavos de perlin que se desea
-		float m_sharpness;				//define que tan delgadas son las nubes
-		float m_cover;					//define que tan nuboso debe estar el cielo
-		char *m_RGBA_text;				//usado para generar la textura con alpha
-		float m_map32[32 * 32];			//mapa de ruido
-		float * m_map;					//mapa que contiene la textura sin alpha
-		int m_text_width;				//ancho de la textura deseada
-		int m_text_height;				//alto de la textura deseado
-		unsigned int m_texture;			//identificador de la textura generada por openGL
+    Clouds(float cover, float sharpness, int num_octavos, int width, int height);
 
-		virtual void generaTextura()= 0;
-		virtual void forceUpdate()=0;
-		void calculaAlpha();
-		void generaTexturaGL();
+    ~Clouds();
+
+    int getTextureWidth();
+
+    int getTextureHeight();
+
+    unsigned int getTextureId();
+
+    char *getData();
+
+protected:
+    unsigned char m_num_octaves;    //define la cantidad de octavos de perlin que se desea
+    float m_sharpness;                //define que tan delgadas son las nubes
+    float m_cover;                    //define que tan nuboso debe estar el cielo
+    char *m_RGBA_text;                //usado para generar la textura con alpha
+    float m_map32[32 * 32];            //mapa de ruido
+    float *m_map;                    //mapa que contiene la textura sin alpha
+    int m_text_width;                //ancho de la textura deseada
+    int m_text_height;                //alto de la textura deseado
+    unsigned int m_texture;            //identificador de la textura generada por openGL
+
+    virtual void generaTextura()= 0;
+
+    virtual void forceUpdate()=0;
+
+    void calculaAlpha();
+
+    void generaTexturaGL();
 };
 
 /**

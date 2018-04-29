@@ -17,26 +17,27 @@ class Model3D;
 * @date Friday, November 23, 2007 5:49:22 PM
 * @brief Esta clase representa una interfaz para los 
 * loaders de modelos3D
-*/ 
+*/
 class Model3DLoader {
-	protected:
-		Model3D * m_mdl;
+protected:
+    Model3D *m_mdl;
 
-	public:
-		Model3DLoader (Model3D * mdl){
-			m_mdl = mdl;	
-		}
-		~Model3DLoader(){
-			m_mdl = NULL;	
-		}
+public:
+    Model3DLoader(Model3D *mdl) {
+        m_mdl = mdl;
+    }
 
-        /**
-        * @brief Funcion que se encarga de importar el modelo
-        * @author Fernando Montes de Oca Cspedes
-        * @date Friday, November 23, 2007 7:06:23 PM
-        * @param modelo El path hacia el archivo que contiene el modelo
-        */
-		virtual void importar(const char * modelo) = 0;
+    ~Model3DLoader() {
+        m_mdl = NULL;
+    }
+
+    /**
+    * @brief Funcion que se encarga de importar el modelo
+    * @author Fernando Montes de Oca Cspedes
+    * @date Friday, November 23, 2007 7:06:23 PM
+    * @param modelo El path hacia el archivo que contiene el modelo
+    */
+    virtual void importar(const char *modelo) = 0;
 };
 
 /**

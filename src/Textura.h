@@ -15,35 +15,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TGA_RGB		 2		// RGB normal (realmnte BGR)
-#define TGA_A		 3		// ALPHA 
-#define TGA_RLE		10		// Run-Length Encoded (RLE), compresion
+#define TGA_RGB         2        // RGB normal (realmnte BGR)
+#define TGA_A         3        // ALPHA
+#define TGA_RLE        10        // Run-Length Encoded (RLE), compresion
 
-struct tImageTGA {			// Estructura de TGA
-	int channels;			// Canales (3 = RGB : 4 = RGBA)
-	int sizeX;				// Ancho de la imagen en pixeles
-	int sizeY;				// Largo de la imagen en pixeles
-	unsigned char *data;	// Image pixel data
+struct tImageTGA {            // Estructura de TGA
+    int channels;            // Canales (3 = RGB : 4 = RGBA)
+    int sizeX;                // Ancho de la imagen en pixeles
+    int sizeY;                // Largo de la imagen en pixeles
+    unsigned char *data;    // Image pixel data
 };
-
 
 
 class Textura {
 
-    public:
+public:
 
-		bool hasAlpha;
-	   		
-		Textura();
-		~Textura(){};
+    bool hasAlpha;
 
-        void CrearTextura(unsigned int textureArray[], const char * strFileName, int textureID);
+    Textura();
 
-        void CreaBMP(unsigned int textureArray[], const char * strFileName, int textureID);
-		
-        void CreaTGA(unsigned int textureArray[], const char * strFileName, int textureID);
+    ~Textura() {};
 
-        tImageTGA *CargaTGA(const char *filename);
+    void CrearTextura(unsigned int textureArray[], const char *strFileName, int textureID);
+
+    void CreaBMP(unsigned int textureArray[], const char *strFileName, int textureID);
+
+    void CreaTGA(unsigned int textureArray[], const char *strFileName, int textureID);
+
+    tImageTGA *CargaTGA(const char *filename);
 };
 
 #endif

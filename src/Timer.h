@@ -8,19 +8,25 @@
 
 
 class Timer {
-	private:
-		unsigned int ahora;//tiempo registrado en el reset
-		unsigned int despues;//tiempo actual
-		unsigned int ultima;//usado en funciones Lastcall
+private:
+    unsigned int ahora;//tiempo registrado en el reset
+    unsigned int despues;//tiempo actual
+    unsigned int ultima;//usado en funciones Lastcall
 
-	public:
-		Timer();
-		~Timer();
-		int getMilliseconds();
-		int getMillisecondsFromLastCall();
-		int getSeconds();
-		int getSecondsFromLastCall();
-		void reset();
+public:
+    Timer();
+
+    ~Timer();
+
+    int getMilliseconds();
+
+    int getMillisecondsFromLastCall();
+
+    int getSeconds();
+
+    int getSecondsFromLastCall();
+
+    void reset();
 
 };
 

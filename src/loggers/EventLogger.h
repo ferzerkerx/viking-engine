@@ -33,7 +33,7 @@
 /**
 * @var MAX_DEBUG_LINE_LEN
 * @brief usado para la creacion de buffers
-*/ 
+*/
 const int MAX_DEBUG_LINE_LEN = 1024; //usado para la creacion de buffers
 
 /**
@@ -45,13 +45,15 @@ const int MAX_DEBUG_LINE_LEN = 1024; //usado para la creacion de buffers
 * que solo muere cuando la funcion termina por lo que alguna llamada
 * a otra funcion con invocacion al macro FN(var_1) crea otro objeto
 * de esta manera podemos llevar un callstack
-*/ 
+*/
 class EventLogFN {
 public:
-	EventLogFN(const char* funcion);
-	~EventLogFN();
+    EventLogFN(const char *funcion);
+
+    ~EventLogFN();
+
 private:
-	const char* m_function; // nombre de la funcion
+    const char *m_function; // nombre de la funcion
 };
 
 /**
@@ -61,7 +63,7 @@ private:
 
 
 
-typedef std::vector<const char*> CharPtrVec; //tipo que usaremos para nuestro callStack
+typedef std::vector<const char *> CharPtrVec; //tipo que usaremos para nuestro callStack
 
 
 /**
@@ -72,33 +74,47 @@ typedef std::vector<const char*> CharPtrVec; //tipo que usaremos para nuestro ca
 * especficos
 */
 class EventLogger {
-	public:
-		EventLogger();		
-		virtual bool init(const char* logName);
-		virtual void term();
-		bool isInitialized();
-		void logEvent(unsigned int flags, const char* format, ...);
-		void logEvent(const char* format, ...);
-		void update();
-		virtual void flush()=0;
-		void pushFunction(const char* name);
-		void popFunction();
+public:
+    EventLogger();
 
-	protected:
+    virtual bool init(const char *logName);
 
-		virtual void lOutput(const char* buffer, unsigned int flags) = 0;
-		virtual void lStartCallStackLevel(const char * str) = 0;
-		virtual void lEndStackCallLevel() = 0;
-		virtual void lUpdate(int hours, int minutes, int seconds, int hundrethSeconds) = 0;
-		void logOutput(char* buffer, unsigned int flags);
-		void logCallStack();
+    virtual void term();
 
-		
-		CharPtrVec      m_callStack;	//almacena los nombres de las funciones llamadas
-		bool            m_b_loggedEvent;	//indica si acaba de ocurrir un evento
-		unsigned int    m_previousStackLevel;	//nos dice el nivel anterior en la pila de llamadas
-		unsigned int    m_updateCount;		//utilizado para llevar la cuenta del tiempo
-		bool            m_b_initialized;		//indica si el logger ha sido inicializado
+    bool isInitialized();
+
+    void logEvent(unsigned int flags, const char *format, ...);
+
+    void logEvent(const char *format, ...);
+
+    void update();
+
+    virtual void flush()=0;
+
+    void pushFunction(const char *name);
+
+    void popFunction();
+
+protected:
+
+    virtual void lOutput(const char *buffer, unsigned int flags) = 0;
+
+    virtual void lStartCallStackLevel(const char *str) = 0;
+
+    virtual void lEndStackCallLevel() = 0;
+
+    virtual void lUpdate(int hours, int minutes, int seconds, int hundrethSeconds) = 0;
+
+    void logOutput(char *buffer, unsigned int flags);
+
+    void logCallStack();
+
+
+    CharPtrVec m_callStack;    //almacena los nombres de las funciones llamadas
+    bool m_b_loggedEvent;    //indica si acaba de ocurrir un evento
+    unsigned int m_previousStackLevel;    //nos dice el nivel anterior en la pila de llamadas
+    unsigned int m_updateCount;        //utilizado para llevar la cuenta del tiempo
+    bool m_b_initialized;        //indica si el logger ha sido inicializado
 };
 
 /**

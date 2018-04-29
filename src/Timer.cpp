@@ -9,10 +9,10 @@
 
 
 static unsigned int getTickCount() {
-	struct timespec now;
-	if (clock_gettime(CLOCK_MONOTONIC, &now))
-		return 0;
-	return now.tv_sec * 1000.0 + now.tv_nsec / 1000000.0;
+    struct timespec now;
+    if (clock_gettime(CLOCK_MONOTONIC, &now))
+        return 0;
+    return now.tv_sec * 1000.0 + now.tv_nsec / 1000000.0;
 }
 
 /**
@@ -22,10 +22,10 @@ static unsigned int getTickCount() {
  * @author Fernando Montes de Oca Cespedes 
  * @date Saturday, August 11, 2007 10:15:01 PM
  */
-Timer::Timer(){
-	ahora = getTickCount();
-	despues = getTickCount();
-	ultima = getTickCount();
+Timer::Timer() {
+    ahora = getTickCount();
+    despues = getTickCount();
+    ultima = getTickCount();
 }
 
 /**
@@ -33,7 +33,7 @@ Timer::Timer(){
  * @author Fernando Montes de Oca Cespedes
  * @date Saturday, August 11, 2007 10:16:03 PM
  */
-Timer::~Timer(){
+Timer::~Timer() {
 
 }
 
@@ -44,9 +44,9 @@ Timer::~Timer(){
  * @date Saturday, August 11, 2007 10:16:26 PM
  * @retval Milisegundos transcurridos desde el reset()
  */
-int Timer::getMilliseconds(){
-	despues = getTickCount();
-	return despues-ahora;
+int Timer::getMilliseconds() {
+    despues = getTickCount();
+    return despues - ahora;
 }
 
 /**
@@ -56,10 +56,10 @@ int Timer::getMilliseconds(){
  * @date Saturday, August 11, 2007 10:17:07 PM
  * @retval Milisegundos transcurridos desde la ltima llamada a esta funcin
  */
-int Timer::getMillisecondsFromLastCall(){
-	int res = ultima-getTickCount();
-	ultima = getTickCount();
-	return res;
+int Timer::getMillisecondsFromLastCall() {
+    int res = ultima - getTickCount();
+    ultima = getTickCount();
+    return res;
 
 }
 
@@ -70,9 +70,9 @@ int Timer::getMillisecondsFromLastCall(){
  * @date Saturday, August 11, 2007 10:18:21 PM
  * @retval Milisegundos transcurridos desde el ltimo reset()
  */
-int Timer::getSeconds(){
-	despues = getTickCount();
-	return (despues-ahora)/1000;
+int Timer::getSeconds() {
+    despues = getTickCount();
+    return (despues - ahora) / 1000;
 
 }
 
@@ -83,10 +83,10 @@ int Timer::getSeconds(){
  * @date Saturday, August 11, 2007 10:18:21 PM
  * @retval Milisegundos transcurridos desde la ltima llamada a esta funcin
  */
-int Timer::getSecondsFromLastCall(){
-	int res = ultima-getTickCount();
-	ultima = getTickCount();
-	return res/1000;
+int Timer::getSecondsFromLastCall() {
+    int res = ultima - getTickCount();
+    ultima = getTickCount();
+    return res / 1000;
 }
 
 /**
@@ -94,7 +94,7 @@ int Timer::getSecondsFromLastCall(){
  * @author Fernando Montes de Oca Cespedes 
  * @date Saturday, August 11, 2007 10:19:43 PM
  */
-void Timer::reset(){
-	ahora = despues;
+void Timer::reset() {
+    ahora = despues;
 }
 
