@@ -5,7 +5,7 @@
 */
 
 #include "VKSkyDome.h"
-#include "loggers\EventLogger.h"
+#include "loggers/EventLogger.h"
 
 VKSkyDome::VKSkyDome(float r, unsigned int id_textura) : TexturedSkyDome(r, id_textura){
 	LOG(0,"VKSkyDome(float r, unsigned int id_textura)");

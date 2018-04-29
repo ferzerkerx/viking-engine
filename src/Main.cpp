@@ -14,6 +14,7 @@
 #include "definiciones.h"
 #include "Camara.h"
 #include "sky/SkyBox.h"
+#include "VKSkyDome.h"
 #include "model_loaders/MD2Model.h"
 
 #include <GL/glut.h>
@@ -37,7 +38,7 @@ bool    done = false;       // Bandera para salir dl ciclo principal
 
 
 bool camara, billB, lockFrames = false;
-bool wireframe = true;
+bool wireframe = false;
 
 unsigned int fText[1];
 unsigned int piso[1];
@@ -51,7 +52,7 @@ Timer *timer;
 Textura te;
 Camara cam;
 Fuente *fuente;
-//VKSkyDome *vksd;
+VKSkyDome *vksd;
 SkyBox *sb;
 EventLogger *g_Log;
 MD2Model *knight;
@@ -162,17 +163,17 @@ void DrawGLScene() {
 	glLoadIdentity();
 
 	cam.Vista();
-//
+
 	glTranslatef(0.0f,0.0f,-5.0f);
 
 	crearCirculo(10, 20, 40);
-//	if (vksd!=NULL){
-//		glPushMatrix();
-//			glTranslatef(0.0f,-15.0f,0.0f);
-//			vksd->actualiza(cam.getPos());
-//		glPopMatrix();
-//	}
-//
+	if (vksd!=NULL){
+		glPushMatrix();
+			glTranslatef(0.0f,-15.0f,0.0f);
+			vksd->actualiza(cam.getPos());
+		glPopMatrix();
+	}
+
 	if (sb!=NULL){
 		glPushMatrix();
 
@@ -193,29 +194,29 @@ void DrawGLScene() {
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 
-//	if (knight){
-//		glPushMatrix();
-//			glTranslatef(0.0f,3.6f,0.0f);
-//			glScalef(0.15f,0.15f,0.15f);
-//			//knight->render();
-//			knight->renderWithOpenGlCommands();
-//		glPopMatrix();
-//	}
+	if (knight){
+		glPushMatrix();
+			glTranslatef(0.0f,3.6f,0.0f);
+			glScalef(0.15f,0.15f,0.15f);
+			//knight->render();
+			knight->renderWithOpenGlCommands();
+		glPopMatrix();
+	}
 
 
 
 	/**FUENTE**/
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glEnable(GL_TEXTURE_2D);
-//	if (knight){
-//		fuente->glPrint(20,95,"'n' siguiente frame, 'p' frame anterior", 1, ancho, alto);
-//	}
-//	if (vksd){
-//		char buff[50];
-//		sprintf(buff,"Cover(x aumenta, z decrementa): %f",vksd->getCloudCover());
-//		fuente->glPrint(20,55,buff, 1, ancho, alto);
-//		fuente->glPrint(20,75,"'g' guardar (test.bmp) ", 1, ancho, alto);
-//	}
+	if (knight){
+		fuente->glPrint(20,95,"'n' siguiente frame, 'p' frame anterior", 1, ancho, alto);
+	}
+	if (vksd){
+		char buff[50];
+		sprintf(buff,"Cover(x aumenta, z decrementa): %f",vksd->getCloudCover());
+		fuente->glPrint(20,55,buff, 1, ancho, alto);
+		fuente->glPrint(20,75,"'g' guardar (test.bmp) ", 1, ancho, alto);
+	}
 	fuente->glPrint(20,35,"'f' WireFrame (Toggle)", 1, ancho, alto);
 	fuente->glPrint(20,10,"'c' Camara", 1, ancho, alto);
 	glDisable(GL_TEXTURE_2D);
@@ -226,10 +227,10 @@ void DrawGLScene() {
 	else{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-//	/**FUENTE**/
-//
-//
-//	rot++;
+	/**FUENTE**/
+
+	rot++;
+    glutSwapBuffers();
 }
 
 
@@ -323,11 +324,11 @@ void initViking(){
 
     knight = new MD2Model("data/modelos/knight.md2", "data/modelos/knight.bmp");
 
-//	vksd = new VKSkyDome(15,15,70,sky[0]);
-//	vksd->setSunTexture(sun[0]);
+	vksd = new VKSkyDome(15,15,70,sky[0]);
+	vksd->setSunTexture(sun[0]);
 
-    glClearColor(0.35f,0.53f,0.7f,1.0f);
-//    glClearColor(0.0f,0.0f,0.0f,1.0f);
+//    glClearColor(0.35f,0.53f,0.7f,1.0f);
+    glClearColor(0.0f,0.0f,0.0f,1.0f);
 
     glShadeModel(GL_SMOOTH);				// Habilita Smooth Shading
 //    glEnable(GL_CULL_FACE);

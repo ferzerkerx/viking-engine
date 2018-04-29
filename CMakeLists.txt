@@ -16,6 +16,24 @@ add_executable(viking_engine src/Main.cpp
         src/Timer.cpp
         src/Textura.h
         src/Textura.cpp
+        src/VKSkyDome.h
+        src/VKSkyDome.cpp
+        src/BMPWriter.h
+        src/BMPWriter.cpp
+        src/sky/SkyDome.h
+        src/sky/SkyDome.cpp
+        src/sky/TexturedSkyDome.h
+        src/sky/TexturedSkyDome.cpp
+        src/sky/Clouds.h
+        src/sky/Clouds.cpp
+        src/sky/CloudsActualizables.h
+        src/sky/CloudsActualizables.cpp
+        src/sky/TexturedSkyPlane.h
+        src/sky/TexturedSkyPlane.cpp
+        src/TextureWriter.h
+        src/TextureWriter.cpp
+        src/Billboard.h
+        src/Billboard.cpp
         src/loggers/EventLogger.h
         src/loggers/EventLogger.cpp
         src/loggers/ConsoleEventLogger.h
