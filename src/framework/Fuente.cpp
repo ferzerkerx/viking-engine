@@ -54,7 +54,7 @@ Fuente::Fuente(unsigned int *text) {
 /*Destructor*/
 Fuente::~Fuente() {
     glDeleteLists(base, 256);
-    textura = NULL;
+    textura = nullptr;
 }
 
 void Fuente::glPrint(float x, float y, const char *string, int set, int ancho, int alto) {
@@ -84,7 +84,7 @@ void Fuente::glPrint(float x, float y, const char *string, int set, int ancho, i
     /*escogemos las listas del set especificado*/
     glListBase(base - 32 + (128 * set));
     /*Escribimos en pantalla*/
-    glCallLists(strlen(string), GL_BYTE, string);
+    glCallLists(static_cast<GLsizei>(strlen(string)), GL_BYTE, string);
     /*escogemos la matriz de proyeccin*/
     glMatrixMode(GL_PROJECTION);
     /*regresamos a la matriz anterior*/

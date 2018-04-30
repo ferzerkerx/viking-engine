@@ -100,7 +100,6 @@ void TexturedSkyDome::actualiza(vector3f poscam) {
 
 void TexturedSkyDome::calculaUV() {
 
-    vector3f vec_norm;
     vector3f vec_temp;
 
     int i = 0, phi = 0, theta = 0;
@@ -112,7 +111,7 @@ void TexturedSkyDome::calculaUV() {
             vec_temp.y = m_vrtx[i].pos.y;
             vec_temp.z = m_vrtx[i].pos.z;
 
-            vec_norm = Normalizar(vec_temp);
+            Normalizar(vec_temp);
 
             // Calculo de las coordenadas de la textura en la esfera
             m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5f;
@@ -123,7 +122,7 @@ void TexturedSkyDome::calculaUV() {
             vec_temp.y = m_vrtx[i].pos.y;
             vec_temp.z = m_vrtx[i].pos.z;
 
-            vec_norm = Normalizar(vec_temp);
+            Normalizar(vec_temp);
 
             // Calculo de las coordenadas de la textura en la esfera
             m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5f;
@@ -134,7 +133,7 @@ void TexturedSkyDome::calculaUV() {
             vec_temp.y = m_vrtx[i].pos.y;
             vec_temp.z = m_vrtx[i].pos.z;
 
-            vec_norm = Normalizar(vec_temp);
+            Normalizar(vec_temp);
 
             // Calculo de las coordenadas de la textura en la esfera
             m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5f;
@@ -146,7 +145,7 @@ void TexturedSkyDome::calculaUV() {
                 vec_temp.y = m_vrtx[i].pos.y;
                 vec_temp.z = m_vrtx[i].pos.z;
 
-                vec_norm = Normalizar(vec_temp);
+                Normalizar(vec_temp);
 
                 // Calculo de las coordenadas de la textura en la esfera
                 m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5f;
@@ -156,42 +155,42 @@ void TexturedSkyDome::calculaUV() {
         }
     }
 
-    for (int i = 0; i < m_num_vert - 3; i++) {
+    for (int j = 0; j < m_num_vert - 3; j++) {
 
-        if (m_vrtx[i].uv.x - m_vrtx[i + 1].uv.x > 0.9f)
-            m_vrtx[i + 1].uv.x += 1.0f;
+        if (m_vrtx[j].uv.x - m_vrtx[j + 1].uv.x > 0.9f)
+            m_vrtx[j + 1].uv.x += 1.0f;
 
-        if (m_vrtx[i + 1].uv.x - m_vrtx[i].uv.x > 0.9f)
-            m_vrtx[i].uv.x += 1.0f;
+        if (m_vrtx[j + 1].uv.x - m_vrtx[j].uv.x > 0.9f)
+            m_vrtx[j].uv.x += 1.0f;
 
-        if (m_vrtx[i].uv.x - m_vrtx[i + 2].uv.x > 0.9f)
-            m_vrtx[i + 2].uv.x += 1.0f;
+        if (m_vrtx[j].uv.x - m_vrtx[j + 2].uv.x > 0.9f)
+            m_vrtx[j + 2].uv.x += 1.0f;
 
-        if (m_vrtx[i + 2].uv.x - m_vrtx[i].uv.x > 0.9f)
-            m_vrtx[i].uv.x += 1.0f;
+        if (m_vrtx[j + 2].uv.x - m_vrtx[j].uv.x > 0.9f)
+            m_vrtx[j].uv.x += 1.0f;
 
-        if (m_vrtx[i + 1].uv.x - m_vrtx[i + 2].uv.x > 0.9f)
-            m_vrtx[i + 2].uv.x += 1.0f;
+        if (m_vrtx[j + 1].uv.x - m_vrtx[j + 2].uv.x > 0.9f)
+            m_vrtx[j + 2].uv.x += 1.0f;
 
-        if (m_vrtx[i + 2].uv.x - m_vrtx[i + 1].uv.x > 0.9f)
-            m_vrtx[i + 1].uv.x += 1.0f;
+        if (m_vrtx[j + 2].uv.x - m_vrtx[j + 1].uv.x > 0.9f)
+            m_vrtx[j + 1].uv.x += 1.0f;
 
-        if (m_vrtx[i].uv.y - m_vrtx[i + 1].uv.y > 0.8f)
-            m_vrtx[i + 1].uv.y += 1.0f;
+        if (m_vrtx[j].uv.y - m_vrtx[j + 1].uv.y > 0.8f)
+            m_vrtx[j + 1].uv.y += 1.0f;
 
-        if (m_vrtx[i + 1].uv.y - m_vrtx[i].uv.y > 0.8f)
-            m_vrtx[i].uv.y += 1.0f;
+        if (m_vrtx[j + 1].uv.y - m_vrtx[j].uv.y > 0.8f)
+            m_vrtx[j].uv.y += 1.0f;
 
-        if (m_vrtx[i].uv.y - m_vrtx[i + 2].uv.y > 0.8f)
-            m_vrtx[i + 2].uv.y += 1.0f;
+        if (m_vrtx[j].uv.y - m_vrtx[j + 2].uv.y > 0.8f)
+            m_vrtx[j + 2].uv.y += 1.0f;
 
-        if (m_vrtx[i + 2].uv.y - m_vrtx[i].uv.y > 0.8f)
-            m_vrtx[i].uv.y += 1.0f;
+        if (m_vrtx[j + 2].uv.y - m_vrtx[j].uv.y > 0.8f)
+            m_vrtx[j].uv.y += 1.0f;
 
-        if (m_vrtx[i + 1].uv.y - m_vrtx[i + 2].uv.y > 0.8f)
-            m_vrtx[i + 2].uv.y += 1.0f;
+        if (m_vrtx[j + 1].uv.y - m_vrtx[j + 2].uv.y > 0.8f)
+            m_vrtx[j + 2].uv.y += 1.0f;
 
-        if (m_vrtx[i + 2].uv.y - m_vrtx[i + 1].uv.y > 0.8f)
-            m_vrtx[i + 1].uv.y += 1.0f;
+        if (m_vrtx[j + 2].uv.y - m_vrtx[j + 1].uv.y > 0.8f)
+            m_vrtx[j + 1].uv.y += 1.0f;
     }
 }

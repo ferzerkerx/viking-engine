@@ -44,14 +44,13 @@ void Camara::PonCam(float posX, float posY, float posZ,
 void Camara::VistaMouse(int ancho, int alto, int mouseX, int mouseY) {
 	int mitX = ancho  >> 1;	     // Corrimiento binario para obtener la mitad de ancho
 	int mitY = alto >> 1;	     // Corrimiento binario para obtener la mitad de alto
-	float anguloY = 0.0f;			 // Direccion vista arriba o abajo
-	float anguloZ = 0.0f;			 // Rotacin en Y (Izquierda y Derecha)
+	float anguloY;			 // Direccion vista arriba o abajo
+	float anguloZ;			 // Rotacin en Y (Izquierda y Derecha)
 	static float currentRotX = 0.0f;
 
 	// Si el cursor esta en la mitad no nos movemos
 	if((mouseX == mitX) && (mouseY == mitY)) return;
 
-//	SetCursorPos(mitX, mitY); // Poner cursor enmedio de la pantalla
 
 	// Obtener la direccion del mov del mouse, decrementar el numero bastante (/1000)
 	anguloY = (float)((mitX - mouseX)) / 1000.0f;
@@ -99,8 +98,8 @@ void Camara::RotarVista(float angulo, float x, float y, float z) {
     // Obtenemos vector vista
     vector3f vView = m_vView - m_vPos;
     // Calculamos el seno coseno del angulo una vez
-    float cosTheta = (float) cos(angulo);
-    float senTheta = (float) sin(angulo);
+    float cosTheta = cos(angulo);
+    float senTheta = sin(angulo);
     // Encontramos la nueva pos de x para el nuevo punto rotado
     vNewView.x = (cosTheta + (1 - cosTheta) * x * x) * vView.x;
     vNewView.x += ((1 - cosTheta) * x * y - z * senTheta) * vView.y;
@@ -158,6 +157,7 @@ void Camara::ChecarMov(int key) {
         case GLUT_KEY_RIGHT:
             StrafeCam(velCam);
             break;
+        default:break;
     }
 }
 

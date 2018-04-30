@@ -25,7 +25,7 @@ SkyBox::SkyBox(float alto, float largo, float ancho, unsigned int *caras) {
     m_largo = largo / 2.0f;
     m_ancho = ancho / 2.0f;
 
-    if (caras != NULL) {
+    if (caras != nullptr) {
         for (int i = 0; i < 6; i++) {
             m_caras[i] = caras[i];
             glBindTexture(GL_TEXTURE_2D, m_caras[i]);
@@ -65,8 +65,8 @@ SkyBox::SkyBox(float alto, float largo, float ancho, unsigned int front,
     m_caras[UP] = up;
     m_caras[DOWN] = down;
 
-    for (int i = 0; i < 6; i++) {
-        glBindTexture(GL_TEXTURE_2D, m_caras[i]);
+    for (unsigned int m_cara : m_caras) {
+        glBindTexture(GL_TEXTURE_2D, m_cara);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     }

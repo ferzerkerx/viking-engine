@@ -14,12 +14,11 @@
 * @date Thursday, November 29, 2007 8:39:20 PM
 * @param modelo Ruta hacia el modelo
 */
-MD2Model::MD2Model(const char *modelo) {
-    MD2Model(modelo, NULL);
+MD2Model::MD2Model(const char *modelo) : MD2Model(modelo, nullptr) {
 }
 
 /**
-* @brief Constructor que recibe la ruta y la textura usada por el modelo MD2
+* @brief Constrtuctor que recibe la ruta y la textura usada por el modelo MD2
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:39:31 PM
 * @param modelo Ruta hacia el modelo
@@ -27,7 +26,7 @@ MD2Model::MD2Model(const char *modelo) {
 */
 MD2Model::MD2Model(const char *modelo, const char *text) {
     m_b_hasAnimation = false;
-    m_glCommandBuffer = NULL;
+    m_glCommandBuffer = nullptr;
     num_glCommands = 0;
 
     m_ml = new MD2Loader(this);
@@ -49,10 +48,10 @@ MD2Model::MD2Model(const char *modelo, const char *text) {
 * @date Thursday, November 29, 2007 8:41:19 PM
 */
 MD2Model::~MD2Model() {
-    while (pAnimations.size() > 0) {
+    while (!pAnimations.empty()) {
         pAnimations.pop_back();
     }
-    if (m_glCommandBuffer) { delete m_glCommandBuffer; }
+    delete m_glCommandBuffer;
 }
 
 
@@ -62,7 +61,7 @@ MD2Model::~MD2Model() {
 * @date Thursday, November 29, 2007 8:41:44 PM
 */
 void MD2Model::render() {
-    if (m_objects.size() <= 0) return;
+    if (m_objects.empty()) return;
 
     float t = 0.0f;
     int i = 0, j = 0, index = 0, index2 = 0;
@@ -81,9 +80,9 @@ void MD2Model::render() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
-    if (m_materials.size() > 0) {
+    if (!m_materials.empty()) {
         glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, m_materials[0].texture_id);
+        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(m_materials[0].texture_id));
     }
 
     glBegin(GL_TRIANGLES);
@@ -96,7 +95,7 @@ void MD2Model::render() {
                 glNormal3f(frame->normales[index].x, frame->normales[index].y, frame->normales[index].z);
             }
 
-            if (first_frame->text_st && m_materials.size() > 0) {
+            if (first_frame->text_st && !m_materials.empty()) {
                 glTexCoord2f(first_frame->text_st[index2].s, first_frame->text_st[index2].t);
             }
 
@@ -112,7 +111,7 @@ void MD2Model::render() {
 
     glEnd();
 
-    if (m_materials.size() > 0) {
+    if (!m_materials.empty()) {
         glDisable(GL_TEXTURE_2D);
     }
     glDisable(GL_CULL_FACE);
@@ -146,8 +145,11 @@ void MD2Model::addAnimation(Animacion anim) {
 */
 void MD2Model::setAnimation(MD2_anim anim) {
     currentAnim = anim;
-    if (currentAnim < STAND) { currentAnim = (pAnimations.size() - 1); }
-    else if (currentAnim >= pAnimations.size()) { currentAnim = STAND; }
+    if (currentAnim < STAND) {
+        currentAnim = static_cast<int>(pAnimations.size() - 1);
+    } else if (currentAnim >= pAnimations.size()) {
+        currentAnim = STAND;
+    }
 
     currentFrame = pAnimations[currentAnim].frame_inicial;
     nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
@@ -229,7 +231,7 @@ void MD2Model::setAnimationSpeed(float speed) {
 void MD2Model::setGlCommands(int *com, int num) {
     if (num_glCommands > 0) { delete m_glCommandBuffer; }
     m_glCommandBuffer = new int[num];
-    memcpy(m_glCommandBuffer, com, num * 4);
+    memcpy(m_glCommandBuffer, com, static_cast<size_t>(num * 4));
     num_glCommands = num;
 }
 
@@ -240,7 +242,7 @@ void MD2Model::setGlCommands(int *com, int num) {
 */
 void MD2Model::renderWithOpenGlCommands() {
 
-    if (m_objects.size() <= 0 || !m_glCommandBuffer) return;
+    if (m_objects.empty() || !m_glCommandBuffer) return;
 
     int *ptricmds = m_glCommandBuffer;
     float t = 0.0f;
@@ -251,16 +253,15 @@ void MD2Model::renderWithOpenGlCommands() {
 
     Object3D *frame = &m_objects[currentFrame];
     Object3D *next_frame = &m_objects[nextFrame];
-    Object3D *first_frame = &m_objects[0];
 
     if (m_b_hasAnimation) { t = calculaFactorInterpolacion(); }
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
-    if (m_materials.size() > 0) {
+    if (!m_materials.empty()) {
         glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, m_materials[0].texture_id);
+        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(m_materials[0].texture_id));
     }
 
     while (int i = *(ptricmds++)) {
@@ -274,7 +275,7 @@ void MD2Model::renderWithOpenGlCommands() {
             // ptricmds[0] : textura  s
             // ptricmds[1] : textura t
             // ptricmds[2] : indice del vertice
-            if (m_materials.size() > 0) {
+            if (!m_materials.empty()) {
                 glTexCoord2f(((float *) ptricmds)[0], 1.0f - ((float *) ptricmds)[1]);
             }
 
@@ -298,7 +299,7 @@ void MD2Model::renderWithOpenGlCommands() {
 
         glEnd();
     }
-    if (m_materials.size() > 0) {
+    if (!m_materials.empty()) {
         glDisable(GL_TEXTURE_2D);
     }
     glDisable(GL_CULL_FACE);
@@ -314,15 +315,15 @@ void MD2Model::calculaNormales() {
     vector3f vVector1, vVector2, vNormal, vPoly[3];
 
 
-    if (m_objects.size() <= 0) return;
+    if (m_objects.empty()) return;
 
     Object3D *first = &(m_objects[0]);
 
-    for (int index = 0; index < m_objects.size(); index++) {
+    for (auto &m_object : m_objects) {
 
-        Object3D *obj = &(m_objects[index]);
-        vector3f *normales = new vector3f[obj->num_faces];
-        vector3f *pTempNormals = new vector3f[obj->num_faces];
+        Object3D *obj = &m_object;
+        auto *normales = new vector3f[obj->num_faces];
+        auto *pTempNormals = new vector3f[obj->num_faces];
         obj->normales = new vector3f[obj->num_verts];
 
         for (int i = 0; i < first->num_faces; i++) {

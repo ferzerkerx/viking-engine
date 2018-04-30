@@ -14,18 +14,18 @@
 */
 Model3D::~Model3D() {
     int i = 0;
-    while (m_objects.size() > 0) {
-        i = m_objects.size() - 1;
-        if (m_objects[i].materials_ids) { delete m_objects[i].materials_ids; }
-        if (m_objects[i].material_vert_index) { delete m_objects[i].material_vert_index; }
-        if (m_objects[i].vertices) { delete m_objects[i].vertices; }
-        if (m_objects[i].normales) { delete m_objects[i].normales; }
-        if (m_objects[i].text_st) { delete m_objects[i].text_st; }
-        if (m_objects[i].faces) { delete m_objects[i].faces; }
+    while (!m_objects.empty()) {
+        i = static_cast<int>(m_objects.size() - 1);
+        delete m_objects[i].materials_ids;
+        delete m_objects[i].material_vert_index;
+        delete m_objects[i].vertices;
+        delete m_objects[i].normales;
+        delete m_objects[i].text_st;
+        delete m_objects[i].faces;
         m_objects.pop_back();
     }
 
-    while (m_materials.size() > 0) {
+    while (!m_materials.empty()) {
         m_materials.pop_back();
     }
 }

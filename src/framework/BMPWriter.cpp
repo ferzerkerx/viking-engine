@@ -20,7 +20,7 @@ BMPWriter::BMPWriter(const char *file, int width, int height, int prof, char *da
     if (prof < 3) { prof = 3; }
 
     m_file_header.bfType = 19778;
-    m_file_header.bfSize = 54 + (width * height * 3);//profundidad 24 bits
+    m_file_header.bfSize = static_cast<unsigned long>(54 + (width * height * 3));//profundidad 24 bits
     m_file_header.bfReserved1 = 0;
     m_file_header.bfReserved2 = 0;
     m_file_header.bfOffBits = 54;
@@ -48,7 +48,7 @@ BMPWriter::BMPWriter(const char *file, int width, int height, int prof, char *da
 * @date Saturday, October 20, 2007 8:51:56 PM
 */
 BMPWriter::~BMPWriter() {
-    m_data = NULL;
+    m_data = nullptr;
 }
 
 /**
@@ -104,8 +104,8 @@ void BMPWriter::escribeData() {
     for (i = 0; i < m_info_header.biWidth; i++) {
         for (j = 0; j < m_info_header.biHeight; j++) {
 
-            if (m_data != NULL) {
-                desplazamiento = i * (m_info_header.biHeight * m_prof) + (j * m_prof);
+            if (m_data != nullptr) {
+                desplazamiento = static_cast<int>(i * (m_info_header.biHeight * m_prof) + (j * m_prof));
                 m_out.write(&m_data[desplazamiento + 1], 1);//b
                 m_out.write(&m_data[desplazamiento], 1);//g
                 m_out.write(&m_data[desplazamiento + 2], 1);//r

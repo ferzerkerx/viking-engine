@@ -39,7 +39,7 @@ Clouds::Clouds() {
 Clouds::Clouds(float cover, float sharpness, int num_octavos, int width, int height) {
     m_cover = cover;
     m_sharpness = sharpness;
-    m_num_octaves = num_octavos;
+    m_num_octaves = static_cast<unsigned char>(num_octavos);
     m_texture = -1;
     m_text_width = width;
     m_text_height = height;
@@ -53,9 +53,8 @@ Clouds::Clouds(float cover, float sharpness, int num_octavos, int width, int hei
 *los octavos y los indices
 */
 Clouds::~Clouds() {
-    if (m_map != NULL) { delete[] m_map; }
-
-    if (m_RGBA_text != NULL) { delete[] m_RGBA_text; }
+    delete[] m_map;
+    delete[] m_RGBA_text;
 
     if (m_texture != -1) { glDeleteTextures(1, &m_texture); }
 
@@ -100,7 +99,7 @@ unsigned int Clouds::getTextureId() {
 * @date Friday, October 19, 2007 5:01:40 PM
 */
 void Clouds::calculaAlpha() {
-    float color = 0.0;
+    float color;
     int desplazamiento = 0;
     int i, j = 0;
 
@@ -108,13 +107,13 @@ void Clouds::calculaAlpha() {
         for (j = 0; j < m_text_height; j++) {
             color = m_map[i * m_text_width + j];
             desplazamiento = i * (m_text_height * 4) + (j * 4);
-            m_RGBA_text[desplazamiento] = color;
-            m_RGBA_text[desplazamiento + 1] = color;
-            m_RGBA_text[desplazamiento + 2] = color;
+            m_RGBA_text[desplazamiento] = static_cast<char>(color);
+            m_RGBA_text[desplazamiento + 1] = static_cast<char>(color);
+            m_RGBA_text[desplazamiento + 2] = static_cast<char>(color);
             if (color == 0.0f) {
                 m_RGBA_text[desplazamiento + 3] = 0;
             } else {
-                m_RGBA_text[desplazamiento + 3] = 255;
+                m_RGBA_text[desplazamiento + 3] = static_cast<char>(255);
             }
         }
     }
@@ -128,7 +127,7 @@ void Clouds::calculaAlpha() {
  */
 void Clouds::generaTexturaGL() {
 
-    if (m_map != NULL && m_RGBA_text != NULL) {
+    if (m_map != nullptr && m_RGBA_text != nullptr) {
         calculaAlpha();
 
         glDeleteTextures(1, &m_texture);

@@ -4,15 +4,15 @@
 * @date Saturday, August 11, 2007 10:14:52 PM
 */
 
-#include <time.h>
+#include <ctime>
 #include "Timer.h"
 
 
 static unsigned int getTickCount() {
-    struct timespec now;
+    struct timespec now{};
     if (clock_gettime(CLOCK_MONOTONIC, &now))
         return 0;
-    return now.tv_sec * 1000.0 + now.tv_nsec / 1000000.0;
+    return static_cast<unsigned int>(now.tv_sec * 1000.0 + now.tv_nsec / 1000000.0);
 }
 
 /**

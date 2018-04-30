@@ -210,7 +210,7 @@ void EventLogger::popFunction() {
 */
 void EventLogger::logOutput(char *buffer, unsigned int flags) {
     // quitamos los caracteres de salto de linea '\n'
-    int i = strlen(buffer);
+    int i = static_cast<int>(strlen(buffer));
     if (i == 0)
         return;
     if (buffer[i - 1] == '\n')
@@ -233,7 +233,7 @@ void EventLogger::logOutput(char *buffer, unsigned int flags) {
 * @date Tuesday, October 23, 2007 4:01:58 PM
 */
 void EventLogger::logCallStack() {
-    unsigned int currentStackLevel = m_callStack.size();
+    unsigned int currentStackLevel = static_cast<unsigned int>(m_callStack.size());
 
     while (m_previousStackLevel < currentStackLevel) {
         /**invocamos a la funcion virtual**/

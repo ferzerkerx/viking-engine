@@ -46,7 +46,7 @@ CloudsActualizables::CloudsActualizables(float cover, float sharpness, int num_o
 
     m_octaves = new struct octave[m_num_octaves];
     for (int i = 0; i < m_num_octaves; i++) {
-        m_octaves[i].scale = 1 / pow(2, 3 - i);
+        m_octaves[i].scale = static_cast<float>(1 / pow(2, 3 - i));
         m_octaves[i].x = 0;
     }
 
@@ -65,7 +65,7 @@ CloudsActualizables::CloudsActualizables(float cover, float sharpness, int num_o
  * @date Saturday, August 11, 2007 10:01:23 PM
  */
 CloudsActualizables::~CloudsActualizables() {
-    if (m_octaves != NULL) { delete[] m_octaves; }
+    delete[] m_octaves;
 }
 
 /**
@@ -86,7 +86,7 @@ void CloudsActualizables::forceUpdate() {
 *@param milli Es el tiempo deseado en milisegundos
 */
 void CloudsActualizables::setTextureUpdateTime(int milli) {
-    m_update_text_milli = milli;
+    m_update_text_milli = static_cast<unsigned int>(milli);
 }
 
 /**
@@ -95,11 +95,11 @@ void CloudsActualizables::setTextureUpdateTime(int milli) {
 */
 void CloudsActualizables::setNumOctaves(unsigned char noctaves) {
     m_num_octaves = noctaves;
-    if (m_octaves != NULL) { delete[] m_octaves; }
+    delete[] m_octaves;
 
     m_octaves = new struct octave[m_num_octaves];
     for (int i = 0; i < m_num_octaves; i++) {
-        m_octaves[i].scale = 1 / pow(2, 3 - i);
+        m_octaves[i].scale = static_cast<float>(1 / pow(2, 3 - i));
         m_octaves[i].x = 0;
     }
 }
@@ -135,8 +135,8 @@ void CloudsActualizables::setSharpness(float sharpness) {
  */
 void CloudsActualizables::setTextureResolution(int width, int height) {
     if (width < 32 || height < 32) return;
-    if (m_RGBA_text != NULL) { delete[] m_RGBA_text; }
-    if (m_map != NULL) { delete[] m_map; }
+    delete[] m_RGBA_text;
+    delete[] m_map;
 
     m_text_width = width;
     m_text_height = height;
@@ -231,8 +231,6 @@ int CloudsActualizables::actualizaPorCoordenada() {
  * @date Saturday, August 11, 2007 9:40:02 PM
  */
 void CloudsActualizables::generaTextura() {
-
     Clouds::generaTexturaGL();
     Perlin::resetOctaves(m_map, m_text_width, m_text_height);
-    //Perlin::setNoise(m_map32);
 }

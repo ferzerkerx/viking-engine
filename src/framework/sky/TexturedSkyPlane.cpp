@@ -14,7 +14,7 @@
  */
 TexturedSkyPlane::TexturedSkyPlane(int divisiones, float planet_radius, float atmosphere_radius, float h_tile,
                                    float v_tile, unsigned int texture) {
-    m_divisiones = divisiones;
+    m_divisiones = static_cast<unsigned int>(divisiones);
     if (m_divisiones < 1)
         m_divisiones = 1;
     if (m_divisiones > 256)
@@ -22,7 +22,6 @@ TexturedSkyPlane::TexturedSkyPlane(int divisiones, float planet_radius, float at
 
     m_texture = texture;
 
-    m_divisiones = divisiones;
     m_planet_radius = planet_radius;
     m_atmosphere_radius = atmosphere_radius;
     m_num_vertices = (m_divisiones + 1) * (m_divisiones + 1);
@@ -46,8 +45,8 @@ TexturedSkyPlane::TexturedSkyPlane(int divisiones, float planet_radius, float at
 
 
 TexturedSkyPlane::~TexturedSkyPlane() {
-    if (m_indices != NULL) { delete[] m_indices; }
-    if (m_vertices != NULL) { delete[] m_vertices; }
+    delete[] m_indices;
+    delete[] m_vertices;
 }
 
 

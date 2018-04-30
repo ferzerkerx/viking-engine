@@ -32,7 +32,7 @@ public:
     /*!
     \param text apuntador al id de la textura que contiene la fuente
     */
-    Fuente(unsigned int *text);
+    explicit Fuente(unsigned int *text);
 
     /*!
     \brief Coloca el apuntador en NULL y eliminamos las listas generadas

@@ -145,7 +145,6 @@ public:
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 noise = interpolate(x * scale, y * scale, map32);
-                //map256[(y*256) + x] += noise / pow(2, octave);
                 map[(y * height) + x] += noise / (1 << octave);
 
             }
@@ -177,7 +176,6 @@ public:
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     brightness = interpolate(x * scale, y * scale, map32);
-                    //map256[(y*256) + x] += noise / pow(2, octave);
                     map[(y * height) + x] += brightness / (1 << octave);
 
                 }

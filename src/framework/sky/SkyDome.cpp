@@ -34,7 +34,7 @@ SkyDome::SkyDome(float dphi, float dtheta, float r) {
     m_has_sun_text = false;
     m_sun_text = -1;
 
-    m_vrtx = NULL;
+    m_vrtx = nullptr;
     generaHemiEsfera();
     m_sun_polar = polar3f(0, 0, m_r - 5);
 }
@@ -44,7 +44,7 @@ SkyDome::SkyDome(float dphi, float dtheta, float r) {
 *y destruye objeto de nubes (Clouds)
 */
 SkyDome::~SkyDome() {
-    if (m_vrtx != NULL) { delete[] m_vrtx; }
+    delete[] m_vrtx;
     if (m_has_sun_text) { glDeleteTextures(1, &m_sun_text); }
 }
 
@@ -58,8 +58,8 @@ void SkyDome::generaHemiEsfera() {
     m_vrtx = new vertxDome[m_num_vert];
 
     int i = 0, phi = 0, theta = 0;
-    float phirad = 0.0f, thetarad = 0.0f;
-    float phidrad = 0.0f, thetadrad = 0.0f;
+    float phirad, thetarad;
+    float phidrad, thetadrad;
 
     for (; phi <= 90 - m_dphi; phi += (int) m_dphi) {
         for (theta = 0; theta <= 360 - m_dtheta; theta += (int) m_dtheta) {
@@ -128,19 +128,17 @@ void SkyDome::renderSun(vector3f poscam) {
         m_sun_vector = vector3f(m_sun_polar);
         m_sun_polar.phi += 0.002f;
         glTranslatef(m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
-        //printf("%f,%f,%f\n",m_sun_vector.y,m_sun_vector.x,m_sun_vector.z);
         glRotatef(-90.0f, 1.0, 0.0, 0.0f);
         Billboard::BBEsfera(poscam, m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
-        //Billboard::BBFalsoEsfera();
         glBegin(GL_POLYGON);
         glTexCoord2f(0.0, 1.0);
-        glVertex3f(-5.0, 0.0, -5.0);
+        glVertex3f(-5.0f, 0.0, -5.0f);
         glTexCoord2f(1.0, 1.0);
-        glVertex3f(5.0, 0.0, -5.0);
+        glVertex3f(5.0, 0.0, -5.0f);
         glTexCoord2f(1.0, 0.0);
         glVertex3f(5.0, 0.0, 5.0);
         glTexCoord2f(0.0, 0.0);
-        glVertex3f(-5.0, 0.0, 5.0);
+        glVertex3f(-5.0f, 0.0, 5.0);
         glEnd();
         Billboard::BBFin();
         glPopMatrix();

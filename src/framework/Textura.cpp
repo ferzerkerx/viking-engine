@@ -23,7 +23,7 @@ void Textura::CrearTextura(unsigned int textureArray[], const char *strFileName,
         return;
 
     const char *pdest = strrchr(strFileName, '.');        // encuentra '.'
-    if (pdest[0] != NULL)        // Avanzamos uno mas que '.'
+    if (pdest[0])        // Avanzamos uno mas que '.'
         pdest++;
 
     if (!strcmp(pdest, "bmp")) {
@@ -45,7 +45,6 @@ void Textura::CreaBMP(unsigned int textureArray[], const char *strFileName, int 
     int imageSize;   // = width*height*3
     unsigned char *data;
 
-// Open the file
     FILE *file = fopen(strFileName, "rb");
     if (!file) {
         printf("Image could not be opened\n");
@@ -67,10 +66,9 @@ void Textura::CreaBMP(unsigned int textureArray[], const char *strFileName, int 
     height = *(int *) &(header[0x16]);
 
     if (imageSize == 0) imageSize = width * height * 3; // 3 : one byte for each Red, Green and Blue component
-    if (dataPos == 0) dataPos = 54; // skip bmp header
     data = new unsigned char[imageSize];
 
-    fread(data, 1, imageSize, file);
+    fread(data, 1, static_cast<size_t>(imageSize), file);
 
     fclose(file);
 
@@ -85,9 +83,7 @@ void Textura::CreaBMP(unsigned int textureArray[], const char *strFileName, int 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     // Liberamos los datos de la imagen
-    if (data) {
-        free(data);
-    }
+    free(data);
 }
 
 void Textura::CreaTGA(unsigned int textureArray[], const char *strFileName, int textureID) {
@@ -95,7 +91,7 @@ void Textura::CreaTGA(unsigned int textureArray[], const char *strFileName, int 
     // Apuntador a datos de la imagen
     tImageTGA *pImage = CargaTGA(strFileName);    // Carga imagen y guarda los datos
 
-    if (pImage == NULL)        // Checamos que se cargue la imagen
+    if (pImage == nullptr)        // Checamos que se cargue la imagen
         return
 
             // Generate la textura conforme a OpenGL
@@ -108,36 +104,34 @@ void Textura::CreaTGA(unsigned int textureArray[], const char *strFileName, int 
         textureType = GL_RGBA;
 
     gluBuild2DMipmaps(GL_TEXTURE_2D, pImage->channels, pImage->sizeX,
-                      pImage->sizeY, textureType, GL_UNSIGNED_BYTE, pImage->data);
+                      pImage->sizeY, static_cast<GLenum>(textureType), GL_UNSIGNED_BYTE, pImage->data);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Liberamos la imagen
-    if (pImage) {
-        if (pImage->data) {
-            delete[] pImage->data;
-        }
-        free(pImage);
+    if (pImage->data) {
+        delete[] pImage->data;
     }
+    free(pImage);
 }
 
 // Carga la imagen TGA y regresa sus datos
 tImageTGA *Textura::CargaTGA(const char *filename) {
 
-    tImageTGA *pImageData = NULL;        // Datos de la imagen
+    tImageTGA *pImageData = nullptr;        // Datos de la imagen
     unsigned short width = 0, height = 0;            // Dimensiones de la imagen
     unsigned char length = 0;                    // Longitud en bytes de pixeles
     unsigned char imageType = 0;                    // Tipo de imagen (RLE, RGB, Alpha...)
     unsigned char bits = 0;                        // The bits per pixel for the image (16, 24, 32)
-    FILE *pFile = NULL;
+    FILE *pFile = nullptr;
     int channels = 0;                    // Canales de la imagen (3 = RGA : 4 = RGBA)
     int stride = 0;                        // (channels * width)
     int i = 0;
 
-    if ((pFile = fopen(filename, "rb")) == NULL) {    // Abrimos archivo
+    if ((pFile = fopen(filename, "rb")) == nullptr) {    // Abrimos archivo
         printf("TGA: %s \n", filename);
-        return NULL;
+        return nullptr;
     }
 
     pImageData = (tImageTGA *) malloc(sizeof(tImageTGA));    // Guardamos espacio a la estructura
@@ -163,13 +157,13 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
             for (int y = 0; y < height; y++) {    // Cargamos pixeles linea por linea
                 // Apuntador a la linea actual de pixeles
                 unsigned char *pLine = &(pImageData->data[stride * y]);
-                fread(pLine, stride, 1, pFile);    // Leemos la linea actual
+                fread(pLine, static_cast<size_t>(stride), 1, pFile);    // Leemos la linea actual
 
                 // Cambiamos B y R porque TGA se guardan como BGR en lugar de RGB
                 for (i = 0; i < stride; i += channels) {
                     int temp = pLine[i];
                     pLine[i] = pLine[i + 2];
-                    pLine[i + 2] = temp;
+                    pLine[i + 2] = static_cast<unsigned char>(temp);
                 }
             }
         } else if (bits == 16) {    // Checamos si la imagen es de 16 bits
@@ -192,9 +186,9 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
                 r = ((pixels >> 10) & 0x1f) << 3;
 
                 // Asignamos color al arreglo y cambiamos B por R al mismo tiempo.
-                pImageData->data[i * 3 + 0] = r;
-                pImageData->data[i * 3 + 1] = g;
-                pImageData->data[i * 3 + 2] = b;
+                pImageData->data[i * 3 + 0] = static_cast<unsigned char>(r);
+                pImageData->data[i * 3 + 1] = static_cast<unsigned char>(g);
+                pImageData->data[i * 3 + 2] = static_cast<unsigned char>(b);
             }
         } else
             return NULL;
@@ -210,7 +204,7 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
         stride = channels * width;
 
         pImageData->data = new unsigned char[stride * height];
-        unsigned char *pColors = new unsigned char[channels];
+        auto *pColors = new unsigned char[channels];
 
         while (i < width * height) {
             fread(&rleID, sizeof(unsigned char), 1, pFile);    // Leemos color actual

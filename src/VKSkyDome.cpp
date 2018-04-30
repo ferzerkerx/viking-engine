@@ -43,7 +43,7 @@ void VKSkyDome::actualiza(vector3f poscam) {
 
 
 void VKSkyDome::escribeImagenDeNubes() {
-    BMPWriter *bmpwr = new BMPWriter("test.bmp", m_ca->getTextureWidth(), m_ca->getTextureHeight(), 4, m_ca->getData());
+    auto *bmpwr = new BMPWriter("test.bmp", m_ca->getTextureWidth(), m_ca->getTextureHeight(), 4, m_ca->getData());
     bmpwr->writeTexture();
 
     delete bmpwr;
