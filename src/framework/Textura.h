@@ -12,7 +12,7 @@
 #ifndef TEXTURA_H
 #define TEXTURA_H
 
-#include <stdio.h>
+#include <cstdio>
 #include <stdlib.h>
 
 #define TGA_RGB         2        // RGB normal (realmnte BGR)

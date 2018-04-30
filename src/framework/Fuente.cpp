@@ -57,19 +57,19 @@ void Fuente::glPrint(float x, float y, const char *string, int set, int ancho, i
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
-        glLoadIdentity();
-        glOrtho(0, ancho, 0, alto, -1, 1);
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-        glTranslated(x, y, 0);
-        /*escogemos las listas del set especificado*/
-        glListBase(base - 32 + (128 * set));
-        /*Escribimos en pantalla*/
-        glCallLists(static_cast<GLsizei>(strlen(string)), GL_BYTE, string);
-        glMatrixMode(GL_PROJECTION);
-        glPopMatrix();
-        glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glOrtho(0, ancho, 0, alto, -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslated(x, y, 0);
+    /*escogemos las listas del set especificado*/
+    glListBase(base - 32 + (128 * set));
+    /*Escribimos en pantalla*/
+    glCallLists(static_cast<GLsizei>(strlen(string)), GL_BYTE, string);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);

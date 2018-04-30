@@ -4,7 +4,7 @@
 * @date Friday, October 19, 2007 5:18:12 PM
 */
 #include <GL/glut.h>
-#include <stdio.h>
+#include <cstdio>
 #include "Clouds.h"
 
 
@@ -15,7 +15,7 @@
 */
 Clouds::Clouds() {
     m_cover = 45.0F;
-    m_sharpness = 0.987f;
+    m_sharpness = 0.987F;
     m_num_octaves = 4;
     m_texture = -1;
 
@@ -36,14 +36,9 @@ Clouds::Clouds() {
 * @param width Ancho de la textura
 * @param height Alto de la textura
 */
-Clouds::Clouds(float cover, float sharpness, int num_octavos, int width, int height) {
-    m_cover = cover;
-    m_sharpness = sharpness;
+Clouds::Clouds(float cover, float sharpness, int num_octavos, int width, int height): m_cover(cover), m_sharpness(sharpness), m_text_width(width), m_text_height(height)  {
     m_num_octaves = static_cast<unsigned char>(num_octavos);
     m_texture = -1;
-    m_text_width = width;
-    m_text_height = height;
-
 }
 
 
@@ -101,7 +96,8 @@ unsigned int Clouds::getTextureId() {
 void Clouds::calculaAlpha() {
     float color;
     int desplazamiento = 0;
-    int i, j = 0;
+    int i = 0;
+    int j = 0;
 
     for (i = 0; i < m_text_width; i++) {
         for (j = 0; j < m_text_height; j++) {

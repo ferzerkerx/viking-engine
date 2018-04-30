@@ -5,7 +5,7 @@
 */
 
 #include <GL/glut.h>
-#include <stdio.h>
+#include <cstdio>
 #include "CloudsActualizables.h"
 
 /**
@@ -39,8 +39,8 @@ CloudsActualizables::CloudsActualizables() : Clouds() {
 */
 CloudsActualizables::CloudsActualizables(float cover, float sharpness, int num_octavos, int width, int height,
                                          unsigned int up_text_milli)
-        : Clouds(cover, sharpness, num_octavos, width, height) {
-    m_update_text_milli = up_text_milli;
+        : Clouds(cover, sharpness, num_octavos, width, height),
+          m_actual_octave(static_cast<unsigned char>(up_text_milli)) {
     m_brightness = 0.0F;
     m_actual_octave = 0;
 

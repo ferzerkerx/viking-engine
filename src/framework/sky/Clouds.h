@@ -25,8 +25,6 @@ public:
 
     Clouds(float cover, float sharpness, int num_octavos, int width, int height);
 
-    ~Clouds();
-
     int getTextureWidth();
 
     int getTextureHeight();
@@ -36,6 +34,8 @@ public:
     char *getData();
 
 protected:
+    ~Clouds();
+
     unsigned char m_num_octaves;    //define la cantidad de octavos de perlin que se desea
     float m_sharpness;                //define que tan delgadas son las nubes
     float m_cover;                    //define que tan nuboso debe estar el cielo

@@ -15,7 +15,6 @@
 #define velCam    0.1f
 
 
-
 Camara::Camara() {
     vector3f vZero = vector3f(0.0, 0.0, 0.0);        // Init Vec 0 0 0 for our position
     vector3f vView = vector3f(0.0, 1.0, 0.5);        // Init view vVec (looking up and out the screen)
@@ -42,54 +41,53 @@ void Camara::PonCam(float posX, float posY, float posZ,
 
 // Mover vista con el mouse
 void Camara::VistaMouse(int ancho, int alto, int mouseX, int mouseY) {
-	int mitX = ancho  >> 1;	     // Corrimiento binario para obtener la mitad de ancho
-	int mitY = alto >> 1;	     // Corrimiento binario para obtener la mitad de alto
-	float anguloY;			 // Direccion vista arriba o abajo
-	float anguloZ;			 // Rotacin en Y (Izquierda y Derecha)
-	static float currentRotX = 0.0F;
+    int mitX = ancho >> 1;         // Corrimiento binario para obtener la mitad de ancho
+    int mitY = alto >> 1;         // Corrimiento binario para obtener la mitad de alto
+    float anguloY;             // Direccion vista arriba o abajo
+    float anguloZ;             // Rotacin en Y (Izquierda y Derecha)
+    static float currentRotX = 0.0F;
 
-	// Si el cursor esta en la mitad no nos movemos
-	if((mouseX == mitX) && (mouseY == mitY)) return;
+    // Si el cursor esta en la mitad no nos movemos
+    if ((mouseX == mitX) && (mouseY == mitY)) { return; }
 
 
-	// Obtener la direccion del mov del mouse, decrementar el numero bastante (/1000)
-	anguloY = (float)(mitX - mouseX) / 1000.0F;
-	anguloZ = (float)(mitY - mouseY) / 1000.0F;
+    // Obtener la direccion del mov del mouse, decrementar el numero bastante (/1000)
+    anguloY = (float) (mitX - mouseX) / 1000.0F;
+    anguloZ = (float) (mitY - mouseY) / 1000.0F;
 
     static float lastRotX = 0.0F;
- 	lastRotX = currentRotX; // Guardamos currentRotX
+    lastRotX = currentRotX; // Guardamos currentRotX
 
-	currentRotX += anguloZ;	// Rotation actual, restringimos vuelta de 360 en camara
+    currentRotX += anguloZ;    // Rotation actual, restringimos vuelta de 360 en camara
 
-	// Si la rotacion actual (radianes) es mayor a 1.0, la mantenemos (cap it).
-	if(currentRotX > 1.0F) {
+    // Si la rotacion actual (radianes) es mayor a 1.0, la mantenemos (cap it).
+    if (currentRotX > 1.0F) {
         currentRotX = 1.0F;
-		if(lastRotX != 1.0F) {	// Rotar por el angulo restante
+        if (lastRotX != 1.0F) {    // Rotar por el angulo restante
             // Obtenemos eje de rotacion
-			vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
-			vAxis = Normalizar(vAxis);
-			// Rotamos camara por el angulo restante (1.0F - lastRotX)
-			RotarVista(1.0F - lastRotX, vAxis.x, vAxis.y, vAxis.z);
-		}
-	}
-	// Si la rotacion es menor a -1.0, no continuar
-	else if(currentRotX < -1.0F) {
+            vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
+            vAxis = Normalizar(vAxis);
+            // Rotamos camara por el angulo restante (1.0F - lastRotX)
+            RotarVista(1.0F - lastRotX, vAxis.x, vAxis.y, vAxis.z);
+        }
+    }
+        // Si la rotacion es menor a -1.0, no continuar
+    else if (currentRotX < -1.0F) {
         currentRotX = -1.0F;
-		if(lastRotX != -1.0F) {	// Rotar por el angulo restante
-			vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
-			vAxis = Normalizar(vAxis);
-			// Rotamos ( -1.0F - lastRotX)
-			RotarVista(-1.0F - lastRotX, vAxis.x, vAxis.y, vAxis.z);
-		}
-	}
-	else { // Rotamos en cualquier direccin
+        if (lastRotX != -1.0F) {    // Rotar por el angulo restante
+            vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
+            vAxis = Normalizar(vAxis);
+            // Rotamos ( -1.0F - lastRotX)
+            RotarVista(-1.0F - lastRotX, vAxis.x, vAxis.y, vAxis.z);
+        }
+    } else { // Rotamos en cualquier direccin
         vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
-		vAxis = Normalizar(vAxis);
-		// Rotar sobre el eje perpendicular
-		RotarVista(anguloZ, vAxis.x, vAxis.y, vAxis.z);
-	}
-	// Siempre rotamos sobre eje Y
-	RotarVista(anguloY, 0, 1, 0);
+        vAxis = Normalizar(vAxis);
+        // Rotar sobre el eje perpendicular
+        RotarVista(anguloZ, vAxis.x, vAxis.y, vAxis.z);
+    }
+    // Siempre rotamos sobre eje Y
+    RotarVista(anguloY, 0, 1, 0);
 }
 
 //	Rotar la vista 
@@ -157,7 +155,8 @@ void Camara::ChecarMov(int key) {
         case GLUT_KEY_RIGHT:
             StrafeCam(velCam);
             break;
-        default:break;
+        default:
+            break;
     }
 }
 

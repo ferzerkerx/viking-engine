@@ -64,7 +64,10 @@ void MD2Model::render() {
     if (m_objects.empty()) return;
 
     float t = 0.0F;
-    int i = 0, j = 0, index = 0, index2 = 0;
+    int i = 0;
+    int j = 0;
+    int index = 0;
+    int index2 = 0;
 
     if (m_b_hasAnimation) {
         nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
@@ -123,7 +126,7 @@ void MD2Model::render() {
 * @date Thursday, November 29, 2007 8:42:57 PM
 */
 void MD2Model::actualiza() {
-
+    // nothing to do here
 }
 
 /**
@@ -162,7 +165,7 @@ void MD2Model::setAnimation(MD2_anim anim) {
 * @retval MD2_anim La animacion actual
 */
 MD2_anim MD2Model::getCurrentAnimation() {
-    return *((MD2_anim *) &currentAnim);;
+    return *((MD2_anim *) &currentAnim);
 }
 
 /**
@@ -312,8 +315,10 @@ void MD2Model::renderWithOpenGlCommands() {
 * @date Thursday, November 29, 2007 8:50:12 PM
 */
 void MD2Model::calculaNormales() {
-    vector3f vVector1, vVector2, vNormal, vPoly[3];
-
+    vector3f vVector1;
+    vector3f vVector2;
+    vector3f vNormal;
+    vector3f vPoly[3];
 
     if (m_objects.empty()) return;
 

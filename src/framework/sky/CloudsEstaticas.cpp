@@ -4,7 +4,7 @@
 * @date Saturday, August 11, 2007 9:54:57 PM
 */
 #include <GL/glut.h>
-#include <stdio.h>
+#include <cstdio>
 #include "CloudsEstaticas.h"
 
 

@@ -6,7 +6,7 @@ class Matrix {
 private:
     int columnas;
     int renglones;
-        std::map<int, std::vector<int> > data;
+    std::map<int, std::vector<int> > data;
 
     int determinante(int i, int j);
 

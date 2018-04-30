@@ -3,7 +3,7 @@
 * @brief Implementacin de la clase Quaternion
 * @date Friday, October 26, 2007 8:07:09 PM
 */
-#include <stdio.h>
+#include <cstdio>
 #include <math.h>
 #include "Quaternion.h"
 

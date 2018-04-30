@@ -121,7 +121,8 @@ void processAsciiKeyEvents(unsigned char key, int mouseX, int mouseY) {
         case 'c':
             useCamera = !useCamera;
             break;
-        default:break;
+        default:
+            break;
     }
 
     glutPostRedisplay();
@@ -200,17 +201,17 @@ void renderScene() {
 void renderFloor() {
     glEnable(GL_TEXTURE_2D);
     glPushMatrix();
-        glBindTexture(GL_TEXTURE_2D, floorTexture[0]);
-        glBegin(GL_POLYGON);
-            glTexCoord2f(0.0, 1.0);
-            glVertex3f(-5.0F, 0.0F, -5.0F);
-            glTexCoord2f(1.0, 1.0);
-            glVertex3f(45.0F, 0.0F, -5.0F);
-            glTexCoord2f(1.0, 0.0);
-            glVertex3f(45.0F, 0.0F, 45.0F);
-            glTexCoord2f(0.0, 0.0);
-            glVertex3f(-5.0F, 0.0F, 45.0F);
-        glEnd();
+    glBindTexture(GL_TEXTURE_2D, floorTexture[0]);
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f(-5.0F, 0.0F, -5.0F);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3f(45.0F, 0.0F, -5.0F);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3f(45.0F, 0.0F, 45.0F);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3f(-5.0F, 0.0F, 45.0F);
+    glEnd();
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
 }

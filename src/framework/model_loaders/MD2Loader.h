@@ -27,13 +27,11 @@
 class MD2Loader : public Model3DLoader {
 
 public:
-    MD2Loader(MD2Model *model);
-
-    ~MD2Loader();
+    explicit MD2Loader(MD2Model *model);
 
     void importar(const char *modelo, const char *textura);
 
-    void importar(const char *modelo);
+    void importar(const char *modelo) override;
 
 private:
 

@@ -18,8 +18,6 @@ MD2Loader::MD2Loader(MD2Model *model) : Model3DLoader(model) {
     m_file = nullptr;
 }
 
-MD2Loader::~MD2Loader() = default;
-
 void MD2Loader::importar(const char *modelo) {
     importar(modelo, nullptr);
 }

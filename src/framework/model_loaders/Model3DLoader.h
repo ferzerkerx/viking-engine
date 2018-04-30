@@ -28,7 +28,7 @@ public:
     }
 
     ~Model3DLoader() {
-        m_mdl = NULL;
+        m_mdl = nullptr;
     }
 
     /**

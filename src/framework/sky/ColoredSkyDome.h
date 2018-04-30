@@ -18,15 +18,15 @@
 
 class ColoredSkyDome : public SkyDome {
 public:
-    ColoredSkyDome(float r);
+    explicit ColoredSkyDome(float r);
 
     ColoredSkyDome(float dphi, float dtheta, float r);
-
-    ~ColoredSkyDome();
 
     void actualiza(vector3f poscam);
 
 protected:
+    ~ColoredSkyDome();
+
     void render(vector3f poscam);
 
     void renderDome(vector3f poscam);

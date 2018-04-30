@@ -5,7 +5,7 @@
 */
 
 #include "ColoredSkyDome.h"
-#include <stdio.h>
+#include <cstdio>
 #include <GL/glut.h>
 
 /**

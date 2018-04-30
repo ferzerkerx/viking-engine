@@ -68,8 +68,7 @@ void Billboard::BBEsfera(vector3f camP, float objPosX, float objPosY, float objP
     if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
         if (objACam.y < 0) {
             glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), 1, 0, 0);
-        }
-        else {
+        } else {
             glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), -1, 0, 0);
         }
     }
@@ -92,8 +91,7 @@ void Billboard::BBFalsoCilindro() {
         for (j = 0; j < 3; j++) {
             if (i == j) {
                 modelview[i * 4 + j] = 1.0;
-            }
-            else {
+            } else {
                 modelview[i * 4 + j] = 0.0;
             }
         }

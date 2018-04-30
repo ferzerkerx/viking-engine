@@ -16,6 +16,7 @@ struct vector2f {
 
 struct polar3f {
     polar3f() {}
+
     polar3f(float ph, float th, float rad) : phi(ph), theta(th), r(rad) {
 
     }
@@ -113,6 +114,7 @@ static vector3f Normalizar(vector3f vVector) {
 
 struct color3f {
     color3f() {}
+
     color3f(float R, float G, float B) {
         r = R;
         g = G;

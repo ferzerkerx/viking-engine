@@ -10,6 +10,16 @@
 #include "../Timer.h"
 
 /**
+*@struct octave
+*@brief Contiene datos necesarios de cada octavo
+*(usado para actualizacin eficiente por coordenada)
+*/
+struct octave {
+    int x;                        //lleva la ultima x por ser actualizada
+    float scale;                //contiene la escala de cada octavo
+};
+
+/**
 * @class CloudsActualizables
 * @author Fernando Montes de Oca Cspedes
 * @date Friday, October 19, 2007 5:12:31 PM
@@ -50,17 +60,9 @@ private:
     unsigned int m_update_text_milli;//define cada cuando se debe actualizar la textura
     unsigned char m_actual_octave;    //define el octavo actual (usado para actualizacin eficiente)
 
-    /**
-    *@struct octave
-    *@brief Contiene datos necesarios de cada octavo
-    *(usado para actualizacin eficiente por coordenada)
-    */
-    struct octave {
-        int x;                        //lleva la ultima x por ser actualizada
-        float scale;                //contiene la escala de cada octavo
-    } *m_octaves;                    //guarda todos los octavos y sus datos
+    octave *m_octaves;                    //guarda todos los octavos y sus datos
 
-    void generaTextura();
+    void generaTextura() override;
 
 };
 

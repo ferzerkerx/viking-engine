@@ -74,8 +74,6 @@ class EventLogger {
 public:
     EventLogger();
 
-    ~EventLogger();
-
     virtual bool init(const char *logName);
 
     virtual void term();
@@ -93,6 +91,8 @@ public:
     void pushFunction(const char *name);
 
     void popFunction();
+
+    virtual ~EventLogger();
 
 protected:
 

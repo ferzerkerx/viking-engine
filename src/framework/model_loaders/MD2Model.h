@@ -31,7 +31,7 @@ typedef enum {
 
 class MD2Model : public Model3D {
 public:
-    MD2Model(const char *modelo);
+    explicit MD2Model(const char *modelo);
 
     MD2Model(const char *modelo, const char *text);
 

@@ -1,7 +1,7 @@
 #include "Matrix.h"
 #include <malloc.h>
 #include <stdlib.h>
-#include <stdio.h>
+#include <cstdio>
 #include <math.h>
 
 
@@ -48,8 +48,8 @@ int Matrix::MatDet3x3(int **m) {
 }
 
 void Matrix::setData(int *m1, int rengl, int cols) {
-
-    int i = 0, j = 0;
+    int i = 0;
+    int j = 0;
 
     if (data.size() != 0) {
         limpia();
@@ -65,7 +65,8 @@ void Matrix::setData(int *m1, int rengl, int cols) {
 }
 
 void Matrix::setData(int **m1, int rengl, int cols) {
-    int i = 0, j = 0;
+    int i = 0;
+    int j = 0;
 
     if (data.size() != 0) {
         limpia();
@@ -89,8 +90,7 @@ void Matrix::limpia() {
 void Matrix::addVector(std::vector<int> v) {
     if (columnas > 0) {
         if (renglones != v.size()) {
-            printf("Error no puedo meter vectores de diferente tamano%d, %d\n", renglones, v.size());
-            throw 200;
+            throw std::out_of_range("Error no puedo meter vectores de diferente tamano\n");
         }
     } else {
         renglones = v.size();
@@ -102,8 +102,7 @@ void Matrix::addVector(std::vector<int> v) {
 void Matrix::addRengl(std::vector<int> v) {
     if (renglones > 0) {
         if (columnas != v.size()) {
-            printf("Error no puedo meter renglones de diferente tamano  %d, %d\n", columnas, v.size());
-            throw 200;
+            throw std::out_of_range("Error no puedo meter renglones de diferente tamano\n");
         }
     } else {
         std::vector<int> temp;
@@ -227,12 +226,13 @@ Matrix Matrix::operator+(Matrix m2) {
 }
 
 Matrix Matrix::operator-(Matrix m2) {
-
     if (renglones != m2.getNumRengl() || columnas != m2.getNumCols()) {
         throw std::invalid_argument("error no se pueden restar las matrices por ser de distinto tamano\n");
     }
 
-    int i = 0, j = 0, **temp;
+    int i = 0;
+    int j = 0;
+    int **temp;
     temp = (int **) malloc(sizeof(int) * renglones);
 
     for (j = 1; j <= renglones; j++) {
@@ -253,12 +253,10 @@ Matrix Matrix::operator-(Matrix m2) {
 
 Matrix Matrix::operator*(Matrix m2) {
     if (columnas != m2.getNumRengl()) {
-        printf("error no se pueden multiplicar las matrices por ser de distinto tamano\n");
-        throw 200;
+        throw std::invalid_argument("error no se pueden multiplicat las matrices por ser de distinto tamano\n");
     }
 
     int i = 0;
-    int j = 0;
     int **temp;
     int resul = 0;
     int k = 0;
@@ -362,17 +360,19 @@ int Matrix::determinante() {
 int Matrix::determinante(int i, int j) {
     if (renglones == 1 && columnas == 1) {
         return getVal(1, 1);
-    } else {
-        Matrix nueva(this);
-        nueva.quitaRengl(i);
-        nueva.quitaVector(j);
-        nueva.print();
-        return nueva.determinante();
     }
+    Matrix nueva(this);
+    nueva.quitaRengl(i);
+    nueva.quitaVector(j);
+    nueva.print();
+    return nueva.determinante();
+
 }
 
 Matrix Matrix::getMatrizCofactores() {
-    int i = 0, j = 0, **temp;
+    int i = 0;
+    int j = 0;
+    int **temp;
 
     temp = (int **) malloc(sizeof(int *) * renglones);
     for (i = 1; i <= renglones; i++) {
