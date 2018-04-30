@@ -445,7 +445,7 @@ Quaternion Quaternion::SLERP(const Quaternion &q1, const Quaternion &q2, float t
 
 
     // Solamente si el angulo es muy grande hacemos los calculos
-    if (1 - cos_theta > 0.1F, {
+    if (1 - cos_theta > 0.1F) {
 
         // obtenemos el angulo y calculamos sin(theta)
         float theta = acos(cos_theta);
@@ -562,6 +562,7 @@ void Quaternion::to3x3Matriz(float *m3x3) {
 * la informacion del Quaternion
 */
 char *Quaternion::toString() {
+    char buff[32];
     sprintf(m_buff, "%.2f + %.2fi + %.2fj + %.2fk", w, x, y, z);
-    return m_buff;
+    return buff;
 }

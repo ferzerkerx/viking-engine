@@ -20,7 +20,7 @@ BMPWriter::BMPWriter(const char *file, int width, int height, int prof, char *da
     if (prof < 3) { prof = 3; }
 
     m_file_header.bfType = 19778;
-    m_file_header.bfSize = static_cast<unsigned long>(54 + (width * height * 3));//profundidad 24 bits
+    m_file_header.bfSize = static_cast<unsigned int>(54 + (width * height * 3));//profundidad 24 bits
     m_file_header.bfReserved1 = 0;
     m_file_header.bfReserved2 = 0;
     m_file_header.bfOffBits = 54;
@@ -70,7 +70,7 @@ void BMPWriter::writeTexture() {
 * @date Saturday, October 20, 2007 8:50:50 PM
 */
 void BMPWriter::escribeFileHeader() {
-    //m_out.write((char *) &m_file_header, sizeof(struct BITMAPFILEHEADER));
+    m_out.write((char *) &m_file_header, sizeof(struct BITMAPFILEHEADER));
     m_out.write((char *) &m_file_header.bfType, 2);
     m_out.write((char *) &m_file_header.bfSize, 4);
     m_out.write((char *) &m_file_header.bfReserved1, 2);
@@ -96,10 +96,13 @@ void BMPWriter::escribeInfoHeader() {
 * @date Saturday, October 20, 2007 8:49:21 PM
 */
 void BMPWriter::escribeData() {
-
     int desplazamiento = 0;
-    int i = 0, j = 0;
-    int r = 0, g = 0, b = 0;
+    int i = 0;
+    int j = 0;
+
+    int r = 0;
+    int g = 0;
+    int b = 0;
 
     for (i = 0; i < m_info_header.biWidth; i++) {
         for (j = 0; j < m_info_header.biHeight; j++) {

@@ -38,7 +38,8 @@ void Textura::CrearTextura(unsigned int textureArray[], const char *strFileName,
 }
 
 void Textura::CreaBMP(unsigned int textureArray[], const char *strFileName, int textureID) {
-    int width, height;
+    int width;
+    int height;
 
     unsigned char header[54]; // 54-bytes header
     int imageSize;   // = width*height*3
@@ -118,7 +119,8 @@ void Textura::CreaTGA(unsigned int textureArray[], const char *strFileName, int 
 tImageTGA *Textura::CargaTGA(const char *filename) {
 
     tImageTGA *pImageData = nullptr;        // Datos de la imagen
-    unsigned short width = 0, height = 0;            // Dimensiones de la imagen
+    unsigned short width = 0;            // Dimensiones de la imagen
+    unsigned short height = 0;            // Dimensiones de la imagen
     unsigned char length = 0;                    // Longitud en bytes de pixeles
     unsigned char imageType = 0;                    // Tipo de imagen (RLE, RGB, Alpha...)
     unsigned char bits = 0;                        // The bits per pixel for the image (16, 24, 32)
@@ -166,7 +168,9 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
             }
         } else if (bits == 16) {    // Checamos si la imagen es de 16 bits
             unsigned short pixels = 0;
-            int r = 0, g = 0, b = 0;
+            int r = 0;
+            int g = 0;
+            int b = 0;
 
             // Convertimos de 16-bit a 24 bit
             channels = 3;

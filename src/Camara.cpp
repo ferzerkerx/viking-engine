@@ -15,7 +15,7 @@
 #define velCam    0.1f
 
 
-// Constructor
+
 Camara::Camara() {
     vector3f vZero = vector3f(0.0, 0.0, 0.0);        // Init Vec 0 0 0 for our position
     vector3f vView = vector3f(0.0, 1.0, 0.5);        // Init view vVec (looking up and out the screen)
@@ -53,8 +53,8 @@ void Camara::VistaMouse(int ancho, int alto, int mouseX, int mouseY) {
 
 
 	// Obtener la direccion del mov del mouse, decrementar el numero bastante (/1000)
-	anguloY = (float)((mitX - mouseX)) / 1000.0F;
-	anguloZ = (float)((mitY - mouseY)) / 1000.0F;
+	anguloY = (float)(mitX - mouseX) / 1000.0F;
+	anguloZ = (float)(mitY - mouseY) / 1000.0F;
 
     static float lastRotX = 0.0F;
  	lastRotX = currentRotX; // Guardamos currentRotX

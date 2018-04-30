@@ -60,7 +60,7 @@ public:
 
     Quaternion SLERP(const Quaternion &q1, const Quaternion &q2, float t);
 
-    inline float getMagnitud();
+    float getMagnitud();
 
     void to4x4Matriz(float *m4x4);
 
@@ -74,9 +74,6 @@ public:
     float x; //componente imaginario i del Quaternion
     float y; //componente imaginario j del Quaternion
     float z; //componente imaginario k del Quaternion
-
-private:
-    char m_buff[32]; //usada para debug
 
 };
 

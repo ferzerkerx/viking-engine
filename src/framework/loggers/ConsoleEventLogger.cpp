@@ -60,6 +60,7 @@ void ConsoleEventLogger::lUpdate(int hours, int minutes, int seconds, int hundre
 * @date Tuesday, October 23, 2007 4:12:12 PM
 */
 void ConsoleEventLogger::flush() {
+    //Nothing to do here
 }
 
 #endif //logging

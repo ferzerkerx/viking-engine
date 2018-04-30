@@ -6,7 +6,6 @@
 
 #include <cstring>
 #include "MD2Loader.h"
-#include "../Textura.h"
 #include "../loggers/EventLogger.h"
 
 
@@ -139,7 +138,8 @@ void MD2Loader::leeMD2Data(md2_header &m_header) {
 }
 
 void MD2Loader::convertDataStructures(md2_header &m_header) {
-    int j = 0, i = 0;
+    int j = 0;
+    int i = 0;
 
     parseAnimations(m_header);
 

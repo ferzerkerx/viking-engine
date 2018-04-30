@@ -4,7 +4,6 @@
 * @date Tuesday, October 23, 2007 2:23:31 PM
 */
 #include "EventLogger.h"
-#include <string>
 #include <cstring>
 
 #ifdef LOGGING
@@ -44,6 +43,9 @@ EventLogger::EventLogger() {
     m_callStack.reserve(32);
 }
 
+EventLogger::~EventLogger() {
+
+}
 
 /**
 * @brief coloca al objeto en un estado listo para 
@@ -210,7 +212,7 @@ void EventLogger::popFunction() {
 */
 void EventLogger::logOutput(char *buffer, unsigned int flags) {
     // quitamos los caracteres de salto de linea '\n'
-    int i = static_cast<int>(strlen(buffer));
+    auto i = static_cast<int>(strlen(buffer));
     if (i == 0)
         return;
     if (buffer[i - 1] == '\n')
@@ -226,14 +228,13 @@ void EventLogger::logOutput(char *buffer, unsigned int flags) {
     lOutput(buffer, flags);
 }
 
-
 /**
 * @brief Loggea y actualiza el callStack
 * @author Fernando Montes de Oca Cspedes
 * @date Tuesday, October 23, 2007 4:01:58 PM
 */
 void EventLogger::logCallStack() {
-    unsigned int currentStackLevel = static_cast<unsigned int>(m_callStack.size());
+    auto currentStackLevel = static_cast<unsigned int>(m_callStack.size());
 
     while (m_previousStackLevel < currentStackLevel) {
         /**invocamos a la funcion virtual**/

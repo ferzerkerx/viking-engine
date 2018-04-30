@@ -21,12 +21,12 @@ class TextureWriter {
 protected:
     std::ofstream m_out;
 
+    virtual ~TextureWriter();
+
 public:
     virtual void writeTexture() = 0;
 
-    TextureWriter(const char *file);
-
-    ~TextureWriter();
+    explicit TextureWriter(const char *file);
 
 };
 

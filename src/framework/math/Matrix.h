@@ -1,14 +1,12 @@
 #include <map>
 #include <vector>
 
-using namespace std;
-
 class Matrix {
 
 private:
     int columnas;
     int renglones;
-    map<int, vector<int> > data;
+        std::map<int, std::vector<int> > data;
 
     int determinante(int i, int j);
 
@@ -56,17 +54,17 @@ public:
 
     void limpia();
 
-    void addVector(vector<int> v);
+    void addVector(std::vector<int> v);
 
-    vector<int> getVector(int n);
+    std::vector<int> getVector(int n);
 
-    vector<int> getRengl(int n);
+    std::vector<int> getRengl(int n);
 
     void quitaVector(int n);
 
     void quitaRengl(int n);
 
-    void addRengl(vector<int> v);
+    void addRengl(std::vector<int> v);
 
     void print();
 

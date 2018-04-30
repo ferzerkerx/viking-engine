@@ -7,7 +7,8 @@
  */
 void Billboard::BBFalsoEsfera() {
     float modelview[16];
-    int i, j;
+    int i;
+    int j;
 
     glPushMatrix();    // Guardamos la matriz modelview actual
     glGetFloatv(GL_MODELVIEW_MATRIX, modelview); // Obtenemos la matriz modelview actual
@@ -31,7 +32,10 @@ void Billboard::BBFalsoEsfera() {
 */
 void Billboard::BBEsfera(vector3f camP, float objPosX, float objPosY, float objPosZ) {
 
-    vector3f lookAt, objACamProj, objACam, upAux;
+    vector3f lookAt;
+    vector3f objACamProj;
+    vector3f objACam;
+    vector3f upAux;
     float cosAngulo;
 
     glPushMatrix();
@@ -49,8 +53,9 @@ void Billboard::BBEsfera(vector3f camP, float objPosX, float objPosY, float objP
 
     cosAngulo = Punto(lookAt, objACamProj);
 
-    if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999))
+    if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
         glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), upAux.x, upAux.y, upAux.z);
+    }
 
     objACam.x = camP.x - objPosX;
     objACam.y = camP.y - objPosY;
@@ -60,11 +65,15 @@ void Billboard::BBEsfera(vector3f camP, float objPosX, float objPosY, float objP
 
     cosAngulo = Punto(objACamProj, objACam);
 
-    if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999))
-        if (objACam.y < 0)
+    if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
+        if (objACam.y < 0) {
             glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), 1, 0, 0);
-        else
+        }
+        else {
             glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), -1, 0, 0);
+        }
+    }
+
 }
 
 /**
@@ -73,17 +82,20 @@ void Billboard::BBEsfera(vector3f camP, float objPosX, float objPosY, float objP
 */
 void Billboard::BBFalsoCilindro() {
     float modelview[16];
-    int i, j;
+    int i;
+    int j;
 
     glPushMatrix(); // Guardamos la matriz modelview actual
     glGetFloatv(GL_MODELVIEW_MATRIX, modelview); // Obtenemos la matriz modelview actual
     // Nos movemos dentro de la matriz modelview
     for (i = 0; i < 3; i += 2) // Nos saltamos la columna del up vector (2da.)
         for (j = 0; j < 3; j++) {
-            if (i == j)
+            if (i == j) {
                 modelview[i * 4 + j] = 1.0;
-            else
+            }
+            else {
                 modelview[i * 4 + j] = 0.0;
+            }
         }
     glLoadMatrixf(modelview); // Asignamos la matriz modelview
 }
@@ -98,7 +110,9 @@ void Billboard::BBFalsoCilindro() {
 void Billboard::BBCilindro(vector3f camP, float objPosX, float objPosY, float objPosZ) {
 
     float cosAngulo;
-    vector3f objACamProj, lookAt, upAux;
+    vector3f objACamProj;
+    vector3f lookAt;
+    vector3f upAux;
 
     glPushMatrix();
     objACamProj.x = camP.x - objPosX;
@@ -115,8 +129,9 @@ void Billboard::BBCilindro(vector3f camP, float objPosX, float objPosY, float ob
 
     cosAngulo = Punto(lookAt, objACamProj);
 
-    if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999))
+    if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
         glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), upAux.x, upAux.y, upAux.z);
+    }
 }
 
 /**

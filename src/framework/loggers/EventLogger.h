@@ -18,9 +18,9 @@
 
 #include <vector>
 #include <map>
-#include <stdarg.h>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdarg>
+#include <cstdio>
+#include <cassert>
 
 /**macros que sirven para el loggeo de eventos**/
 #define FN(var_1)                   EventLogFN obj____unique_name(var_1)
@@ -48,12 +48,9 @@ const int MAX_DEBUG_LINE_LEN = 1024; //usado para la creacion de buffers
 */
 class EventLogFN {
 public:
-    EventLogFN(const char *funcion);
+    explicit EventLogFN(const char *funcion);
 
     ~EventLogFN();
-
-private:
-    const char *m_function; // nombre de la funcion
 };
 
 /**
@@ -76,6 +73,8 @@ typedef std::vector<const char *> CharPtrVec; //tipo que usaremos para nuestro c
 class EventLogger {
 public:
     EventLogger();
+
+    ~EventLogger();
 
     virtual bool init(const char *logName);
 
@@ -109,11 +108,12 @@ protected:
 
     void logCallStack();
 
-
+    unsigned int m_updateCount;
+private:
     CharPtrVec m_callStack;    //almacena los nombres de las funciones llamadas
     bool m_b_loggedEvent;    //indica si acaba de ocurrir un evento
     unsigned int m_previousStackLevel;    //nos dice el nivel anterior en la pila de llamadas
-    unsigned int m_updateCount;        //utilizado para llevar la cuenta del tiempo
+    //utilizado para llevar la cuenta del tiempo
     bool m_b_initialized;        //indica si el logger ha sido inicializado
 };
 

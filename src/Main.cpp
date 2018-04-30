@@ -7,8 +7,6 @@
 */
 
 #include "framework/Framework.h"
-#include <vector>
-#include <cstring>
 #include "Camara.h"
 #include "VKSkyDome.h"
 #include "framework/sky/SkyBox.h"
@@ -120,15 +118,10 @@ void processAsciiKeyEvents(unsigned char key, int mouseX, int mouseY) {
         case 'f':
             wireframe = !wireframe;
             break;
-        case 'g':
-            if (vkSkyDome) {
-                LOG(0, "Guardando imagen de nubes");
-                vkSkyDome->escribeImagenDeNubes();
-            }
-            break;
         case 'c':
             useCamera = !useCamera;
             break;
+        default:break;
     }
 
     glutPostRedisplay();

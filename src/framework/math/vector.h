@@ -4,9 +4,9 @@
 #include <math.h>
 
 struct vector2f {
-    vector2f() {}    // Constructor
+    vector2f() {}
 
-    vector2f(float S, float T) {    // Constructor inicializador
+    vector2f(float S, float T) {
         s = S;
         t = T;
     }
@@ -15,11 +15,9 @@ struct vector2f {
 };
 
 struct polar3f {
-    polar3f() {}    // Constructor
-    polar3f(float ph, float th, float rad) {    // Constructor inicializador
-        phi = ph;
-        theta = th;
-        r = rad;
+    polar3f() {}
+    polar3f(float ph, float th, float rad) : phi(ph), theta(th), r(rad) {
+
     }
 
     // Operaciones con vectores
@@ -39,20 +37,22 @@ struct polar3f {
         return polar3f(phi / num, theta / num, r / num);
     }
 
-    float phi, theta, r;
+    float phi;
+    float theta;
+    float r;
 };
 
 
 struct vector3f {
-    vector3f() {}    // Constructor
+    vector3f() {}
 
-    vector3f(polar3f p) {    // Constructor inicializador
+    vector3f(polar3f p) {
         x = p.r * sin(p.phi) * cos(p.theta);
         y = p.r * sin(p.phi) * sin(p.theta);
         z = p.r * cos(p.phi);
     }
 
-    vector3f(float X, float Y, float Z) {    // Constructor inicializador
+    vector3f(float X, float Y, float Z) {
         x = X;
         y = Y;
         z = Z;
@@ -112,8 +112,8 @@ static vector3f Normalizar(vector3f vVector) {
 }
 
 struct color3f {
-    color3f() {}    // Constructor
-    color3f(float R, float G, float B) {    // Constructor inicializador
+    color3f() {}
+    color3f(float R, float G, float B) {
         r = R;
         g = G;
         b = B;
@@ -144,7 +144,9 @@ struct color3f {
         exp = exps;
     }
 
-    float r, g, b;
+    float r;
+    float g;
+    float b;
     float exp;
 };
 

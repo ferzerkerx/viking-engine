@@ -21,13 +21,10 @@ Matrix::Matrix(Matrix *m) {
     renglones = 0;
     columnas = 0;
     int i = 0;
-    vector<int> temp;
-    //printf("copy constructor %d,%d",m->getNumRengl(), m->getNumCols());
+    std::vector<int> temp;
     for (i = 1; i <= m->getNumCols(); i++) {
         temp = m->getVector(i);
-        if (temp.size() == 0) {
-            printf("vector vacio\n");
-        } else {
+        if (!temp.size() == 0) {
             addVector(temp);
         }
     }
@@ -57,11 +54,10 @@ void Matrix::setData(int *m1, int rengl, int cols) {
     if (data.size() != 0) {
         limpia();
     }
-    vector<int> temp;
+    std::vector<int> temp;
     for (; i < rengl; i++) {
         for (j = 0; j < cols; j++) {
             temp.push_back(*(m1 + (i * cols) + j));
-            //printf("vector temp val %d\n",*(m1 + (i*cols)+ j));
         }
         addRengl(temp);
         temp.clear();
@@ -74,11 +70,10 @@ void Matrix::setData(int **m1, int rengl, int cols) {
     if (data.size() != 0) {
         limpia();
     }
-    vector<int> temp;
+    std::vector<int> temp;
     for (; i < rengl; i++) {
         for (j = 0; j < cols; j++) {
             temp.push_back(m1[i][j]);
-            //printf("vector temp val %d\n",*(m1 + (i*cols)+ j));
         }
         addRengl(temp);
         temp.clear();
@@ -91,12 +86,11 @@ void Matrix::limpia() {
     columnas = 0;
 }
 
-void Matrix::addVector(vector<int> v) {
+void Matrix::addVector(std::vector<int> v) {
     if (columnas > 0) {
         if (renglones != v.size()) {
             printf("Error no puedo meter vectores de diferente tamano%d, %d\n", renglones, v.size());
-            //tal vez funcion de chequeo que agrege ceros
-            return;
+            throw 200;
         }
     } else {
         renglones = v.size();
@@ -105,15 +99,14 @@ void Matrix::addVector(vector<int> v) {
     data[columnas - 1] = v;
 }
 
-void Matrix::addRengl(vector<int> v) {
+void Matrix::addRengl(std::vector<int> v) {
     if (renglones > 0) {
         if (columnas != v.size()) {
             printf("Error no puedo meter renglones de diferente tamano  %d, %d\n", columnas, v.size());
-            //tal vez funcion de chequeo que agrege ceros
-            return;
+            throw 200;
         }
     } else {
-        vector<int> temp;
+        std::vector<int> temp;
         for (columnas = 0; columnas < v.size(); columnas++) {
             data[columnas] = temp;
         }
@@ -122,24 +115,21 @@ void Matrix::addRengl(vector<int> v) {
     renglones++;
 
     int i = 0;
-    map<int, vector<int> >::iterator miter;
+    std::map<int, std::vector<int> >::iterator miter;
 
 
     for (miter = data.begin(); miter != data.end(); miter++, i++) {
         miter->second.push_back(v[i]);
     }
 
-
 }
 
 
 void Matrix::quitaVector(int n) {
     if (n < 1 || n > columnas) {
-        printf("Error la columna %d excede el numero de las contenidas\n", n);
-        throw (200);
+        throw std::out_of_range("n es mayor del numero de columnas\n");
     }
     columnas--;
-    //printf("quitando vector %d\n",n);
     int i = n - 1;
     data.erase(n - 1);
     for (; i < columnas; i++) {
@@ -149,33 +139,29 @@ void Matrix::quitaVector(int n) {
 
 void Matrix::quitaRengl(int n) {
     if (n < 1 || n > renglones) {
-        printf("Error la columna %d excede el numero de las contenidas\n", n);
-        throw (200);
+        throw std::out_of_range("n es mayor del numero de renglones\n");
     }
     renglones--;
-    //printf("quitando renglon %d\n",n);
     int i = 0;
-    vector<int>::iterator viter;
+    std::vector<int>::iterator viter;
     for (i = 1; i <= columnas; i++) {
         viter = data[i - 1].begin() + (n - 1);
         data[i - 1].erase(viter);
     }
 }
 
-vector<int> Matrix::getVector(int n) {
+std::vector<int> Matrix::getVector(int n) {
     if (n < 1 || n > columnas) {
-        printf("Error la columna %d excede el numero de las contenidas %d\n", n, columnas);
-        throw (200);
+        throw std::out_of_range("n es mayor del numero de columnas\n");
     }
     return data[n - 1];
 }
 
-vector<int> Matrix::getRengl(int n) {
+std::vector<int> Matrix::getRengl(int n) {
     if (n < 1 || n > renglones) {
-        printf("Error el renglon %d excede el numero de las contenidas\n", n);
-        throw (200);
+        throw std::out_of_range("n es mayor del numero de renglones\n");
     }
-    vector<int> temp;
+    std::vector<int> temp;
     int i = 0;
     for (i = 1; i <= columnas; i++) {
         temp.push_back(data[i - 1].at(n));
@@ -185,7 +171,7 @@ vector<int> Matrix::getRengl(int n) {
 
 void Matrix::print() {
 
-    map<int, vector<int> >::const_iterator miter;
+    std::map<int, std::vector<int> >::const_iterator miter;
     int j = 0;
 
     for (; j < renglones; j++) {
@@ -207,13 +193,11 @@ int Matrix::getNumRengl() {
 
 int Matrix::getVal(int rengl, int cols) {
     if (rengl > renglones || rengl < 1) {
-        printf("Error inserte un indice  de renglon valido del 1 al %d   %d", renglones, rengl);
-        throw 100;
+        throw std::out_of_range("rengl no valido\n");
     }
 
     if (cols > columnas || cols < 1) {
-        printf("Error inserte un indice de columna valido del 1 al %d   %d", columnas, cols);
-        throw 100;
+        throw std::out_of_range("col no valido\n");
     }
 
     return data[cols - 1].at(rengl - 1);
@@ -221,8 +205,7 @@ int Matrix::getVal(int rengl, int cols) {
 
 Matrix Matrix::operator+(Matrix m2) {
     if (renglones != m2.getNumRengl() || columnas != m2.getNumCols()) {
-        printf("error no se pueden sumar las matrices por ser de distinto tamano\n");
-        throw 200;
+        throw std::invalid_argument("error no se pueden sumar las matrices por ser de distinto tamano\n");
     }
 
     int i = 0, j = 0, **temp;
@@ -232,7 +215,6 @@ Matrix Matrix::operator+(Matrix m2) {
         temp[j - 1] = (int *) malloc(sizeof(int) * columnas);
         for (i = 1; i <= columnas; i++) {
             temp[j - 1][i - 1] = getVal(j, i) + m2.getVal(j, i);
-            //printf("res%d \n", getVal(j,i) + m2.getVal(j,i));
         }
     }
     Matrix res(temp, renglones, columnas);
@@ -247,8 +229,7 @@ Matrix Matrix::operator+(Matrix m2) {
 Matrix Matrix::operator-(Matrix m2) {
 
     if (renglones != m2.getNumRengl() || columnas != m2.getNumCols()) {
-        printf("error no se pueden restar las matrices por ser de distinto tamano\n");
-        throw 200;
+        throw std::invalid_argument("error no se pueden restar las matrices por ser de distinto tamano\n");
     }
 
     int i = 0, j = 0, **temp;
@@ -258,7 +239,6 @@ Matrix Matrix::operator-(Matrix m2) {
         temp[j - 1] = (int *) malloc(sizeof(int) * columnas);
         for (i = 1; i <= columnas; i++) {
             temp[j - 1][i - 1] = getVal(j, i) - m2.getVal(j, i);
-            //printf("res%d \n", getVal(j,i) + m2.getVal(j,i));
         }
     }
     Matrix res(temp, renglones, columnas);
@@ -277,7 +257,12 @@ Matrix Matrix::operator*(Matrix m2) {
         throw 200;
     }
 
-    int i = 0, j = 0, **temp, resul = 0, k = 0, l = 0;
+    int i = 0;
+    int j = 0;
+    int **temp;
+    int resul = 0;
+    int k = 0;
+    int l = 0;
     temp = (int **) malloc(sizeof(int) * renglones);
 
     for (i = 0; i < renglones; i++) {
@@ -289,7 +274,6 @@ Matrix Matrix::operator*(Matrix m2) {
         resul = 0;
         for (l = 1; l <= columnas; l++) {
             resul += getVal(k, l) * m2.getVal(l, i);
-            //printf("%d,%d      %d,%d\n",k,l,l,i);
             if (l == columnas) {
                 temp[k - 1][i - 1] = resul;
             }
@@ -302,7 +286,6 @@ Matrix Matrix::operator*(Matrix m2) {
         }
     }
     Matrix res(temp, renglones, m2.getNumCols());
-    //Matrix res;
 
     for (i = 0; i < renglones; i++) {
         free(temp[i]);
@@ -364,16 +347,11 @@ int Matrix::determinante() {
         return getVal(1, 1);
     }
     Matrix cofactores = getMatrizCofactores();
-    //printf("Matriz de cofactores\n");
-    //cofactores.print();
-    //printf("fin Matriz de cofactores\n");
-    int res = 0, i = 0, j = 0;
-    /*for(i=1; i<=renglones; i++){
-        for(j=1; j<=columnas; j++){
-            res += cofactores.getVal(i,j)*getVal(i,j);
-        }
-    }*/
-    j = 1;
+
+    int res = 0;
+    int i = 0;
+    int j = 1;
+
     for (i = 1; i <= renglones; i++) {
         res += cofactores.getVal(i, j) * getVal(i, j);
     }
@@ -385,9 +363,6 @@ int Matrix::determinante(int i, int j) {
     if (renglones == 1 && columnas == 1) {
         return getVal(1, 1);
     } else {
-        //printf("antes de meterla a nueva %d, %d\n", renglones, columnas);
-        //print();
-        //printf("----------------------------%d,  %d \n", i,j);
         Matrix nueva(this);
         nueva.quitaRengl(i);
         nueva.quitaVector(j);
