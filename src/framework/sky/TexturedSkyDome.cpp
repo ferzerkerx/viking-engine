@@ -157,40 +157,40 @@ void TexturedSkyDome::calculaUV() {
 
     for (int j = 0; j < m_num_vert - 3; j++) {
 
-        if (m_vrtx[j].uv.x - m_vrtx[j + 1].uv.x > 0.9f)
+        if (m_vrtx[j].uv.x - m_vrtx[j + 1].uv.x > 0.9F)
             m_vrtx[j + 1].uv.x += 1.0F;
 
-        if (m_vrtx[j + 1].uv.x - m_vrtx[j].uv.x > 0.9f)
+        if (m_vrtx[j + 1].uv.x - m_vrtx[j].uv.x > 0.9F)
             m_vrtx[j].uv.x += 1.0F;
 
-        if (m_vrtx[j].uv.x - m_vrtx[j + 2].uv.x > 0.9f)
+        if (m_vrtx[j].uv.x - m_vrtx[j + 2].uv.x > 0.9F)
             m_vrtx[j + 2].uv.x += 1.0F;
 
-        if (m_vrtx[j + 2].uv.x - m_vrtx[j].uv.x > 0.9f)
+        if (m_vrtx[j + 2].uv.x - m_vrtx[j].uv.x > 0.9F)
             m_vrtx[j].uv.x += 1.0F;
 
-        if (m_vrtx[j + 1].uv.x - m_vrtx[j + 2].uv.x > 0.9f)
+        if (m_vrtx[j + 1].uv.x - m_vrtx[j + 2].uv.x > 0.9F)
             m_vrtx[j + 2].uv.x += 1.0F;
 
-        if (m_vrtx[j + 2].uv.x - m_vrtx[j + 1].uv.x > 0.9f)
+        if (m_vrtx[j + 2].uv.x - m_vrtx[j + 1].uv.x > 0.9F)
             m_vrtx[j + 1].uv.x += 1.0F;
 
-        if (m_vrtx[j].uv.y - m_vrtx[j + 1].uv.y > 0.8f)
+        if (m_vrtx[j].uv.y - m_vrtx[j + 1].uv.y > 0.8F)
             m_vrtx[j + 1].uv.y += 1.0F;
 
-        if (m_vrtx[j + 1].uv.y - m_vrtx[j].uv.y > 0.8f)
+        if (m_vrtx[j + 1].uv.y - m_vrtx[j].uv.y > 0.8F)
             m_vrtx[j].uv.y += 1.0F;
 
-        if (m_vrtx[j].uv.y - m_vrtx[j + 2].uv.y > 0.8f)
+        if (m_vrtx[j].uv.y - m_vrtx[j + 2].uv.y > 0.8F)
             m_vrtx[j + 2].uv.y += 1.0F;
 
-        if (m_vrtx[j + 2].uv.y - m_vrtx[j].uv.y > 0.8f)
+        if (m_vrtx[j + 2].uv.y - m_vrtx[j].uv.y > 0.8F)
             m_vrtx[j].uv.y += 1.0F;
 
-        if (m_vrtx[j + 1].uv.y - m_vrtx[j + 2].uv.y > 0.8f)
+        if (m_vrtx[j + 1].uv.y - m_vrtx[j + 2].uv.y > 0.8F)
             m_vrtx[j + 2].uv.y += 1.0F;
 
-        if (m_vrtx[j + 2].uv.y - m_vrtx[j + 1].uv.y > 0.8f)
+        if (m_vrtx[j + 2].uv.y - m_vrtx[j + 1].uv.y > 0.8F)
             m_vrtx[j + 1].uv.y += 1.0F;
     }
 }

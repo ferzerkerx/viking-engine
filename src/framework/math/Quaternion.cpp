@@ -445,7 +445,7 @@ Quaternion Quaternion::SLERP(const Quaternion &q1, const Quaternion &q2, float t
 
 
     // Solamente si el angulo es muy grande hacemos los calculos
-    if (1 - cos_theta > 0.1f) {
+    if (1 - cos_theta > 0.1F, {
 
         // obtenemos el angulo y calculamos sin(theta)
         float theta = acos(cos_theta);

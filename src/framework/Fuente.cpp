@@ -32,13 +32,13 @@ Fuente::Fuente(unsigned int *text) {
         /*generamos un polgono para cada caracter*/
         glBegin(GL_QUADS);
         /*abajo izquierda*/
-        glTexCoord2f(cx, 1.0F - cy - 0.0625f);
+        glTexCoord2f(cx, 1.0F - cy - 0.0625F);
         glVertex2i(0, 0);
         /*abajo derecha*/
-        glTexCoord2f(cx + 0.0625f, 1.0F - cy - 0.0625f);
+        glTexCoord2f(cx + 0.0625F, 1.0F - cy - 0.0625F);
         glVertex2i(16, 0);
         /*arriba derecha*/
-        glTexCoord2f(cx + 0.0625f, 1.0F - cy);
+        glTexCoord2f(cx + 0.0625F, 1.0F - cy);
         glVertex2i(16, 16);
         /*arriba izquierda*/
         glTexCoord2f(cx, 1.0F - cy);

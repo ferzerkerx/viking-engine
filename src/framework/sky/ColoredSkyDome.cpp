@@ -80,6 +80,6 @@ void ColoredSkyDome::actualiza(vector3f poscam) {
 
 void ColoredSkyDome::coloreaDomo() {
     for (int i = 0; i < m_num_vert; i++) {
-        m_vrtx[i].color = color3f(0.0, 0.35f, 0.7f);
+        m_vrtx[i].color = color3f(0.0, 0.35F, 0.7F);
     }
 }

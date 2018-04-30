@@ -131,8 +131,8 @@ void TexturedSkyPlane::generaSkyPlane() {
             sv.pos.z = z_dist;
 
             // Calculate the texture coordinates
-            sv.u = m_h_tile * ((float) j * tex_delta * 0.5f);
-            sv.v = m_v_tile * (1.0F - (float) i * tex_delta * 0.5f);
+            sv.u = m_h_tile * ((float) j * tex_delta * 0.5F);
+            sv.v = m_v_tile * (1.0F - (float) i * tex_delta * 0.5F);
 
             m_vertices[i * (m_divisiones + 1) + j] = sv;
         }

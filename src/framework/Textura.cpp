@@ -41,7 +41,6 @@ void Textura::CreaBMP(unsigned int textureArray[], const char *strFileName, int 
     int width, height;
 
     unsigned char header[54]; // 54-bytes header
-    int dataPos;     // Position in the file where the actual data begins
     int imageSize;   // = width*height*3
     unsigned char *data;
 
@@ -60,7 +59,6 @@ void Textura::CreaBMP(unsigned int textureArray[], const char *strFileName, int 
         return;
     }
     // Read ints from the byte array
-    dataPos = *(int *) &(header[0x0A]);
     imageSize = *(int *) &(header[0x22]);
     width = *(int *) &(header[0x12]);
     height = *(int *) &(header[0x16]);
@@ -74,7 +72,6 @@ void Textura::CreaBMP(unsigned int textureArray[], const char *strFileName, int 
 
     // Generamos texturas segun OpenGL
     glGenTextures(1, &textureArray[textureID]);
-    //glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
     glBindTexture(GL_TEXTURE_2D, textureArray[textureID]);
     gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, GL_BGR, GL_UNSIGNED_BYTE, data);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
@@ -91,11 +88,12 @@ void Textura::CreaTGA(unsigned int textureArray[], const char *strFileName, int 
     // Apuntador a datos de la imagen
     tImageTGA *pImage = CargaTGA(strFileName);    // Carga imagen y guarda los datos
 
-    if (pImage == nullptr)        // Checamos que se cargue la imagen
-        return
+    if (pImage == nullptr) {         // Checamos que se cargue la imagen
+        return;
+    }
 
-            // Generate la textura conforme a OpenGL
-                glGenTextures(1, &textureArray[textureID]);
+    // Generate la textura conforme a OpenGL
+    glGenTextures(1, &textureArray[textureID]);
     glBindTexture(GL_TEXTURE_2D, textureArray[textureID]);
 
     int textureType = GL_RGB;
@@ -110,9 +108,9 @@ void Textura::CreaTGA(unsigned int textureArray[], const char *strFileName, int 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Liberamos la imagen
-    if (pImage->data) {
-        delete[] pImage->data;
-    }
+
+    delete[] pImage->data;
+
     free(pImage);
 }
 
@@ -191,7 +189,7 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
                 pImageData->data[i * 3 + 2] = static_cast<unsigned char>(b);
             }
         } else
-            return NULL;
+            return nullptr;
     } else {    // Si la imagen tiene compresion
         // RLE es tipo bsico de compresion, ejemplo: "aaaaabbcccccccc" se hace "a5b2c8"
         // Leemos un contador de color (rleID), si es menor a 128, no hay optimizacion asi

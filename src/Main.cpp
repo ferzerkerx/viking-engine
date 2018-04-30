@@ -98,7 +98,7 @@ void resize(int width, int height) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    gluPerspective(30.0, aspectRatio, 0.1f, 1000.0F);
+    gluPerspective(30.0, aspectRatio, 0.1F, 1000.0F);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -184,8 +184,8 @@ void renderScene() {
 
     if (knight) {
         glPushMatrix();
-        glTranslatef(0.0F, 3.6f, 0.0F);
-        glScalef(0.15f, 0.15f, 0.15f);
+        glTranslatef(0.0F, 3.6F, 0.0F);
+        glScalef(0.15F, 0.15F, 0.15F);
         knight->renderWithOpenGlCommands();
         glPopMatrix();
     }
