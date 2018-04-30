@@ -9,8 +9,8 @@
 */
 SkyDome::SkyDome(float r) {
     m_r = r;
-    m_dphi = 5.0f;
-    m_dtheta = 10.0f;
+    m_dphi = 5.0F;
+    m_dtheta = 10.0F;
     m_has_sun_text = false;
     m_sun_text = -1;
 
@@ -52,8 +52,8 @@ SkyDome::~SkyDome() {
 *@brief Genera la hemiesfera que representa el SkyDome
 */
 void SkyDome::generaHemiEsfera() {
-    m_num_vert = (int) ((360.0f / m_dtheta) * (90.0f / m_dphi) *
-                        4.0f);//el 4 es porque se va a dibujar usando GL_TRIANGLE_STRIP
+    m_num_vert = (int) ((360.0F / m_dtheta) * (90.0F / m_dphi) *
+                        4.0F);//el 4 es porque se va a dibujar usando GL_TRIANGLE_STRIP
 
     m_vrtx = new vertxDome[m_num_vert];
 
@@ -128,17 +128,17 @@ void SkyDome::renderSun(vector3f poscam) {
         m_sun_vector = vector3f(m_sun_polar);
         m_sun_polar.phi += 0.002f;
         glTranslatef(m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
-        glRotatef(-90.0f, 1.0, 0.0, 0.0f);
+        glRotatef(-90.0F, 1.0, 0.0, 0.0F);
         Billboard::BBEsfera(poscam, m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
         glBegin(GL_POLYGON);
         glTexCoord2f(0.0, 1.0);
-        glVertex3f(-5.0f, 0.0, -5.0f);
+        glVertex3f(-5.0F, 0.0, -5.0F);
         glTexCoord2f(1.0, 1.0);
-        glVertex3f(5.0, 0.0, -5.0f);
+        glVertex3f(5.0, 0.0, -5.0F);
         glTexCoord2f(1.0, 0.0);
         glVertex3f(5.0, 0.0, 5.0);
         glTexCoord2f(0.0, 0.0);
-        glVertex3f(-5.0f, 0.0, 5.0);
+        glVertex3f(-5.0F, 0.0, 5.0);
         glEnd();
         Billboard::BBFin();
         glPopMatrix();

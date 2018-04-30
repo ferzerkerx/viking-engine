@@ -38,7 +38,7 @@ MD2Model::MD2Model(const char *modelo, const char *text) {
     currentAnim = STAND;
     currentFrame = 0;
     nextFrame = 0;
-    m_animation_speed = 1.0f;
+    m_animation_speed = 1.0F;
 }
 
 
@@ -63,7 +63,7 @@ MD2Model::~MD2Model() {
 void MD2Model::render() {
     if (m_objects.empty()) return;
 
-    float t = 0.0f;
+    float t = 0.0F;
     int i = 0, j = 0, index = 0, index2 = 0;
 
     if (m_b_hasAnimation) {
@@ -193,18 +193,18 @@ void MD2Model::previousAnimation() {
 * frames de acuerdo al tiempo y a la velocidad de la animacion
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:45:50 PM
-* @retval float Valor que va de 0.0f a 1.0f representando el factor
+* @retval float Valor que va de 0.0F a 1.0F representando el factor
 * de interpolacion de un frame a otro
 */
 float MD2Model::calculaFactorInterpolacion() {
-    float t = m_timer.getMilliseconds() / (1000.0f / m_animation_speed);
+    float t = m_timer.getMilliseconds() / (1000.0F / m_animation_speed);
 
-    if (m_timer.getMilliseconds() >= (1000.0f / m_animation_speed)) {
+    if (m_timer.getMilliseconds() >= (1000.0F / m_animation_speed)) {
         currentFrame = nextFrame;
         nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
         m_timer.reset();
     }
-    if (t > 1.0f) { t = 1.0f; }
+    if (t > 1.0F) { t = 1.0F; }
     return t;
 }
 
@@ -216,7 +216,7 @@ float MD2Model::calculaFactorInterpolacion() {
 */
 void MD2Model::setAnimationSpeed(float speed) {
     m_animation_speed = speed;
-    if (m_animation_speed < 0.0f) { m_animation_speed = 0.0f; }
+    if (m_animation_speed < 0.0F) { m_animation_speed = 0.0F; }
 }
 
 
@@ -245,7 +245,7 @@ void MD2Model::renderWithOpenGlCommands() {
     if (m_objects.empty() || !m_glCommandBuffer) return;
 
     int *ptricmds = m_glCommandBuffer;
-    float t = 0.0f;
+    float t = 0.0F;
     if (m_b_hasAnimation) {
         nextFrame = (currentFrame + 1) % pAnimations[currentAnim].frame_final;
         if (nextFrame == 0) { nextFrame = pAnimations[currentAnim].frame_inicial; }
@@ -276,7 +276,7 @@ void MD2Model::renderWithOpenGlCommands() {
             // ptricmds[1] : textura t
             // ptricmds[2] : indice del vertice
             if (!m_materials.empty()) {
-                glTexCoord2f(((float *) ptricmds)[0], 1.0f - ((float *) ptricmds)[1]);
+                glTexCoord2f(((float *) ptricmds)[0], 1.0F - ((float *) ptricmds)[1]);
             }
 
             if (frame->normales) {
@@ -343,7 +343,7 @@ void MD2Model::calculaNormales() {
         }
 
 
-        vector3f vSum(0.0f, 0.0f, 0.0f);
+        vector3f vSum(0.0F, 0.0F, 0.0F);
         vector3f vZero = vSum;
         int shared = 0;
 
@@ -361,7 +361,7 @@ void MD2Model::calculaNormales() {
 
 
             obj->normales[i] = vSum / float(-shared);
-            obj->normales[i] = Normalizar(obj->normales[i]) * (-1.0f);
+            obj->normales[i] = Normalizar(obj->normales[i]) * (-1.0F);
 
             vSum = vZero;
             shared = 0;

@@ -15,8 +15,8 @@
 */
 TexturedSkyDome::TexturedSkyDome(float r, unsigned int id_textura) : SkyDome(r) {
     m_textura = id_textura;
-    m_v_tile = 1.0f;
-    m_h_tile = 1.0f;
+    m_v_tile = 1.0F;
+    m_h_tile = 1.0F;
 
     calculaUV();
 }
@@ -30,8 +30,8 @@ TexturedSkyDome::TexturedSkyDome(float r, unsigned int id_textura) : SkyDome(r) 
 TexturedSkyDome::TexturedSkyDome(float dphi, float dtheta, float r, unsigned int id_textura) : SkyDome(dphi, dtheta,
                                                                                                        r) {
     m_textura = id_textura;
-    m_v_tile = 1.0f;
-    m_h_tile = 1.0f;
+    m_v_tile = 1.0F;
+    m_h_tile = 1.0F;
 
     calculaUV();
 }
@@ -67,7 +67,7 @@ void TexturedSkyDome::renderDome(vector3f poscam) {
     int i = 0;
     glPushMatrix();
     glTranslatef(poscam.x, poscam.y, poscam.z);
-    glRotatef(-90.0f, 1.0, 0.0, 0.0f);
+    glRotatef(-90.0F, 1.0, 0.0, 0.0F);
     glBegin(GL_TRIANGLE_STRIP);
     for (i = 0; i < m_num_vert; i++) {
         glTexCoord2f(m_vrtx[i].uv.x, m_vrtx[i].uv.y);
@@ -158,39 +158,39 @@ void TexturedSkyDome::calculaUV() {
     for (int j = 0; j < m_num_vert - 3; j++) {
 
         if (m_vrtx[j].uv.x - m_vrtx[j + 1].uv.x > 0.9f)
-            m_vrtx[j + 1].uv.x += 1.0f;
+            m_vrtx[j + 1].uv.x += 1.0F;
 
         if (m_vrtx[j + 1].uv.x - m_vrtx[j].uv.x > 0.9f)
-            m_vrtx[j].uv.x += 1.0f;
+            m_vrtx[j].uv.x += 1.0F;
 
         if (m_vrtx[j].uv.x - m_vrtx[j + 2].uv.x > 0.9f)
-            m_vrtx[j + 2].uv.x += 1.0f;
+            m_vrtx[j + 2].uv.x += 1.0F;
 
         if (m_vrtx[j + 2].uv.x - m_vrtx[j].uv.x > 0.9f)
-            m_vrtx[j].uv.x += 1.0f;
+            m_vrtx[j].uv.x += 1.0F;
 
         if (m_vrtx[j + 1].uv.x - m_vrtx[j + 2].uv.x > 0.9f)
-            m_vrtx[j + 2].uv.x += 1.0f;
+            m_vrtx[j + 2].uv.x += 1.0F;
 
         if (m_vrtx[j + 2].uv.x - m_vrtx[j + 1].uv.x > 0.9f)
-            m_vrtx[j + 1].uv.x += 1.0f;
+            m_vrtx[j + 1].uv.x += 1.0F;
 
         if (m_vrtx[j].uv.y - m_vrtx[j + 1].uv.y > 0.8f)
-            m_vrtx[j + 1].uv.y += 1.0f;
+            m_vrtx[j + 1].uv.y += 1.0F;
 
         if (m_vrtx[j + 1].uv.y - m_vrtx[j].uv.y > 0.8f)
-            m_vrtx[j].uv.y += 1.0f;
+            m_vrtx[j].uv.y += 1.0F;
 
         if (m_vrtx[j].uv.y - m_vrtx[j + 2].uv.y > 0.8f)
-            m_vrtx[j + 2].uv.y += 1.0f;
+            m_vrtx[j + 2].uv.y += 1.0F;
 
         if (m_vrtx[j + 2].uv.y - m_vrtx[j].uv.y > 0.8f)
-            m_vrtx[j].uv.y += 1.0f;
+            m_vrtx[j].uv.y += 1.0F;
 
         if (m_vrtx[j + 1].uv.y - m_vrtx[j + 2].uv.y > 0.8f)
-            m_vrtx[j + 2].uv.y += 1.0f;
+            m_vrtx[j + 2].uv.y += 1.0F;
 
         if (m_vrtx[j + 2].uv.y - m_vrtx[j + 1].uv.y > 0.8f)
-            m_vrtx[j + 1].uv.y += 1.0f;
+            m_vrtx[j + 1].uv.y += 1.0F;
     }
 }

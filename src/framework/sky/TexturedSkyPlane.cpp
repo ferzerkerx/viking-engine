@@ -35,8 +35,8 @@ TexturedSkyPlane::TexturedSkyPlane(int divisiones, float planet_radius, float at
 
     m_wind_factor_x = 0.0001f;
     m_wind_factor_y = 0.0001f;
-    m_desface_text_x = 0.0f;
-    m_desface_text_y = 0.0f;
+    m_desface_text_x = 0.0F;
+    m_desface_text_y = 0.0F;
     m_rot_text_milli = 10;
 
     generaSkyPlane();
@@ -69,8 +69,6 @@ void TexturedSkyPlane::render(vector3f poscam) {
     }
 
     glPushMatrix();
-    //glLoadIdentity();
-    //glTranslatef(0.0, poscam.y+m_planet_radius, 0.0);
     glTranslatef(poscam.x, poscam.y + m_planet_radius, poscam.z);
     glRotatef(m_desface_text_x, 0.0, 1.0, 0.0);
 
@@ -84,12 +82,8 @@ void TexturedSkyPlane::render(vector3f poscam) {
     glBegin(GL_TRIANGLES);
 
     for (int i = 0; i < m_num_indices; i++) {
-        //glColor3f(1.0f, 1.0f, 1.0f);
-
-        //if (m_vertices[m_indices[i]].y > -130){
         glTexCoord2f(m_vertices[m_indices[i]].u, m_vertices[m_indices[i]].v);
         glVertex3f(m_vertices[m_indices[i]].pos.x, m_vertices[m_indices[i]].pos.y, m_vertices[m_indices[i]].pos.z);
-        //}
     }
 
     glEnd();
@@ -109,17 +103,16 @@ void TexturedSkyPlane::render(vector3f poscam) {
 */
 void TexturedSkyPlane::generaSkyPlane() {
 
-    float plane_size = 2.0f * (float) sqrt((SQR(m_atmosphere_radius) - SQR(m_planet_radius)));
+    float plane_size = 2.0F * sqrt((SQR(m_atmosphere_radius) - SQR(m_planet_radius)));
     float delta = plane_size / (float) m_divisiones;
-    float tex_delta = 2.0f / (float) m_divisiones;
+    float tex_delta = 2.0F / (float) m_divisiones;
 
-    float x_dist = 0.0f;
-    float z_dist = 0.0f;
-    float x_height = 0.0f;
-    float z_height = 0.0f;
-    float height = 0.0f;
+    float x_dist;
+    float z_dist;
+    float x_height;
+    float z_height;
+    float height;
 
-    int count = 0;
     int i = 0, j = 0;
 
     vertx sv; // temporary vertex
@@ -134,12 +127,12 @@ void TexturedSkyPlane::generaSkyPlane() {
             height = x_height + z_height;
 
             sv.pos.x = x_dist;
-            sv.pos.y = 0.0f - height;
+            sv.pos.y = 0.0F - height;
             sv.pos.z = z_dist;
 
             // Calculate the texture coordinates
             sv.u = m_h_tile * ((float) j * tex_delta * 0.5f);
-            sv.v = m_v_tile * (1.0f - (float) i * tex_delta * 0.5f);
+            sv.v = m_v_tile * (1.0F - (float) i * tex_delta * 0.5f);
 
             m_vertices[i * (m_divisiones + 1) + j] = sv;
         }
@@ -149,7 +142,7 @@ void TexturedSkyPlane::generaSkyPlane() {
     int index = 0;
     for (i = 0; i < m_divisiones; i++) {
         for (j = 0; j < m_divisiones; j++) {
-            int startvert = (i * (m_divisiones + 1) + j);
+            unsigned int startvert = (i * (m_divisiones + 1) + j);
 
             // tri 1f
             m_indices[index++] = startvert;

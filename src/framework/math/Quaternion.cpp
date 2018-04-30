@@ -14,10 +14,10 @@
 * @date Sunday, October 28, 2007 11:58:10 PM
 */
 Quaternion::Quaternion() {
-    w = 1.0f;
-    x = 0.0f;
-    y = 0.0f;
-    z = 0.0f;
+    w = 1.0F;
+    x = 0.0F;
+    y = 0.0F;
+    z = 0.0F;
 }
 
 /**
@@ -52,12 +52,12 @@ Quaternion::Quaternion(float theta, vector3f *eje) {
     * - A el eje de rotacion
     * - theta el angulo de rotacion
     **/
-    if (theta > 360.0f) { theta = 360.0f; }
-    if (theta < 0.0f) { theta = 0.0f; }
-    w = cos(theta / 2.0f);
-    x = eje->x * sin(theta / 2.0f);
-    y = eje->y * sin(theta / 2.0f);
-    z = eje->z * sin(theta / 2.0f);
+    if (theta > 360.0F) { theta = 360.0F; }
+    if (theta < 0.0F) { theta = 0.0F; }
+    w = cos(theta / 2.0F);
+    x = eje->x * sin(theta / 2.0F);
+    y = eje->y * sin(theta / 2.0F);
+    z = eje->z * sin(theta / 2.0F);
 }
 
 /**
@@ -96,18 +96,18 @@ Quaternion::Quaternion(float *matriz, int num_columnas) {
     float trace = m[0] + m[5] + m[10]; //t00 + t11 + t22
 
     /*variable que usamos para facilitar los calculos**/
-    float escala = 0.0f;
+    float escala = 0.0F;
 
     if (trace > 0.00000001) {/* |w|> 1/2 **/
 
         /*
-        * w = sqrt(trace + 1.0f) * (1/2)
+        * w = sqrt(trace + 1.0F) * (1/2)
         * escala = 4w
         * x = (t12 - t21)/4w
         * y = (t20 - t02)/4w
         * z = (t01 - t10)/4w
         */
-        w = sqrt(trace + 1.0f) * 0.5f;
+        w = sqrt(trace + 1.0F) * 0.5f;
         escala = 4 * w;
         x = (m[6] - m[9]) / escala;
         y = (m[8] - m[2]) / escala;
@@ -124,7 +124,7 @@ Quaternion::Quaternion(float *matriz, int num_columnas) {
             * y = (t01 + t10)/4x
             * z = (t02 + t20)/4x
             */
-            x = sqrt(1.0f + m[0] - m[5] - m[10]) * 0.5f;
+            x = sqrt(1.0F + m[0] - m[5] - m[10]) * 0.5f;
             escala = 4 * x;
             w = (m[6] - m[9]) / escala;
             y = (m[1] + m[4]) / escala;
@@ -139,7 +139,7 @@ Quaternion::Quaternion(float *matriz, int num_columnas) {
             * z = (t12 + t21)/4y
             * w = (t20 - t02)/4y
             */
-            y = sqrt(1.0f + m[5] - m[0] - m[10]) * 0.5f;
+            y = sqrt(1.0F + m[5] - m[0] - m[10]) * 0.5f;
             escala = 4 * y;
             x = (m[1] + m[4]) / escala;
             z = (m[6] + m[9]) / escala;
@@ -156,7 +156,7 @@ Quaternion::Quaternion(float *matriz, int num_columnas) {
             * y = (t12 + t21)/4z
             * w = (t01 - t10)/4z
             */
-            z = sqrt(1.0f + m[10] - m[0] - m[5]) * 0.5f;
+            z = sqrt(1.0F + m[10] - m[0] - m[5]) * 0.5f;
             escala = 4 * z;
             x = (m[2] + m[8]) / escala;
             y = (m[6] + m[9]) / escala;
@@ -244,7 +244,7 @@ vector3f Quaternion::operator*(vector3f p) {
 * @param f El escalar por el que se va a dividir el Quaternion
 */
 Quaternion Quaternion::operator/(float f) {
-    if (f == 0.0f) { return Quaternion(0.0f, 0.0f, 0.0f, 0.0f); }
+    if (f == 0.0F) { return Quaternion(0.0F, 0.0F, 0.0F, 0.0F); }
     return Quaternion(w / f, x / f, y / f, z / f);
 }
 
@@ -316,7 +316,7 @@ Quaternion &Quaternion::operator*=(float f) {
 * @param f Escalar por el que se va a dividir el Quaternion
 */
 Quaternion &Quaternion::operator/=(float f) {
-    if (f != 0.0f) {
+    if (f != 0.0F) {
         w /= f;
         x /= f;
         y /= f;
@@ -352,13 +352,13 @@ vector3f Quaternion::rotaVector(vector3f p) {
     vector3f q_xyz(x, y, z);
 
     //Calculamos la primera parte de la ecuacion: (P * ( 2w*w - 1))
-    vector3f t1 = p * (2.0f * w * w - 1.0f);
+    vector3f t1 = p * (2.0F * w * w - 1.0F);
 
     //Calculamos la segunda parte de la ecuacion: (2w * (q_xyz x P)
-    vector3f t2 = Cruzado(q_xyz, p) * 2.0f * w;
+    vector3f t2 = Cruzado(q_xyz, p) * 2.0F * w;
 
     //Calculamos la tercer parte de la ecuacion: (2 * (q_xyz . P) * q_xyz)
-    vector3f t3 = q_xyz * 2.0f * Punto(q_xyz, p);
+    vector3f t3 = q_xyz * 2.0F * Punto(q_xyz, p);
 
     // obtenemos el Punto resultante
     return t1 + t2 + t3;
@@ -429,7 +429,7 @@ Quaternion Quaternion::SLERP(const Quaternion &q1, const Quaternion &q2, float t
     float cos_theta = (q1.w * q2.w) + (q1.x * q2.x) + (q1.y * q2.y) + (q1.z * q2.z);
 
     // checamos que el angulo sea mayor a 90; cos(90) = 0;
-    if (cos_theta < 0.0f) {
+    if (cos_theta < 0.0F) {
         // negamos el segundo quaternion y el angulo
         (Quaternion) q2 = Quaternion(-q2.x, -q2.y, -q2.z, -q2.w);
         cos_theta = -cos_theta;
@@ -484,7 +484,7 @@ inline float Quaternion::getMagnitud() {
 * @retval bool verdadero si es unitario, falso en caso contrario
 */
 bool Quaternion::isUnitario() {
-    if ((int) (w * w + x * x + y * y + z * z - 1.0f) == 0) {
+    if ((int) (w * w + x * x + y * y + z * z - 1.0F) == 0) {
         return true;
     }
     return false;
@@ -501,28 +501,28 @@ void Quaternion::to4x4Matriz(float *m4x4) {
     if (!m4x4) { return; }
 
     /*renglon 1**/
-    m4x4[0] = 1.0f - 2.0f * (y * y + z * z);
-    m4x4[1] = 2.0f * (x * y - w * z);
-    m4x4[2] = 2.0f * (x * z + w * y);
-    m4x4[3] = 0.0f;
+    m4x4[0] = 1.0F - 2.0F * (y * y + z * z);
+    m4x4[1] = 2.0F * (x * y - w * z);
+    m4x4[2] = 2.0F * (x * z + w * y);
+    m4x4[3] = 0.0F;
 
     /*renglon 2**/
-    m4x4[4] = 2.0f * (x * y + w * z);
-    m4x4[5] = 1.0f - 2.0f * (x * x + z * z);
-    m4x4[6] = 2.0f * (y * z - w * x);
-    m4x4[7] = 0.0f;
+    m4x4[4] = 2.0F * (x * y + w * z);
+    m4x4[5] = 1.0F - 2.0F * (x * x + z * z);
+    m4x4[6] = 2.0F * (y * z - w * x);
+    m4x4[7] = 0.0F;
 
     /*renglon 3**/
-    m4x4[8] = 2.0f * (x * z - w * y);
-    m4x4[9] = 2.0f * (y * z + w * x);
-    m4x4[10] = 1.0f - 2.0f * (x * x + y * y);
-    m4x4[11] = 0.0f;
+    m4x4[8] = 2.0F * (x * z - w * y);
+    m4x4[9] = 2.0F * (y * z + w * x);
+    m4x4[10] = 1.0F - 2.0F * (x * x + y * y);
+    m4x4[11] = 0.0F;
 
     /*renglon 4**/
     m4x4[12] = 0;
     m4x4[13] = 0;
     m4x4[14] = 0;
-    m4x4[15] = 1.0f;
+    m4x4[15] = 1.0F;
 
 }
 
@@ -537,19 +537,19 @@ void Quaternion::to3x3Matriz(float *m3x3) {
     if (!m3x3) { return; }
 
     /*renglon 1**/
-    m3x3[0] = 1.0f - 2.0f * (y * y + z * z);
-    m3x3[1] = 2.0f * (x * y - w * z);
-    m3x3[2] = 2.0f * (x * z + w * y);
+    m3x3[0] = 1.0F - 2.0F * (y * y + z * z);
+    m3x3[1] = 2.0F * (x * y - w * z);
+    m3x3[2] = 2.0F * (x * z + w * y);
 
     /*renglon 2**/
-    m3x3[3] = 2.0f * (x * y + w * z);
-    m3x3[4] = 1.0f - 2.0f * (x * x + z * z);
-    m3x3[5] = 2.0f * (y * z - w * x);
+    m3x3[3] = 2.0F * (x * y + w * z);
+    m3x3[4] = 1.0F - 2.0F * (x * x + z * z);
+    m3x3[5] = 2.0F * (y * z - w * x);
 
     /*renglon 3**/
-    m3x3[6] = 2.0f * (x * z - w * y);
-    m3x3[7] = 2.0f * (y * z + w * x);
-    m3x3[8] = 1.0f - 2.0f * (x * x + y * y);
+    m3x3[6] = 2.0F * (x * z - w * y);
+    m3x3[7] = 2.0F * (y * z + w * x);
+    m3x3[8] = 1.0F - 2.0F * (x * x + y * y);
 
 }
 

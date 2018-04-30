@@ -46,7 +46,7 @@ void ColoredSkyDome::renderDome(vector3f poscam) {
     int i = 0;
     glPushMatrix();
     glTranslatef(poscam.x, poscam.y, poscam.z);
-    glRotatef(-90.0f, 1.0, 0.0, 0.0f);
+    glRotatef(-90.0F, 1.0, 0.0, 0.0F);
     glBegin(GL_TRIANGLE_STRIP);
     for (i = 0; i < m_num_vert; i++) {
         glColor3f(m_vrtx[i].color.r, m_vrtx[i].color.g, m_vrtx[i].color.b);
@@ -57,7 +57,7 @@ void ColoredSkyDome::renderDome(vector3f poscam) {
 
     glDisable(GL_CULL_FACE);
 
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor3f(1.0F, 1.0F, 1.0F);
 }
 
 

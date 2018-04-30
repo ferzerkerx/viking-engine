@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
     glutKeyboardUpFunc(processAsciiKeyEvents);
     glutMouseFunc(handleMouseMovement);
 
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
 
     glutTimerFunc(10, myTimer, 1);
 
@@ -98,7 +98,7 @@ void resize(int width, int height) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    gluPerspective(30.0, aspectRatio, 0.1f, 1000.0f);
+    gluPerspective(30.0, aspectRatio, 0.1f, 1000.0F);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -164,11 +164,11 @@ void renderScene() {
 
     camara.Vista();
 
-    glTranslatef(0.0f, 0.0f, -5.0f);
+    glTranslatef(0.0F, 0.0F, -5.0F);
 
     if (vkSkyDome) {
         glPushMatrix();
-        glTranslatef(0.0f, -15.0f, 0.0f);
+        glTranslatef(0.0F, -15.0F, 0.0F);
         vkSkyDome->actualiza(camara.getPos());
         glPopMatrix();
     }
@@ -184,7 +184,7 @@ void renderScene() {
 
     if (knight) {
         glPushMatrix();
-        glTranslatef(0.0f, 3.6f, 0.0f);
+        glTranslatef(0.0F, 3.6f, 0.0F);
         glScalef(0.15f, 0.15f, 0.15f);
         knight->renderWithOpenGlCommands();
         glPopMatrix();
@@ -210,13 +210,13 @@ void renderFloor() {
         glBindTexture(GL_TEXTURE_2D, floorTexture[0]);
         glBegin(GL_POLYGON);
             glTexCoord2f(0.0, 1.0);
-            glVertex3f(-5.0f, 0.0f, -5.0f);
+            glVertex3f(-5.0F, 0.0F, -5.0F);
             glTexCoord2f(1.0, 1.0);
-            glVertex3f(45.0f, 0.0f, -5.0f);
+            glVertex3f(45.0F, 0.0F, -5.0F);
             glTexCoord2f(1.0, 0.0);
-            glVertex3f(45.0f, 0.0f, 45.0f);
+            glVertex3f(45.0F, 0.0F, 45.0F);
             glTexCoord2f(0.0, 0.0);
-            glVertex3f(-5.0f, 0.0f, 45.0f);
+            glVertex3f(-5.0F, 0.0F, 45.0F);
         glEnd();
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
@@ -259,7 +259,7 @@ void initViking() {
         textura.CrearTextura(skybox_text, "data/skydome/image5.bmp", 4);
         textura.CrearTextura(skybox_text, "data/skydome/image6.bmp", 5);
 
-        skyBox = new SkyBox(50.0f, 100.0f, 120.0f, skybox_text);
+        skyBox = new SkyBox(50.0F, 100.0F, 120.0F, skybox_text);
     }
 
     if (useSkyDome) {
@@ -272,11 +272,11 @@ void initViking() {
 
     knight = new MD2Model("data/modelos/knight.md2", "data/modelos/knight.bmp");
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
 
     glShadeModel(GL_SMOOTH);                // Habilita Smooth Shading
 
-    glClearDepth(1.0f);                            // Depth Buffer
+    glClearDepth(1.0F);                            // Depth Buffer
     glEnable(GL_DEPTH_TEST);                    // Habilita Depth Testing
     glDepthFunc(GL_LEQUAL);                        // Tipo de Depth Testing
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);    // Calculos de Perspectiva

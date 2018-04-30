@@ -39,7 +39,7 @@ public:
     static inline float noise(int x, int y, int random) {
         int n = x + y * 57 + random * 131;
         n = (n << 13) ^ n;
-        return (1.0f - ((n * (n * n * 15731 + 789221) +
+        return (1.0F - ((n * (n * n * 15731 + 789221) +
                          1376312589) & 0x7fffffff) * 0.000000000931322574615478515625f);
     }
 
@@ -56,7 +56,7 @@ public:
 
         for (int y = 1; y < 33; y++) {
             for (int x = 1; x < 33; x++) {
-                temp[x][y] = 128.0f + noise(x, y, random) * 128.0f;
+                temp[x][y] = 128.0F + noise(x, y, random) * 128.0F;
             }
         }
 
@@ -74,10 +74,10 @@ public:
 
         for (int y = 1; y < 33; y++) {
             for (int x = 1; x < 33; x++) {
-                float center = temp[x][y] / 4.0f;
-                float sides = (temp[x + 1][y] + temp[x - 1][y] + temp[x][y + 1] + temp[x][y - 1]) / 8.0f;
+                float center = temp[x][y] / 4.0F;
+                float sides = (temp[x + 1][y] + temp[x - 1][y] + temp[x][y + 1] + temp[x][y - 1]) / 8.0F;
                 float corners =
-                        (temp[x + 1][y + 1] + temp[x + 1][y - 1] + temp[x - 1][y + 1] + temp[x - 1][y - 1]) / 16.0f;
+                        (temp[x + 1][y + 1] + temp[x + 1][y - 1] + temp[x - 1][y + 1] + temp[x - 1][y - 1]) / 16.0F;
 
                 map32[((x - 1) * 32) + (y - 1)] = center + sides + corners;
             }
@@ -140,7 +140,7 @@ public:
     */
     static void overlapOctave(float *map32, float *map, int width, int height, int octave, float scale) {
 
-        float noise = 0.0f;
+        float noise = 0.0F;
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -167,8 +167,8 @@ public:
 
         resetOctaves(map, width, height);
 
-        float scale = 0.0f;
-        float brightness = 0.0f;
+        float scale = 0.0F;
+        float brightness = 0.0F;
 
         for (int octave = 0; octave < 4; octave++) {
             scale = 1 / pow(2, 3 - octave);
@@ -197,9 +197,9 @@ public:
     static inline void expFilter(float *map, int width, int height, float cover, float sharpness) {
 
         for (int x = 0; x < width * height; x++) {
-            float c = map[x] - (255.0f - cover);
+            float c = map[x] - (255.0F - cover);
             if (c < 0) c = 0;
-            map[x] = 255.0f - ((float) (pow(sharpness, c)) * 255.0f);
+            map[x] = 255.0F - ((float) (pow(sharpness, c)) * 255.0F);
         }
     }
 };

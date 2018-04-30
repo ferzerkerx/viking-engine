@@ -46,40 +46,40 @@ void Camara::VistaMouse(int ancho, int alto, int mouseX, int mouseY) {
 	int mitY = alto >> 1;	     // Corrimiento binario para obtener la mitad de alto
 	float anguloY;			 // Direccion vista arriba o abajo
 	float anguloZ;			 // Rotacin en Y (Izquierda y Derecha)
-	static float currentRotX = 0.0f;
+	static float currentRotX = 0.0F;
 
 	// Si el cursor esta en la mitad no nos movemos
 	if((mouseX == mitX) && (mouseY == mitY)) return;
 
 
 	// Obtener la direccion del mov del mouse, decrementar el numero bastante (/1000)
-	anguloY = (float)((mitX - mouseX)) / 1000.0f;
-	anguloZ = (float)((mitY - mouseY)) / 1000.0f;
+	anguloY = (float)((mitX - mouseX)) / 1000.0F;
+	anguloZ = (float)((mitY - mouseY)) / 1000.0F;
 
-    static float lastRotX = 0.0f;
+    static float lastRotX = 0.0F;
  	lastRotX = currentRotX; // Guardamos currentRotX
 
 	currentRotX += anguloZ;	// Rotation actual, restringimos vuelta de 360 en camara
 
 	// Si la rotacion actual (radianes) es mayor a 1.0, la mantenemos (cap it).
-	if(currentRotX > 1.0f) {
-        currentRotX = 1.0f;
-		if(lastRotX != 1.0f) {	// Rotar por el angulo restante
+	if(currentRotX > 1.0F) {
+        currentRotX = 1.0F;
+		if(lastRotX != 1.0F) {	// Rotar por el angulo restante
             // Obtenemos eje de rotacion
 			vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
 			vAxis = Normalizar(vAxis);
-			// Rotamos camara por el angulo restante (1.0f - lastRotX)
-			RotarVista(1.0f - lastRotX, vAxis.x, vAxis.y, vAxis.z);
+			// Rotamos camara por el angulo restante (1.0F - lastRotX)
+			RotarVista(1.0F - lastRotX, vAxis.x, vAxis.y, vAxis.z);
 		}
 	}
 	// Si la rotacion es menor a -1.0, no continuar
-	else if(currentRotX < -1.0f) {
-        currentRotX = -1.0f;
-		if(lastRotX != -1.0f) {	// Rotar por el angulo restante
+	else if(currentRotX < -1.0F) {
+        currentRotX = -1.0F;
+		if(lastRotX != -1.0F) {	// Rotar por el angulo restante
 			vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
 			vAxis = Normalizar(vAxis);
-			// Rotamos ( -1.0f - lastRotX)
-			RotarVista(-1.0f - lastRotX, vAxis.x, vAxis.y, vAxis.z);
+			// Rotamos ( -1.0F - lastRotX)
+			RotarVista(-1.0F - lastRotX, vAxis.x, vAxis.y, vAxis.z);
 		}
 	}
 	else { // Rotamos en cualquier direccin

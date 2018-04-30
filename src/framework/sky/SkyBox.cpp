@@ -18,12 +18,12 @@
 * @param caras Arreglo de identificadores de textura en este orden FRONT,BACK,LEFT,RIGHT,UP,DOWN
 */
 SkyBox::SkyBox(float alto, float largo, float ancho, unsigned int *caras) {
-    if (alto <= 0.0f) { alto = 10.0f; }
-    if (largo <= 0.0f) { largo = 10.0f; }
-    if (ancho <= 0.0f) { ancho = 10.0f; }
-    m_alto = alto / 2.0f;
-    m_largo = largo / 2.0f;
-    m_ancho = ancho / 2.0f;
+    if (alto <= 0.0F) { alto = 10.0F; }
+    if (largo <= 0.0F) { largo = 10.0F; }
+    if (ancho <= 0.0F) { ancho = 10.0F; }
+    m_alto = alto / 2.0F;
+    m_largo = largo / 2.0F;
+    m_ancho = ancho / 2.0F;
 
     if (caras != nullptr) {
         for (int i = 0; i < 6; i++) {
@@ -51,12 +51,12 @@ SkyBox::SkyBox(float alto, float largo, float ancho, unsigned int *caras) {
 */
 SkyBox::SkyBox(float alto, float largo, float ancho, unsigned int front,
                unsigned int back, unsigned int left, unsigned int right, unsigned int up, unsigned int down) {
-    if (alto <= 0.0f) { alto = 10.0f; }
-    if (largo <= 0.0f) { largo = 10.0f; }
-    if (ancho <= 0.0f) { ancho = 10.0f; }
-    m_alto = alto / 2.0f;
-    m_largo = largo / 2.0f;
-    m_ancho = ancho / 2.0f;
+    if (alto <= 0.0F) { alto = 10.0F; }
+    if (largo <= 0.0F) { largo = 10.0F; }
+    if (ancho <= 0.0F) { ancho = 10.0F; }
+    m_alto = alto / 2.0F;
+    m_largo = largo / 2.0F;
+    m_ancho = ancho / 2.0F;
 
     m_caras[FRONT] = front;
     m_caras[BACK] = back;
@@ -109,65 +109,65 @@ void SkyBox::render(vector3f poscam) {
     /****cara frontal****/
     glBindTexture(GL_TEXTURE_2D, m_caras[FRONT]);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
+    glTexCoord2f(0.0F, 0.0F);
     glVertex3f(m_largo, -m_alto, -m_ancho);
-    glTexCoord2f(1.0f, 0.0f);
+    glTexCoord2f(1.0F, 0.0F);
     glVertex3f(-m_largo, -m_alto, -m_ancho);
-    glTexCoord2f(1.0f, 1.0f);
+    glTexCoord2f(1.0F, 1.0F);
     glVertex3f(-m_largo, m_alto, -m_ancho);
-    glTexCoord2f(0.0f, 1.0f);
+    glTexCoord2f(0.0F, 1.0F);
     glVertex3f(m_largo, m_alto, -m_ancho);
     glEnd();
 
     /****cara trasera****/
     glBindTexture(GL_TEXTURE_2D, m_caras[BACK]);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
+    glTexCoord2f(0.0F, 0.0F);
     glVertex3f(-m_largo, -m_alto, m_ancho);
-    glTexCoord2f(1.0f, 0.0f);
+    glTexCoord2f(1.0F, 0.0F);
     glVertex3f(m_largo, -m_alto, m_ancho);
-    glTexCoord2f(1.0f, 1.0f);
+    glTexCoord2f(1.0F, 1.0F);
     glVertex3f(m_largo, m_alto, m_ancho);
-    glTexCoord2f(0.0f, 1.0f);
+    glTexCoord2f(0.0F, 1.0F);
     glVertex3f(-m_largo, m_alto, m_ancho);
     glEnd();
 
     /****cara izquierda****/
     glBindTexture(GL_TEXTURE_2D, m_caras[LEFT]);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
+    glTexCoord2f(0.0F, 0.0F);
     glVertex3f(-m_largo, -m_alto, -m_ancho);
-    glTexCoord2f(1.0f, 0.0f);
+    glTexCoord2f(1.0F, 0.0F);
     glVertex3f(-m_largo, -m_alto, m_ancho);
-    glTexCoord2f(1.0f, 1.0f);
+    glTexCoord2f(1.0F, 1.0F);
     glVertex3f(-m_largo, m_alto, m_ancho);
-    glTexCoord2f(0.0f, 1.0f);
+    glTexCoord2f(0.0F, 1.0F);
     glVertex3f(-m_largo, m_alto, -m_ancho);
     glEnd();
 
     /****cara derecha****/
     glBindTexture(GL_TEXTURE_2D, m_caras[RIGHT]);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
+    glTexCoord2f(0.0F, 0.0F);
     glVertex3f(m_largo, -m_alto, m_ancho);
-    glTexCoord2f(1.0f, 0.0f);
+    glTexCoord2f(1.0F, 0.0F);
     glVertex3f(m_largo, -m_alto, -m_ancho);
-    glTexCoord2f(1.0f, 1.0f);
+    glTexCoord2f(1.0F, 1.0F);
     glVertex3f(m_largo, m_alto, -m_ancho);
-    glTexCoord2f(0.0f, 1.0f);
+    glTexCoord2f(0.0F, 1.0F);
     glVertex3f(m_largo, m_alto, m_ancho);
     glEnd();
 
     /****cara arriba****/
     glBindTexture(GL_TEXTURE_2D, m_caras[UP]);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
+    glTexCoord2f(0.0F, 0.0F);
     glVertex3f(m_largo, m_alto, -m_ancho);
-    glTexCoord2f(1.0f, 0.0f);
+    glTexCoord2f(1.0F, 0.0F);
     glVertex3f(-m_largo, m_alto, -m_ancho);
-    glTexCoord2f(1.0f, 1.0f);
+    glTexCoord2f(1.0F, 1.0F);
     glVertex3f(-m_largo, m_alto, m_ancho);
-    glTexCoord2f(0.0f, 1.0f);
+    glTexCoord2f(0.0F, 1.0F);
     glVertex3f(m_largo, m_alto, m_ancho);
     glEnd();
 
@@ -175,13 +175,13 @@ void SkyBox::render(vector3f poscam) {
     /****cara abajo****/
     glBindTexture(GL_TEXTURE_2D, m_caras[DOWN]);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
+    glTexCoord2f(0.0F, 0.0F);
     glVertex3f(m_largo, -m_alto, m_ancho);
-    glTexCoord2f(1.0f, 0.0f);
+    glTexCoord2f(1.0F, 0.0F);
     glVertex3f(-m_largo, -m_alto, m_ancho);
-    glTexCoord2f(1.0f, 1.0f);
+    glTexCoord2f(1.0F, 1.0F);
     glVertex3f(-m_largo, -m_alto, -m_ancho);
-    glTexCoord2f(0.0f, 1.0f);
+    glTexCoord2f(0.0F, 1.0F);
     glVertex3f(m_largo, -m_alto, -m_ancho);
     glEnd();
     glPopMatrix();

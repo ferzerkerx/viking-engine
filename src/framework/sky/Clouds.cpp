@@ -14,7 +14,7 @@
 * por default
 */
 Clouds::Clouds() {
-    m_cover = 45.0f;
+    m_cover = 45.0F;
     m_sharpness = 0.987f;
     m_num_octaves = 4;
     m_texture = -1;
@@ -110,7 +110,7 @@ void Clouds::calculaAlpha() {
             m_RGBA_text[desplazamiento] = static_cast<char>(color);
             m_RGBA_text[desplazamiento + 1] = static_cast<char>(color);
             m_RGBA_text[desplazamiento + 2] = static_cast<char>(color);
-            if (color == 0.0f) {
+            if (color == 0.0F) {
                 m_RGBA_text[desplazamiento + 3] = 0;
             } else {
                 m_RGBA_text[desplazamiento + 3] = static_cast<char>(255);

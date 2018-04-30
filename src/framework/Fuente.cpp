@@ -24,24 +24,24 @@ Fuente::Fuente(unsigned int *text) {
     for (i = 0; i < 256; i++) {
 
         /*asignamos las coordenadas(x,y)de nuestro caracter*/
-        cx = float(i % 16) / 16.0f;
-        cy = float(i / 16) / 16.0f;
+        cx = float(i % 16) / 16.0F;
+        cy = float(i / 16) / 16.0F;
 
         /*comenzamos a llenar las listas*/
         glNewList(base + i, GL_COMPILE);
         /*generamos un polgono para cada caracter*/
         glBegin(GL_QUADS);
         /*abajo izquierda*/
-        glTexCoord2f(cx, 1.0f - cy - 0.0625f);
+        glTexCoord2f(cx, 1.0F - cy - 0.0625f);
         glVertex2i(0, 0);
         /*abajo derecha*/
-        glTexCoord2f(cx + 0.0625f, 1.0f - cy - 0.0625f);
+        glTexCoord2f(cx + 0.0625f, 1.0F - cy - 0.0625f);
         glVertex2i(16, 0);
         /*arriba derecha*/
-        glTexCoord2f(cx + 0.0625f, 1.0f - cy);
+        glTexCoord2f(cx + 0.0625f, 1.0F - cy);
         glVertex2i(16, 16);
         /*arriba izquierda*/
-        glTexCoord2f(cx, 1.0f - cy);
+        glTexCoord2f(cx, 1.0F - cy);
         glVertex2i(0, 16);
         glEnd();
         /*nos movemos a la derecha*/

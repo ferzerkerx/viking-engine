@@ -10,18 +10,18 @@
 
 VKSkyDome::VKSkyDome(float r, unsigned int id_textura) : TexturedSkyDome(r, id_textura) {
     LOG(0, "VKSkyDome(float r, unsigned int id_textura)");
-    m_cloud_cover = 45.0f;
+    m_cloud_cover = 45.0F;
     m_ca = new CloudsActualizables();
-    m_sp = new TexturedSkyPlane(16, 50.0f, 90.0f, 1.0f, 1.0f, m_ca->getTextureId());
+    m_sp = new TexturedSkyPlane(16, 50.0F, 90.0F, 1.0F, 1.0F, m_ca->getTextureId());
 }
 
 VKSkyDome::VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura) : TexturedSkyDome(dphi, dtheta, r,
                                                                                                    id_textura) {
     FN("VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura)");
     LOG(0, "VKSkyDome creado %f %f %f ", dphi, dtheta, r);
-    m_cloud_cover = 45.0f;
+    m_cloud_cover = 45.0F;
     m_ca = new CloudsActualizables();
-    m_sp = new TexturedSkyPlane(16, 50.0f, 90.0f, 1.0f, 1.0f, m_ca->getTextureId());
+    m_sp = new TexturedSkyPlane(16, 50.0F, 90.0F, 1.0F, 1.0F, m_ca->getTextureId());
 }
 
 VKSkyDome::~VKSkyDome() {

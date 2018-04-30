@@ -14,7 +14,7 @@
 */
 CloudsActualizables::CloudsActualizables() : Clouds() {
     m_update_text_milli = 500;
-    m_brightness = 0.0f;
+    m_brightness = 0.0F;
     m_actual_octave = 0;
 
     m_octaves = new struct octave[m_num_octaves];
@@ -41,7 +41,7 @@ CloudsActualizables::CloudsActualizables(float cover, float sharpness, int num_o
                                          unsigned int up_text_milli)
         : Clouds(cover, sharpness, num_octavos, width, height) {
     m_update_text_milli = up_text_milli;
-    m_brightness = 0.0f;
+    m_brightness = 0.0F;
     m_actual_octave = 0;
 
     m_octaves = new struct octave[m_num_octaves];

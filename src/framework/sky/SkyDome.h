@@ -20,7 +20,7 @@
 *RAD Es el valor de un radian
 *@todo Tal vez ponerlo en un archivo donde esten todas las constantes
 */
-#define RAD PI/180.0f
+#define RAD PI/180.0F
 
 /**	@class SkyDome
 *	@author Fernando Montes de Oca Cspedes.
