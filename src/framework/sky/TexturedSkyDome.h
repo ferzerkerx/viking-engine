@@ -10,7 +10,7 @@
 #include "SkyDome.h"
 
 /**	@class TexturedSkyDome
-*	@author Fernando Montes de Oca Cspedes.
+*	@author Fernando Montes de Oca Cespedes.
 *	@version 1.0
 *	@date	09/May/2007
 *	@brief Esta clase es un SkyDome texturizado

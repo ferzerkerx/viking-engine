@@ -5,7 +5,6 @@
 */
 
 #include "TexturedSkyDome.h"
-#include <cstdio>
 #include <GL/glut.h>
 
 /**
@@ -51,7 +50,7 @@ void TexturedSkyDome::setTexture(unsigned int id) {
 
 /**
 * @brief Renderea el Domo texturizado
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 8:44:26 PM
 * @param poscam vector de la camara
 */

@@ -19,7 +19,7 @@ Textura::Textura() {
 }
 
 void Textura::CrearTextura(unsigned int textureArray[], const char *strFileName, int textureID) {
-    if (!strFileName)        // Sale si no es un nombre de archivo vlido
+    if (!strFileName)        // Sale si no es un name de archivo vlido
         return;
 
     const char *pdest = strrchr(strFileName, '.');        // encuentra '.'

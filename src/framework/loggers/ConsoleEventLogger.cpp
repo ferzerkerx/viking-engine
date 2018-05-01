@@ -10,7 +10,7 @@
 
 /**
 * @brief Imprime el texto en consola ignorando las banderas
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 4:07:57 PM
 * @param buffer Texto a escribir en consola
 * @param flags Banderas para impresion
@@ -22,7 +22,7 @@ void ConsoleEventLogger::lOutput(const char *buffer, unsigned int flags) {
 
 /**
 * @brief Imprime la funcion invocada en consola
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 4:07:57 PM
 * @param str nombre de la funcion
 */
@@ -32,7 +32,7 @@ void ConsoleEventLogger::lStartCallStackLevel(const char *str) {
 
 /**
 * @brief Imprime un salto de linea despues de la impresion del callStack
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 4:12:12 PM
 */
 void ConsoleEventLogger::lEndStackCallLevel() {
@@ -41,7 +41,7 @@ void ConsoleEventLogger::lEndStackCallLevel() {
 
 /**
 * @brief Imprime el texto de actualizacion
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 4:28:51 PM
 * @param hours Horas transcurridas
 * @param minutes Minutos transcurridos
@@ -56,7 +56,7 @@ void ConsoleEventLogger::lUpdate(int hours, int minutes, int seconds, int hundre
 
 /**
 * @brief Como es consola el flush no tiene ningun efecto
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 4:12:12 PM
 */
 void ConsoleEventLogger::flush() {

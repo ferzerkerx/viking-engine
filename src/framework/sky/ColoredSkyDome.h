@@ -10,7 +10,7 @@
 
 /**
 * @class ColoredSkyDome
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 9:05:57 PM
 * @brief Es una clase que representa un SkyDome
 * coloreado, la funcion de coloreado es por default azul claro

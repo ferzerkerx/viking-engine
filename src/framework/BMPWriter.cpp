@@ -44,7 +44,7 @@ BMPWriter::BMPWriter(const char *file, int width, int height, int prof, char *da
 
 /**
 * @brief Simplemente coloca m_data en NULL
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 8:51:56 PM
 */
 BMPWriter::~BMPWriter() {
@@ -53,7 +53,7 @@ BMPWriter::~BMPWriter() {
 
 /**
 * @brief Escribe los encabezados y los datos de la textura
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 8:51:56 PM
 */
 void BMPWriter::writeTexture() {
@@ -66,7 +66,7 @@ void BMPWriter::writeTexture() {
 * @brief escribe un BITMAPFILEHEADER
 * NOTA: por alguna razon no puedo escribir la estructura directamente (linea comentada)
 * porque escribe 2 bytes de mas
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 8:50:50 PM
 */
 void BMPWriter::escribeFileHeader() {
@@ -82,7 +82,7 @@ void BMPWriter::escribeFileHeader() {
 
 /**
 * @brief Escribe el BITMAPINFOHEADER del BMP
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 8:50:21 PM
 */
 void BMPWriter::escribeInfoHeader() {
@@ -92,7 +92,7 @@ void BMPWriter::escribeInfoHeader() {
 /**
 * @brief Escribe la imagen en el archivo especificado
 * si los datos no existen escribe una imagen con r=g=b= 0
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 8:49:21 PM
 */
 void BMPWriter::escribeData() {

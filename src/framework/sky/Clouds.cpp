@@ -4,7 +4,6 @@
 * @date Friday, October 19, 2007 5:18:12 PM
 */
 #include <GL/glut.h>
-#include <cstdio>
 #include "Clouds.h"
 
 
@@ -28,7 +27,7 @@ Clouds::Clouds() {
 /**
 * @brief Constructor de las nubes, inicializa los factores para generar la
 * textura de nubes con parametros especificos
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 5:07:08 PM
 * @param cover Que tan poblado est el cielo
 * @param sharpness Que tan finas son las nubes
@@ -36,7 +35,10 @@ Clouds::Clouds() {
 * @param width Ancho de la textura
 * @param height Alto de la textura
 */
-Clouds::Clouds(float cover, float sharpness, int num_octavos, int width, int height): m_cover(cover), m_sharpness(sharpness), m_text_width(width), m_text_height(height)  {
+Clouds::Clouds(float cover, float sharpness, int num_octavos, int width, int height) : m_cover(cover),
+                                                                                       m_sharpness(sharpness),
+                                                                                       m_text_width(width),
+                                                                                       m_text_height(height) {
     m_num_octaves = static_cast<unsigned char>(num_octavos);
     m_texture = -1;
 }
@@ -58,7 +60,7 @@ Clouds::~Clouds() {
 
 /**
  * @brief Regresa el ancho de la textura
- * @author Fernando Montes de Oca Cspedes
+ * @author Fernando Montes de Oca Cespedes
  * @date Saturday, August 11, 2007 9:36:56 PM
  * @retval m_text_width
  */
@@ -69,7 +71,7 @@ int Clouds::getTextureWidth() {
 
 /**
  * @brief Regresa el alto de la textura
- * @author Fernando Montes de Oca Cspedes
+ * @author Fernando Montes de Oca Cespedes
  * @date Saturday, August 11, 2007 9:38:18 PM
  * @retval m_text_height
  */
@@ -80,7 +82,7 @@ int Clouds::getTextureHeight() {
 
 /**
 * @brief Regresa el identificador de la textura generada, -1 en caso contrario
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 10:09:30 AM
 * @retval unsigned int Identificador de la textura generada
 */
@@ -90,7 +92,7 @@ unsigned int Clouds::getTextureId() {
 
 /**
 * @brief Calcula el Alpha de una textura de 32 bits
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 5:01:40 PM
 */
 void Clouds::calculaAlpha() {
@@ -140,7 +142,7 @@ void Clouds::generaTexturaGL() {
 
 /**
 * @brief Regresa una referencia constante a m_RGBA_text
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 7:06:58 PM
 * @retval Apuntador a datos constantes de la imagen  
 */

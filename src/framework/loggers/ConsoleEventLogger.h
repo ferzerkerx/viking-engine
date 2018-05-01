@@ -12,7 +12,7 @@
 
 /**
 * @class ConsoleEventLogger
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 12:36:25 PM
 * @brief Clase que loggea los eventos en consola
 * 

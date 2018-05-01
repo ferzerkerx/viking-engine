@@ -113,7 +113,7 @@ void SkyDome::setSunTexture(unsigned int id) {
 
 /**
 * @brief Renderea el sol si es que hay textura
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 8:35:41 PM
 * @param poscam Vector de posicion de la camara
 */
@@ -124,23 +124,23 @@ void SkyDome::renderSun(vector3f poscam) {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, m_sun_text);
         glPushMatrix();
-            glTranslatef(poscam.x, poscam.y, poscam.z);
-            m_sun_vector = vector3f(m_sun_polar);
-            m_sun_polar.phi += 0.002F;
-            glTranslatef(m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
-            glRotatef(-90.0F, 1.0, 0.0, 0.0F);
-            Billboard::BBEsfera(poscam, m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
-            glBegin(GL_POLYGON);
-            glTexCoord2f(0.0, 1.0);
-            glVertex3f(-5.0F, 0.0, -5.0F);
-            glTexCoord2f(1.0, 1.0);
-            glVertex3f(5.0, 0.0, -5.0F);
-            glTexCoord2f(1.0, 0.0);
-            glVertex3f(5.0, 0.0, 5.0);
-            glTexCoord2f(0.0, 0.0);
-            glVertex3f(-5.0F, 0.0, 5.0);
-            glEnd();
-            Billboard::BBFin();
+        glTranslatef(poscam.x, poscam.y, poscam.z);
+        m_sun_vector = vector3f(m_sun_polar);
+        m_sun_polar.phi += 0.002F;
+        glTranslatef(m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
+        glRotatef(-90.0F, 1.0, 0.0, 0.0F);
+        Billboard::BBEsfera(poscam, m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
+        glBegin(GL_POLYGON);
+        glTexCoord2f(0.0, 1.0);
+        glVertex3f(-5.0F, 0.0, -5.0F);
+        glTexCoord2f(1.0, 1.0);
+        glVertex3f(5.0, 0.0, -5.0F);
+        glTexCoord2f(1.0, 0.0);
+        glVertex3f(5.0, 0.0, 5.0);
+        glTexCoord2f(0.0, 0.0);
+        glVertex3f(-5.0F, 0.0, 5.0);
+        glEnd();
+        Billboard::BBFin();
         glPopMatrix();
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);

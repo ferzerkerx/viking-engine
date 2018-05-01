@@ -11,7 +11,7 @@
 
 
 /**	@class CloudsEstaticas
-*	@author Fernando Montes de Oca Cspedes.
+*	@author Fernando Montes de Oca Cespedes.
 *	@version 1.0
 *	@date	29/Jul/2007
 *	@brief Esta clase genera una textura de nubes y no permite

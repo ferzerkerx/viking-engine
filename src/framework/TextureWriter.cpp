@@ -9,7 +9,7 @@
 /**
 * @brief Abre un stream para escribir un archivo
 * en forma binaria
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 5:24:55 PM
 * @param file Es el nombre del archivo
 */
@@ -23,7 +23,7 @@ TextureWriter::TextureWriter(const char *file) {
 
 /**
 * @brief Cierra el archivo
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 5:24:55 PM
 */
 TextureWriter::~TextureWriter() {

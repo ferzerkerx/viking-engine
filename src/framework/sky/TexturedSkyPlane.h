@@ -19,7 +19,7 @@
 
 /**
 * @class TexturedSkyPlane
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 9:36:24 AM
 * @brief Es un TexturedSkyPlane texturizado, es similar
 * a un TexturedSkyDome con la diferencia que se usa un plano torcido
@@ -40,12 +40,12 @@ private:
     float m_h_tile;                    //horizontal tile para texturizacion
     float m_v_tile;                    //vertical tile para texturizacion
     unsigned int m_texture;            //textura del TexturedSkyPlane
-    unsigned int m_num_vertices;    //guarda el nmero de vertices
+    unsigned int m_num_vertices;    //guarda el nmero de vertex
     unsigned int m_num_indices;        //guarda el nmero de indices
     unsigned int m_divisiones;        //contiene el nmero de divisiones
     float m_atmosphere_radius;        //es el radio atmosfrico del TexturedSkyPlane
-    unsigned int *m_indices;        //guarda todos los indices (indica como deben ser dibujados los vertices)
-    vertx *m_vertices;            //guarda todos los vertices
+    unsigned int *m_indices;        //guarda todos los indices (indica como deben ser dibujados los vertex)
+    vertx *m_vertices;            //guarda todos los vertex
     float m_planet_radius;            //radio planetario del TexturedSkyPlane
     float m_roty_factor;            //factor de rotacin en y(delta)
     float m_wind_factor_x;            //define el movimiento de la textura en x;

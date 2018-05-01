@@ -5,10 +5,10 @@
 #include "ModelFactory.h"
 #include "MD2Loader.h"
 
-MD2Model *ModelFactory::loadMD2(const char *modelo, const char *text) {
-    auto *m_ml = new MD2Loader();
-    Model3D *loadedModel = m_ml->importar(modelo, text);
-    delete m_ml;
+Md2Model *ModelFactory::LoadMD2(const char *md2_file_name, const char *texture_file_name) {
+    auto *md2_loader = new MD2Loader();
+    Model3d *loaded_model = md2_loader->load(md2_file_name, texture_file_name);
+    delete md2_loader;
 
-    return dynamic_cast<MD2Model *>(loadedModel);
+    return dynamic_cast<Md2Model *>(loaded_model);
 }

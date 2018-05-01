@@ -21,7 +21,7 @@ struct octave {
 
 /**
 * @class CloudsActualizables
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 5:12:31 PM
 * @brief Genera una textura de nubes y permite actualizarla
 * a diferentes velocidades, slo actualiza el cover sharpness

@@ -12,7 +12,7 @@
 /**
 * @brief Hace un push sobre nuestro EventLogger g_Log
 * de la funcin especificada
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:36:54 PM
 * @param funcion El nombre de la funcion en la que se
 * esta haciendo el logging
@@ -23,7 +23,7 @@ EventLogFN::EventLogFN(const char *funcion) {
 
 /**
 * @brief Hace un pop sobre nuestro EventLogger g_Log
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:37:00 PM
 */
 EventLogFN::~EventLogFN() {
@@ -32,7 +32,7 @@ EventLogFN::~EventLogFN() {
 
 /**
 * @brief Inicializa el stack y coloca al logger en su estado inicial
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:40:49 PM
 */
 EventLogger::EventLogger() {
@@ -50,7 +50,7 @@ EventLogger::~EventLogger() {
 /**
 * @brief coloca al objeto en un estado listo para 
 * loggear eventos
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:41:43 PM
 * @retval bool  Falso si ya ha sido inicializado, 
 * verdadero si la inicializacion fue un exito
@@ -72,7 +72,7 @@ bool EventLogger::init(const char *logName) {
 
 /**
 * @brief Nos dice si el objeto esta listo para loggear eventos
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:45:26 PM
 * @retval bool  verdadero cuando est listo, falso cuando no lo esta
 */
@@ -82,7 +82,7 @@ bool EventLogger::isInitialized() {
 
 /**
 * @brief Coloca al logger en un estado en que no puede loggear eventos
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:46:25 PM
 */
 void EventLogger::term() {
@@ -92,7 +92,7 @@ void EventLogger::term() {
 
 /**
 * @brief Loggea un evento con las banderas y formato especificados
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:47:16 PM
 * @param format Es una cadena de texto en cierto formato, al estilo printf ("%s %d %c")
 * @param ... Argumentos variables, usados por la cadena de formato
@@ -116,7 +116,7 @@ void EventLogger::logEvent(unsigned int flags, const char *format, ...) {
 
 /**
 * @brief Loggea un evento con las banderas y formato especificados
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:47:16 PM
 * @param format Es una cadena de texto en cierto formato, al estilo printf ("%s %d %c")
 * @param ... Argumentos variables, usados por la cadena de formato
@@ -143,7 +143,7 @@ void EventLogger::logEvent(const char *format, ...) {
 * @brief loggea el callstack, loggea un evento si 
 * es que hay uno y hace un flush
 * esta funcion debe llamarse en el Game Loop
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:53:08 PM
 */
 void EventLogger::update() {
@@ -177,7 +177,7 @@ void EventLogger::update() {
 
 /**
 * @brief Hace un push en nuestro callstack
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:56:29 PM
 * @param name Nombre de la funcion
 */
@@ -190,7 +190,7 @@ void EventLogger::pushFunction(const char *name) {
 
 /**
 * @brief hace un pop en nuestro callStack
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:56:57 PM
 */
 void EventLogger::popFunction() {
@@ -205,7 +205,7 @@ void EventLogger::popFunction() {
 /**
 * @brief Imprimimos el texto deseado con las banderas especificadas
 * y se actualiza el callStack()
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 3:58:08 PM
 * @param buffer El string parseado de impresion
 * @param flags Las banderas de impresion
@@ -230,7 +230,7 @@ void EventLogger::logOutput(char *buffer, unsigned int flags) {
 
 /**
 * @brief Loggea y actualiza el callStack
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 4:01:58 PM
 */
 void EventLogger::logCallStack() {

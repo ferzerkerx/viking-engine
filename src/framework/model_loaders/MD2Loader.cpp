@@ -11,243 +11,239 @@
 
 
 MD2Loader::MD2Loader() : Model3DLoader() {
-    m_pSkins = nullptr;
-    m_pTexCoords = nullptr;
-    m_pTriangles = nullptr;
-    m_pFrames = nullptr;
+    skins_ = nullptr;
+    texture_coordinates_ = nullptr;
+    faces_ = nullptr;
+    frames_ = nullptr;
 
-    m_file = nullptr;
+    file_ = nullptr;
 }
 
-Model3D* MD2Loader::importar(const char *modelo) {
-    return importar(modelo, nullptr);
+Model3d *MD2Loader::Load(const char *md2_file_name) {
+    return load(md2_file_name, nullptr);
 }
 
-Model3D* MD2Loader::importar(const char *modelo, const char *textura) {
-    FN("MD2::readMD2File(char * modelo)");
-    if (!modelo) {
+Model3d *MD2Loader::load(const char *md2_file_name, const char *texture_file_name) {
+    FN("MD2::readMD2File(char * md2_file_name)");
+    if (!md2_file_name) {
         throw std::invalid_argument("No name was spacified.");
     }
 
-    m_file = fopen(modelo, "rb");
+    file_ = fopen(md2_file_name, "rb");
 
-    if (!m_file) {
-        LOG("No existe el archivo: %s", modelo);
+    if (!file_) {
+        LOG("No existe el archivo: %s", md2_file_name);
         throw std::invalid_argument("No existe el archivo");
     }
-    struct md2_header m_header{};
+    struct Md2Header m_header{};
 
-    fread(&m_header, 1, sizeof(struct md2_header), m_file);
+    fread(&m_header, 1, sizeof(struct Md2Header), file_);
     LOG("ident = %d", m_header.ident);
     LOG("version = %d", m_header.version);
-    LOG("skinwidth = %d", m_header.skinwidth);
-    LOG("skinheight = %d", m_header.skinheight);
-    LOG("framesize = %d", m_header.framesize);
+    LOG("skin_width = %d", m_header.skin_width);
+    LOG("skin_height = %d", m_header.skin_height);
+    LOG("frame_size = %d", m_header.frame_size);
     LOG("num_skins = %d", m_header.num_skins);
     LOG("num_vertices = %d", m_header.num_vertices);
     LOG("num_st = %d", m_header.num_st);
     LOG("num_tris = %d", m_header.num_tris);
-    LOG("num_glcmds = %d", m_header.num_glcmds);
+    LOG("num_gl_commands = %d", m_header.num_gl_commands);
     LOG("num_frames = %d", m_header.num_frames);
     LOG("offset_skins = %d", m_header.offset_skins);
     LOG("offset_st = %d", m_header.offset_st);
     LOG("offset_tris = %d", m_header.offset_tris);
     LOG("offset_frames = %d", m_header.offset_frames);
-    LOG("offset_glcmds = %d", m_header.offset_glcmds);
+    LOG("offset_gl_commands = %d", m_header.offset_gl_commands);
     LOG("offset_end = %d", m_header.offset_end);
 
     if (m_header.ident != IDENT || m_header.version != VERSION) {
-        LOG("Error al cargar \"%s\" version de MD2 incorrecta", modelo);
         throw std::invalid_argument("Invalid md2 header");
     }
 
-    leeMD2Data(m_header);
-    auto * md2Model = new MD2Model();
-    convertDataStructures(m_header, md2Model);
+    ReadHeader(m_header);
+    auto *md2Model = new Md2Model();
+    PopulateModelInformation(m_header, md2Model);
 
-    if (textura) {
-        Material texture;
-        strcpy(texture.nombre, textura);
+    if (texture_file_name) {
+        Material material;
+        strcpy(material.name, texture_file_name);
         Textura t;
         unsigned int tex[1];
-        t.CrearTextura(tex, textura, 0);
-        texture.texture_id = tex[0];
-        texture.u_tile = 1;
-        texture.v_tile = 1;
+        t.CrearTextura(tex, texture_file_name, 0);
+        material.texture_id = tex[0];
+        material.u_tile = 1;
+        material.v_tile = 1;
 
-        md2Model->addMaterial(texture);
+        md2Model->AddMaterial(material);
     }
 
-    fclose(m_file);
-    m_file = nullptr;
-    delete[] m_pSkins;
-    delete m_pTexCoords;
-    delete m_pTriangles;
-    delete m_pFrames;
-    delete m_glCommands;
+    fclose(file_);
+    file_ = nullptr;
+    delete[] skins_;
+    delete texture_coordinates_;
+    delete faces_;
+    delete frames_;
+    delete glCommands_;
 
 
-    md2Model->calculaNormales();
+    md2Model->updateNormalVector();
     return md2Model;
 }
 
 
-void MD2Loader::leeMD2Data(md2_header &m_header) {
-    // Create a larger buffer for the frames of animation (not fully used yet)
+void MD2Loader::ReadHeader(Md2Header &m_header) {
     unsigned char buffer[MD2_MAX_FRAMESIZE];
     int j = 0;
 
-    // Here we allocate all of our memory from the header's information
-    m_pSkins = new tMd2Skin[m_header.num_skins];
-    m_pTexCoords = new tMd2TexCoord[m_header.num_st];
-    m_pTriangles = new tMd2Face[m_header.num_tris];
-    m_pFrames = new tMd2Frame[m_header.num_frames];
+    skins_ = new Md2Skin[m_header.num_skins];
+    texture_coordinates_ = new Md2TextureCoordinates[m_header.num_st];
+    faces_ = new Md2Face[m_header.num_tris];
+    frames_ = new Md2Frame[m_header.num_frames];
 
 
-    fseek(m_file, m_header.offset_skins, SEEK_SET);
-    fread(m_pSkins, sizeof(tMd2Skin), static_cast<size_t>(m_header.num_skins), m_file);
+    fseek(file_, m_header.offset_skins, SEEK_SET);
+    fread(skins_, sizeof(Md2Skin), static_cast<size_t>(m_header.num_skins), file_);
 
 
-    fseek(m_file, m_header.offset_st, SEEK_SET);
-    fread(m_pTexCoords, sizeof(tMd2TexCoord), static_cast<size_t>(m_header.num_st), m_file);
+    fseek(file_, m_header.offset_st, SEEK_SET);
+    fread(texture_coordinates_, sizeof(Md2TextureCoordinates), static_cast<size_t>(m_header.num_st), file_);
 
 
-    fseek(m_file, m_header.offset_tris, SEEK_SET);
-    fread(m_pTriangles, sizeof(tMd2Face), static_cast<size_t>(m_header.num_tris), m_file);
+    fseek(file_, m_header.offset_tris, SEEK_SET);
+    fread(faces_, sizeof(Md2Face), static_cast<size_t>(m_header.num_tris), file_);
 
-    fseek(m_file, m_header.offset_frames, SEEK_SET);
-    auto *pFrame = (tMd2AliasFrame *) buffer;
+    fseek(file_, m_header.offset_frames, SEEK_SET);
+    auto *pFrame = (Md2AliasFrame *) buffer;
 
     int i = 0;
     for (i = 0; i < m_header.num_frames; i++) {
 
-        m_pFrames[i].pVertices = new tMd2Triangle[m_header.num_vertices];
-        fread(pFrame, 1, static_cast<size_t>(m_header.framesize), m_file);
-        strcpy(m_pFrames[i].strName, pFrame->name);
+        frames_[i].pVertices = new Md2Triangle[m_header.num_vertices];
+        fread(pFrame, 1, static_cast<size_t>(m_header.frame_size), file_);
+        strcpy(frames_[i].strName, pFrame->name);
 
 
-        tMd2Triangle *pVertices = m_pFrames[i].pVertices;
+        Md2Triangle *pVertices = frames_[i].pVertices;
 
         for (j = 0; j < m_header.num_vertices; j++) {
-            pVertices[j].vertex[0] = pFrame->aliasVertices[j].vertex[0] * pFrame->scale[0] + pFrame->translate[0];
+            pVertices[j].vertex[0] = pFrame->alias_vertices[j].vertex[0] * pFrame->scale[0] + pFrame->translate[0];
             pVertices[j].vertex[2] =
-                    (pFrame->aliasVertices[j].vertex[1] * pFrame->scale[1] + pFrame->translate[1]) * -1;
-            pVertices[j].vertex[1] = pFrame->aliasVertices[j].vertex[2] * pFrame->scale[2] + pFrame->translate[2];
+                    (pFrame->alias_vertices[j].vertex[1] * pFrame->scale[1] + pFrame->translate[1]) * -1;
+            pVertices[j].vertex[1] = pFrame->alias_vertices[j].vertex[2] * pFrame->scale[2] + pFrame->translate[2];
         }
     }
 
-    m_glCommands = new int[m_header.num_glcmds];
-    fseek(m_file, m_header.offset_glcmds, SEEK_SET);
-    fread(m_glCommands, static_cast<size_t>(m_header.num_glcmds), sizeof(int), m_file);
+    glCommands_ = new int[m_header.num_gl_commands];
+    fseek(file_, m_header.offset_gl_commands, SEEK_SET);
+    fread(glCommands_, static_cast<size_t>(m_header.num_gl_commands), sizeof(int), file_);
 
 
 }
 
-void MD2Loader::convertDataStructures(md2_header &m_header, MD2Model * md2Model) {
+void MD2Loader::PopulateModelInformation(Md2Header &md2_header, Md2Model *md2_Model) {
     int j = 0;
     int i = 0;
 
-    parseAnimations(m_header, md2Model);
+    ParseAnimations(md2_header, md2_Model);
 
-    for (i = 0; i < m_header.num_frames; i++) {
-        Object3D currentFrame = {0};
+    for (i = 0; i < md2_header.num_frames; i++) {
+        Object3D current_object = {0};
 
-        currentFrame.num_verts = m_header.num_vertices;
-        currentFrame.num_st = m_header.num_st;
-        currentFrame.num_faces = m_header.num_tris;
+        current_object.num_verts = md2_header.num_vertices;
+        current_object.num_st = md2_header.num_st;
+        current_object.num_faces = md2_header.num_tris;
 
-        currentFrame.vertices = new vector3f[currentFrame.num_verts];
+        current_object.vertex = new vector3f[current_object.num_verts];
 
-        for (j = 0; j < currentFrame.num_verts; j++) {
-            currentFrame.vertices[j].x = m_pFrames[i].pVertices[j].vertex[0];
-            currentFrame.vertices[j].y = m_pFrames[i].pVertices[j].vertex[1];
-            currentFrame.vertices[j].z = m_pFrames[i].pVertices[j].vertex[2];
+        for (j = 0; j < current_object.num_verts; j++) {
+            current_object.vertex[j].x = frames_[i].pVertices[j].vertex[0];
+            current_object.vertex[j].y = frames_[i].pVertices[j].vertex[1];
+            current_object.vertex[j].z = frames_[i].pVertices[j].vertex[2];
         }
 
-        delete m_pFrames[i].pVertices;
+        delete frames_[i].pVertices;
 
         if (i > 0) {
-            md2Model->addObject(currentFrame);
+            md2_Model->AddObject(current_object);
             continue;
 
         }
 
-        currentFrame.text_st = new vector2f[currentFrame.num_st];
+        current_object.texture_st = new vector2f[current_object.num_st];
         // Go through all of the uv coordinates and assign them over to our structure.
         // The UV coordinates are not normal UV coordinates, they have a pixel ratio of
         // 0 to 256.  We want it to be a 0 to 1 ratio, so we divide the u value by the
         // skin width and the v value by the skin height.  This gives us our 0 to 1 ratio.
         // The v coordinate is flipped upside down.  We just subtract
         // the v coordinate from 1 to remedy this problem.
-        for (j = 0; j < currentFrame.num_st; j++) {
-            currentFrame.text_st[j].s = m_pTexCoords[j].u / float(m_header.skinwidth);
-            currentFrame.text_st[j].t = 1 - m_pTexCoords[j].v / float(m_header.skinheight);
+        for (j = 0; j < current_object.num_st; j++) {
+            current_object.texture_st[j].s = texture_coordinates_[j].u / float(md2_header.skin_width);
+            current_object.texture_st[j].t = 1 - texture_coordinates_[j].v / float(md2_header.skin_height);
         }
 
-        currentFrame.faces = new Face[currentFrame.num_faces];
+        current_object.faces = new Face[current_object.num_faces];
         // Go through all of the face data and assign it over to OUR structure
-        for (j = 0; j < currentFrame.num_faces; j++) {
+        for (j = 0; j < current_object.num_faces; j++) {
             // Assign the vertex indices to our face data
-            currentFrame.faces[j].vert_index[0] = m_pTriangles[j].vertexIndices[0];
-            currentFrame.faces[j].vert_index[1] = m_pTriangles[j].vertexIndices[1];
-            currentFrame.faces[j].vert_index[2] = m_pTriangles[j].vertexIndices[2];
+            current_object.faces[j].vert_index[0] = faces_[j].vertex_indexes[0];
+            current_object.faces[j].vert_index[1] = faces_[j].vertex_indexes[1];
+            current_object.faces[j].vert_index[2] = faces_[j].vertex_indexes[2];
 
             // Assign the texture coord indices to our face data
-            currentFrame.faces[j].st_index[0] = m_pTriangles[j].textureIndices[0];
-            currentFrame.faces[j].st_index[1] = m_pTriangles[j].textureIndices[1];
-            currentFrame.faces[j].st_index[2] = m_pTriangles[j].textureIndices[2];
+            current_object.faces[j].st_index[0] = faces_[j].texture_indexes[0];
+            current_object.faces[j].st_index[1] = faces_[j].texture_indexes[1];
+            current_object.faces[j].st_index[2] = faces_[j].texture_indexes[2];
         }
 
         // Here we add the current object (or frame) to our list object list
-        md2Model->addObject(currentFrame);
+        md2_Model->AddObject(current_object);
     }
 
-    md2Model->setGlCommands(m_glCommands, m_header.num_glcmds);
+    md2_Model->set_GlCommands(glCommands_, md2_header.num_gl_commands);
 }
 
 
-void MD2Loader::parseAnimations(md2_header &m_header, MD2Model *m_mdl) {
-    FN("MD2Loader::parseAnimations(md2_header  & m_header)");
+void MD2Loader::ParseAnimations(Md2Header &md2_header, Md2Model *md2_Model) {
+    FN("MD2Loader::ParseAnimations(Md2Header  & md2_header)");
     int i = 0;
-    int longitud = 0;
-    int start = 0;
-    char nombre[20] = {0};
+    int name_size = 0;
+    int start_of_frame = 0;
+    char name[20] = {0};
 
-    for (i = 0; i < m_header.num_frames; i++) {
+    for (i = 0; i < md2_header.num_frames; i++) {
         if (i == 0) {
-            strcpy(nombre, m_pFrames[i].strName);
-            longitud = static_cast<int>(strlen(nombre));
-            FrameName(nombre, longitud);
-            start = i;
+            strcpy(name, frames_[i].strName);
+            name_size = static_cast<int>(strlen(name));
+            FrameName(name, name_size);
+            start_of_frame = i;
             continue;
         }
 
-        if (longitud != strlen(m_pFrames[i].strName) || (strstr(m_pFrames[i].strName, nombre) == nullptr)) {
-
-            agregaAnimacion(start, i - 1, nombre);
-            strcpy(nombre, m_pFrames[i].strName);
-            longitud = static_cast<int>(strlen(nombre));
-            FrameName(nombre, longitud);
-            start = i;
+        if (name_size != strlen(frames_[i].strName) || (strstr(frames_[i].strName, name) == nullptr)) {
+            AddAnimation(start_of_frame, i - 1, name);
+            strcpy(name, frames_[i].strName);
+            name_size = static_cast<int>(strlen(name));
+            FrameName(name, name_size);
+            start_of_frame = i;
         }
     }
-    Animacion animacion = agregaAnimacion(start, i - 1, nombre);
-    m_mdl->addAnimation(animacion);
+    Animation animacion = AddAnimation(start_of_frame, i - 1, name);
+    md2_Model->Add_animation(animacion);
 }
 
-Animacion MD2Loader::agregaAnimacion(int start, int end, char *name) {
-    Animacion anim = {0};
-    anim.frame_inicial = start;
-    anim.frame_final = end;
-    strcpy(anim.nombre, name);
-    LOG("start= %d end= %d nombre = %s", anim.frame_inicial, anim.frame_final, anim.nombre);
-    return anim;
+Animation MD2Loader::AddAnimation(int start, int end, char *name) {
+    Animation animation = {0};
+    animation.initial_frame = start;
+    animation.final_frame = end;
+    strcpy(animation.name, name);
+    LOG("start= %d end= %d name = %s", animation.initial_frame, animation.final_frame, animation.name);
+    return animation;
 
 }
 
 
-void MD2Loader::FrameName(char *buff, int longitud) {
-    if (buff[longitud - 2] == '0') { buff[longitud - 2] = '\0'; }
-    else { buff[longitud - 1] = '\0'; }
+void MD2Loader::FrameName(char *buff, int length) {
+    if (buff[length - 2] == '0') { buff[length - 2] = '\0'; }
+    else { buff[length - 1] = '\0'; }
 }
 

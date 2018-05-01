@@ -7,14 +7,12 @@
 #define __MODEL3DLOADER__H__
 
 #include "../Textura.h"
-#include "Model3D.h"
+#include "Model3d.h"
 
 /**
 * @class Model3DLoader
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, November 23, 2007 5:49:22 PM
-* @brief Esta clase representa una interfaz para los 
-* loaders de modelos3D
 */
 class Model3DLoader {
 
@@ -25,20 +23,8 @@ public:
     virtual ~Model3DLoader() {
     }
 
-    /**
-    * @brief Funcion que se encarga de importar el modelo
-    * @author Fernando Montes de Oca Cspedes
-    * @date Friday, November 23, 2007 7:06:23 PM
-    * @param modelo El path hacia el archivo que contiene el modelo
-    */
-    virtual Model3D* importar(const char *modelo) = 0;
+    virtual Model3d *Load(const char *file_name) = 0;
 };
-
-/**
-* @var Model3DLoader::m_mdl
-* @brief Apuntador a un objeto Model3D que representa un modelo 3D
-*/
-
 
 
 #endif

@@ -11,7 +11,6 @@
 #include "VKSkyDome.h"
 #include "framework/model_loaders/ModelFactory.h"
 #include "framework/sky/SkyBox.h"
-#include "framework/model_loaders/MD2Model.h"
 #include "framework/loggers/ConsoleEventLogger.h"
 
 #include <GL/glut.h>
@@ -40,7 +39,7 @@ Fuente *fuente;
 VKSkyDome *vkSkyDome;
 SkyBox *skyBox;
 EventLogger *g_Log;
-MD2Model *knight;
+Md2Model *knight;
 
 void initViking();
 
@@ -108,12 +107,12 @@ void processAsciiKeyEvents(unsigned char key, int mouseX, int mouseY) {
     switch (key) {
         case 'n':
             if (knight) {
-                knight->nextAnimation();
+                knight->NextAnimation();
             }
             break;
         case 'p':
             if (knight) {
-                knight->previousAnimation();
+                knight->PreviousAnimation();
             }
             break;
         case 'f':
@@ -181,7 +180,7 @@ void renderScene() {
         glPushMatrix();
         glTranslatef(0.0F, 3.6F, 0.0F);
         glScalef(0.15F, 0.15F, 0.15F);
-        knight->renderWithOpenGlCommands();
+        knight->RenderWithOpenGlCommands();
         glPopMatrix();
     }
 
@@ -265,7 +264,7 @@ void initViking() {
     fuente = new Fuente(fontText);
     timer = new Timer();
 
-    knight = ModelFactory::loadMD2("data/modelos/knight.md2", "data/modelos/knight.bmp");
+    knight = ModelFactory::LoadMD2("data/modelos/knight.md2", "data/modelos/knight.bmp");
 
     glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
 

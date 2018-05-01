@@ -10,7 +10,7 @@
 
 /**
 * @brief Constructor que crea un Quaternion unitario
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Sunday, October 28, 2007 11:58:10 PM
 */
 Quaternion::Quaternion() {
@@ -23,7 +23,7 @@ Quaternion::Quaternion() {
 /**
 * @brief Inicializa un Quaternion con los componentes
 * indicados
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Sunday, October 28, 2007 11:58:41 PM
 * @param w Componente real del Quaternion
 * @param x Componente imaginario i del Quaternion
@@ -37,7 +37,7 @@ Quaternion::Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z
 /**
 * @brief Regresa el Quaternion correspondiente a una
 * rotacion con angulo theta sobre el eje dado
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Sunday, October 28, 2007 11:59:59 PM
 * @param theta Angulo de la rotacion
 * @param eje Eje de rotacion
@@ -60,7 +60,7 @@ Quaternion::Quaternion(float theta, vector3f *eje) {
 /**
 * @brief Crea un Quaternion a partir de un arreglo
 * que representa una matriz
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:03:45 AM
 * @param matriz Arreglo que representa una matriz de 3x3 o 4x4
 * @param num_columnas Especifica si la matriz es de 3x3 o de 4x4
@@ -164,7 +164,7 @@ Quaternion::Quaternion(float *matriz, int num_columnas) {
 
 /**
 * @brief Compara si 2 Quaterniones son iguales
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:05:21 AM
 * @retval bool verdadero si sus componentes son iguales, falso en caso contrario
 * @param q El operando derecho de la comparacion
@@ -177,7 +177,7 @@ bool Quaternion::operator==(const Quaternion &q) {
 /**
 * @brief Suma el Quaternion actual con otro y regresa
 * un tercer Quaternion con el resultado de la suma
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:06:55 AM
 * @retval Quaternion Resultado de la suma
 * @param q El operando derecho de la suma
@@ -189,7 +189,7 @@ Quaternion Quaternion::operator+(const Quaternion &q) {
 /**
 * @brief Resta el Quaternion actual con otro y regresa
 * un tercer Quaternion con el resultado de la resta
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:06:55 AM
 * @retval Quaternion Resultado de la resta
 * @param q El operando derecho de la resta
@@ -201,7 +201,7 @@ Quaternion Quaternion::operator-(const Quaternion &q) {
 /**
 * @brief Multiplica el Quaternion actual con otro y regresa
 * un tercer Quaternion con el resultado de la multiplicacion
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:06:55 AM
 * @retval Quaternion Resultado de la multiplicacion
 * @param q El operando derecho de la multiplicacion
@@ -216,7 +216,7 @@ Quaternion Quaternion::operator*(const Quaternion &q) {
 /**
 * @brief Multiplica el Quaternion actual con un escalar y regresa
 * un Quaternion con el resultado de la multiplicacion
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:06:55 AM
 * @retval Quaternion Resultado de la multiplicacion
 * @param f El escalar por el que se va a multiplicar el Quaternion
@@ -235,7 +235,7 @@ vector3f Quaternion::operator*(vector3f p) {
 /**
 * @brief Divide el Quaternion actual con un escalar y regresa
 * un Quaternion con el resultado de la division
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:06:55 AM
 * @retval Quaternion Resultado de la division
 * @param f El escalar por el que se va a dividir el Quaternion
@@ -247,7 +247,7 @@ Quaternion Quaternion::operator/(float f) {
 
 /**
 * @brief Suma el Quaternion actual por el Quaternion especificado
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:35:29 AM
 * @retval Quaternion El Quaternion actual despues de la suma
 * @param q El Quaternion por el que se va a sumar el Quaternion actual
@@ -262,7 +262,7 @@ Quaternion &Quaternion::operator+=(const Quaternion &q) {
 
 /**
 * @brief Resta el Quaternion actual por el Quaternion especificado
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:35:29 AM
 * @retval Quaternion El Quaternion actual despues de la resta
 * @param q El Quaternion por el que se va a restar el Quaternion actual
@@ -277,7 +277,7 @@ Quaternion &Quaternion::operator-=(const Quaternion &q) {
 
 /**
 * @brief Multiplica el Quaternion actual por el Quaternion especificado
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:35:29 AM
 * @retval Quaternion El Quaternion actual despues de la multiplicacion
 * @param q El Quaternion por el que se va a multiplicar el Quaternion actual
@@ -292,7 +292,7 @@ Quaternion &Quaternion::operator*=(const Quaternion &q) {
 
 /**
 * @brief Multiplica el Quaternion por el escalar especificado
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:35:29 AM
 * @retval Quaternion El Quaternion actual despues de la multiplicacion
 * @param f Escalar por el que se va a multiplicar el Quaternion
@@ -307,7 +307,7 @@ Quaternion &Quaternion::operator*=(float f) {
 
 /**
 * @brief Divide el Quaternion por el escalar especificado
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:35:29 AM
 * @retval Quaternion El Quaternion actual despues de la division
 * @param f Escalar por el que se va a dividir el Quaternion
@@ -325,7 +325,7 @@ Quaternion &Quaternion::operator/=(float f) {
 /**
 * @brief Multiplica el Quaternion actual con un vector
 * el resultado de esto es una rotacion del vector
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:06:55 AM
 * @retval vector3f El vector rotado por el Quaternion actual
 * @param p El vector(punto) a rotar
@@ -364,7 +364,7 @@ vector3f Quaternion::rotaVector(vector3f p) {
 /**
 * @brief Regresa un Quaternion nuevo que representa
 * el Quaternion actual normalizado
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:15:02 AM
 * @retval Quaternion Quaternion unitario (normalizado)
 */
@@ -375,7 +375,7 @@ Quaternion Quaternion::normaliza() {
 
 /**
 * @brief Regresa el conjugado de un Quaternion
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:21:02 AM
 * @retval Quaternion Quaternion que representa el conjugado del Quaternion actual
 */
@@ -385,7 +385,7 @@ Quaternion Quaternion::getConjugado() {
 
 /**
 * @brief Regresa la inversa de un Quaternion
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:21:40 AM
 * @retval Quaternion Quaternion que representa la inversa del quaternion actual
 */
@@ -397,7 +397,7 @@ Quaternion Quaternion::getInversa() {
 /**
 * @brief Esta funcion calcula la Interpolacion Esferica Lineal
 * (SLERP en ingles) del quaternion q2 al quaternion q1
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:22:39 AM
 * @retval Quaternion Quaternion resultado de la interpolacion
 * @param q1 Quaternion 1
@@ -466,7 +466,7 @@ Quaternion Quaternion::SLERP(const Quaternion &q1, const Quaternion &q2, float t
 
 /**
 * @brief Regresa la magnitud de un Quaternion
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:30:48 AM
 * @retval float Regresa la magnitud de un Quaternion  
 */
@@ -477,7 +477,7 @@ inline float Quaternion::getMagnitud() {
 /**
 * @brief Nos dice si un Quaternion es unitario
 * es decir si w^2 + x^2 + y^2 + z^2 = 1
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:31:32 AM
 * @retval bool verdadero si es unitario, falso en caso contrario
 */
@@ -491,7 +491,7 @@ bool Quaternion::isUnitario() {
 /**
 * @brief Convierte el Quaternion actual a una matriz homogenea 
 * de 4x4
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:32:52 AM
 * @param m4x4 Arreglo donde se guardara la matriz de 4x4
 */
@@ -527,7 +527,7 @@ void Quaternion::to4x4Matriz(float *m4x4) {
 /**
 * @brief Convierte el Quaternion actual a una matriz 
 * de 3x3
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:32:52 AM
 * @param m3x3 Arreglo donde se guardara la matriz de 3x3
 */
@@ -554,7 +554,7 @@ void Quaternion::to3x3Matriz(float *m3x3) {
 /**
 * @brief Regresa un arreglo de chars que representa
 * la informacion del Quaternion
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Monday, October 29, 2007 12:34:24 AM
 * @retval char Arreglo de chars que representa
 * la informacion del Quaternion

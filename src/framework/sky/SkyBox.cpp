@@ -10,7 +10,7 @@
 /**
 * @brief Genera una caja con un alto, largo, ancho especificos, y recibe las texturas en arreglo
 * @warning Recibe un arreglo de identificadores de textura en este orden FRONT,BACK,LEFT,RIGHT,UP,DOWN
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 9:56:50 AM
 * @param alto Alto de la caja, eje y en openGL
 * @param largo Largo de la caja, eje x en openGL
@@ -37,7 +37,7 @@ SkyBox::SkyBox(float alto, float largo, float ancho, unsigned int *caras) {
 
 /**
 * @brief Genera una caja con un alto, largo, ancho especificos, y recibe las texturas
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 9:56:55 AM
 * @param alto Alto de la caja, eje y en openGL
 * @param largo Largo de la caja, eje x en openGL
@@ -74,7 +74,7 @@ SkyBox::SkyBox(float alto, float largo, float ancho, unsigned int front,
 
 /**
 * @brief Destructor del SkyBox libera las 6 texturas
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 1:18:55 PM
 */
 SkyBox::~SkyBox() {
@@ -83,7 +83,7 @@ SkyBox::~SkyBox() {
 
 /**
 * @brief Manda llamar a render
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 1:18:55 PM
 * @param poscam Vector de la camara
 */
@@ -94,7 +94,7 @@ void SkyBox::actualiza(vector3f poscam) {
 /**
 * @brief Renderea las 6 caras del SkyBox activa culling para 
 * GL_FRONT
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 1:19:55 PM
 * @param poscam vector de la camara
 */
@@ -192,7 +192,7 @@ void SkyBox::render(vector3f poscam) {
 
 /**
 * @brief Regresa el alto de la caja
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 1:29:03 PM
 * @retval float  Alto de la caja
 */
@@ -202,7 +202,7 @@ float SkyBox::getAlto() {
 
 /**
 * @brief Regresa el largo de la caja
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 1:29:03 PM
 * @retval float  Largo de la caja
 */
@@ -212,7 +212,7 @@ float SkyBox::getLargo() {
 
 /**
 * @brief Regresa el ancho de la caja
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 1:29:03 PM
 * @retval float  ancho de la caja
 */

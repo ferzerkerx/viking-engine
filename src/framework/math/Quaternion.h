@@ -10,7 +10,7 @@
 
 /**
 * @class Quaternion
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Sunday, October 28, 2007 11:54:04 PM
 * @brief Clase que maneja los Quaterniones, hace SLERP y 
 * rotacion de vectores

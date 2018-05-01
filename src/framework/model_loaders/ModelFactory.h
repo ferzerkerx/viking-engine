@@ -6,12 +6,12 @@
 #define VIKING_ENGINE_MODELFACTORY_H
 
 
-#include "MD2Model.h"
+#include "Md2Model.h"
 
 class ModelFactory {
 
 public:
-    static MD2Model* loadMD2(const char *modelo, const char *text);
+    static Md2Model *LoadMD2(const char *md2_file_name, const char *texture_file_name);
 };
 
 

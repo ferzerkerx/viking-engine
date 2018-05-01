@@ -10,7 +10,7 @@
 
 /**
 * @class SkyBox
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 1:28:06 PM
 * @brief Esta clase dibuja un cubo texturizado
 * utilizando GL_CLAMP para que no se aprecien los bordes

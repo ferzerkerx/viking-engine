@@ -13,7 +13,7 @@
 
 /**
 * @class Clouds
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 5:14:06 PM
 * @brief Define las estructuras bsicas para la generacion de texturas
 * es una interfaz para generadores de texturas de nubes ms especficos

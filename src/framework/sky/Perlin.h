@@ -15,7 +15,7 @@
 
 
 /**	@class Perlin
-*	@author Fernando Montes de Oca Cspedes.
+*	@author Fernando Montes de Oca Cespedes.
 *	@version 1.0
 *	@date	09/Jul/2007
 *	@brief Tiene funciones necesarias para generar texturas

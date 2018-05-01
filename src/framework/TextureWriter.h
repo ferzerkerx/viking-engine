@@ -11,7 +11,7 @@
 
 /**
 * @class TextureWriter
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 4:47:49 PM
 * @brief Interfaz que define un escritor para texturas
 * decidi no ponerle atributos porque cada header de formato varia

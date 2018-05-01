@@ -33,7 +33,7 @@ struct BITMAPINFOHEADER {                        //start 	size 	name 			stdvalue
 
 /**
 * @class BMPWriter
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 5:50:41 PM
 * @brief Clase qeu escribe BMP's de 24 bits 
 */

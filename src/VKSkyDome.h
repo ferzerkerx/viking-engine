@@ -13,7 +13,7 @@
 
 /**
 * @class VKSkyDome
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 12:16:55 PM
 * @brief Domo del juego  
 */

@@ -38,7 +38,7 @@ const int MAX_DEBUG_LINE_LEN = 1024; //usado para la creacion de buffers
 
 /**
 * @class EventLogFN
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:28:41 PM
 * @brief Esta clase nos ayuda a mantener un callstack
 * cada vez que se invoca el macro FN(var_1) se crea un objeto
@@ -65,7 +65,7 @@ typedef std::vector<const char *> CharPtrVec; //tipo que usaremos para nuestro c
 
 /**
 * @class EventLogger
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Tuesday, October 23, 2007 2:22:31 PM
 * @brief Clase abstracta que sirve de interfaz para los logger de Eventos
 * especficos

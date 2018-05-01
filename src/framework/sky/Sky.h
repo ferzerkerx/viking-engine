@@ -11,7 +11,7 @@
 
 /**
 * @class Sky
-* @author Fernando Montes de Oca Cspedes
+* @author Fernando Montes de Oca Cespedes
 * @date Thursday, October 18, 2007 6:58:13 PM
 * @brief Clase abstracta que representa un cielo y funciona como
 * una interfaz para la implementacin de clases especificas

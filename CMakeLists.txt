@@ -38,18 +38,18 @@ add_executable(viking_engine src/Main.cpp
         src/framework/loggers/EventLogger.cpp
         src/framework/loggers/ConsoleEventLogger.h
         src/framework/loggers/ConsoleEventLogger.cpp
-        src/framework/model_loaders/Model3D.h
-        src/framework/model_loaders/Model3D.cpp
-        src/framework/model_loaders/MD2Model.h
-        src/framework/model_loaders/MD2Model.cpp
+        src/framework/model_loaders/Model3d.h
+        src/framework/model_loaders/Model3d.cpp
+        src/framework/model_loaders/Md2Model.h
+        src/framework/model_loaders/Md2Model.cpp
         src/framework/model_loaders/MD2Loader.h
         src/framework/model_loaders/MD2Loader.cpp
         src/framework/model_loaders/ModelFactory.cpp src/framework/model_loaders/ModelFactory.h)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
-include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
 
-target_link_libraries(viking_engine ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+target_link_libraries(viking_engine ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data/
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data/)
