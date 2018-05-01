@@ -1,188 +1,147 @@
-/**
-* @file SkyBox.cpp
-* @brief Implementacin de la clase SkyBox
-* @date Saturday, October 20, 2007 1:27:58 PM
-*/
 #include "SkyBox.h"
 #include <GL/glut.h>
 
+SkyBox::SkyBox(float height, float large, float width, unsigned int *faces) {
+    if (height <= 0.0F) {
+        height = 10.0F;
+    }
+    if (large <= 0.0F) {
+        large = 10.0F;
+    }
+    if (width <= 0.0F) {
+        width = 10.0F;
+    }
+    height_ = height / 2.0F;
+    large_ = large / 2.0F;
+    width_ = width / 2.0F;
 
-/**
-* @brief Genera una caja con un alto, largo, ancho especificos, y recibe las texturas en arreglo
-* @warning Recibe un arreglo de identificadores de textura en este orden FRONT,BACK,LEFT,RIGHT,UP,DOWN
-* @author Fernando Montes de Oca Cespedes
-* @date Saturday, October 20, 2007 9:56:50 AM
-* @param alto Alto de la caja, eje y en openGL
-* @param largo Largo de la caja, eje x en openGL
-* @param ancho Alto de la caja, eje y en openGL
-* @param caras Arreglo de identificadores de textura en este orden FRONT,BACK,LEFT,RIGHT,UP,DOWN
-*/
-SkyBox::SkyBox(float alto, float largo, float ancho, unsigned int *caras) {
-    if (alto <= 0.0F) { alto = 10.0F; }
-    if (largo <= 0.0F) { largo = 10.0F; }
-    if (ancho <= 0.0F) { ancho = 10.0F; }
-    m_alto = alto / 2.0F;
-    m_largo = largo / 2.0F;
-    m_ancho = ancho / 2.0F;
-
-    if (caras != nullptr) {
+    if (faces != nullptr) {
         for (int i = 0; i < 6; i++) {
-            m_caras[i] = caras[i];
-            glBindTexture(GL_TEXTURE_2D, m_caras[i]);
+            faces_[i] = faces[i];
+            glBindTexture(GL_TEXTURE_2D, faces_[i]);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
         }
     }
 }
-
-/**
-* @brief Genera una caja con un alto, largo, ancho especificos, y recibe las texturas
-* @author Fernando Montes de Oca Cespedes
-* @date Saturday, October 20, 2007 9:56:55 AM
-* @param alto Alto de la caja, eje y en openGL
-* @param largo Largo de la caja, eje x en openGL
-* @param ancho Alto de la caja, eje y en openGL
-* @param front La cara frontal de la caja
-* @param back La cara trasera de la caja
-* @param left La cara izquierda de la caja
-* @param right La cara derecha de la caja
-* @param up La cara de arriba de la caja
-* @param down La cara de abajo de la caja
-*/
-SkyBox::SkyBox(float alto, float largo, float ancho, unsigned int front,
+SkyBox::SkyBox(float height, float large, float width, unsigned int front,
                unsigned int back, unsigned int left, unsigned int right, unsigned int up, unsigned int down) {
-    if (alto <= 0.0F) { alto = 10.0F; }
-    if (largo <= 0.0F) { largo = 10.0F; }
-    if (ancho <= 0.0F) { ancho = 10.0F; }
-    m_alto = alto / 2.0F;
-    m_largo = largo / 2.0F;
-    m_ancho = ancho / 2.0F;
+    if (height <= 0.0F) {
+        height = 10.0F;
+    }
+    if (large <= 0.0F) {
+        large = 10.0F;
+    }
+    if (width <= 0.0F) {
+        width = 10.0F;
+    }
+    height_ = height / 2.0F;
+    large_ = large / 2.0F;
+    width_ = width / 2.0F;
 
-    m_caras[FRONT] = front;
-    m_caras[BACK] = back;
-    m_caras[LEFT] = left;
-    m_caras[RIGHT] = right;
-    m_caras[UP] = up;
-    m_caras[DOWN] = down;
+    faces_[FRONT] = front;
+    faces_[BACK] = back;
+    faces_[LEFT] = left;
+    faces_[RIGHT] = right;
+    faces_[UP] = up;
+    faces_[DOWN] = down;
 
-    for (unsigned int m_cara : m_caras) {
+    for (unsigned int m_cara : faces_) {
         glBindTexture(GL_TEXTURE_2D, m_cara);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     }
 }
 
-/**
-* @brief Destructor del SkyBox libera las 6 texturas
-* @author Fernando Montes de Oca Cespedes
-* @date Saturday, October 20, 2007 1:18:55 PM
-*/
+
 SkyBox::~SkyBox() {
-    glDeleteTextures(6, m_caras);
+    glDeleteTextures(6, faces_);
 }
 
-/**
-* @brief Manda llamar a render
-* @author Fernando Montes de Oca Cespedes
-* @date Saturday, October 20, 2007 1:18:55 PM
-* @param poscam Vector de la camara
-*/
-void SkyBox::actualiza(vector3f poscam) {
-    render(poscam);
+void SkyBox::Update(vector3f camera_position) {
+    Render(camera_position);
 }
 
-/**
-* @brief Renderea las 6 caras del SkyBox activa culling para 
-* GL_FRONT
-* @author Fernando Montes de Oca Cespedes
-* @date Saturday, October 20, 2007 1:19:55 PM
-* @param poscam vector de la camara
-*/
-void SkyBox::render(vector3f poscam) {
+
+void SkyBox::Render(vector3f camera_position) {
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
     glPushMatrix();
-    glTranslatef(poscam.x, poscam.y, poscam.z);
+    glTranslatef(camera_position.x, camera_position.y, camera_position.z);
 
-    /****cara frontal****/
-    glBindTexture(GL_TEXTURE_2D, m_caras[FRONT]);
+    glBindTexture(GL_TEXTURE_2D, faces_[FRONT]);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0F, 0.0F);
-    glVertex3f(m_largo, -m_alto, -m_ancho);
+    glVertex3f(large_, -height_, -width_);
     glTexCoord2f(1.0F, 0.0F);
-    glVertex3f(-m_largo, -m_alto, -m_ancho);
+    glVertex3f(-large_, -height_, -width_);
     glTexCoord2f(1.0F, 1.0F);
-    glVertex3f(-m_largo, m_alto, -m_ancho);
+    glVertex3f(-large_, height_, -width_);
     glTexCoord2f(0.0F, 1.0F);
-    glVertex3f(m_largo, m_alto, -m_ancho);
+    glVertex3f(large_, height_, -width_);
     glEnd();
 
-    /****cara trasera****/
-    glBindTexture(GL_TEXTURE_2D, m_caras[BACK]);
+    glBindTexture(GL_TEXTURE_2D, faces_[BACK]);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0F, 0.0F);
-    glVertex3f(-m_largo, -m_alto, m_ancho);
+    glVertex3f(-large_, -height_, width_);
     glTexCoord2f(1.0F, 0.0F);
-    glVertex3f(m_largo, -m_alto, m_ancho);
+    glVertex3f(large_, -height_, width_);
     glTexCoord2f(1.0F, 1.0F);
-    glVertex3f(m_largo, m_alto, m_ancho);
+    glVertex3f(large_, height_, width_);
     glTexCoord2f(0.0F, 1.0F);
-    glVertex3f(-m_largo, m_alto, m_ancho);
+    glVertex3f(-large_, height_, width_);
     glEnd();
 
-    /****cara izquierda****/
-    glBindTexture(GL_TEXTURE_2D, m_caras[LEFT]);
+    glBindTexture(GL_TEXTURE_2D, faces_[LEFT]);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0F, 0.0F);
-    glVertex3f(-m_largo, -m_alto, -m_ancho);
+    glVertex3f(-large_, -height_, -width_);
     glTexCoord2f(1.0F, 0.0F);
-    glVertex3f(-m_largo, -m_alto, m_ancho);
+    glVertex3f(-large_, -height_, width_);
     glTexCoord2f(1.0F, 1.0F);
-    glVertex3f(-m_largo, m_alto, m_ancho);
+    glVertex3f(-large_, height_, width_);
     glTexCoord2f(0.0F, 1.0F);
-    glVertex3f(-m_largo, m_alto, -m_ancho);
+    glVertex3f(-large_, height_, -width_);
     glEnd();
 
-    /****cara derecha****/
-    glBindTexture(GL_TEXTURE_2D, m_caras[RIGHT]);
+    glBindTexture(GL_TEXTURE_2D, faces_[RIGHT]);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0F, 0.0F);
-    glVertex3f(m_largo, -m_alto, m_ancho);
+    glVertex3f(large_, -height_, width_);
     glTexCoord2f(1.0F, 0.0F);
-    glVertex3f(m_largo, -m_alto, -m_ancho);
+    glVertex3f(large_, -height_, -width_);
     glTexCoord2f(1.0F, 1.0F);
-    glVertex3f(m_largo, m_alto, -m_ancho);
+    glVertex3f(large_, height_, -width_);
     glTexCoord2f(0.0F, 1.0F);
-    glVertex3f(m_largo, m_alto, m_ancho);
+    glVertex3f(large_, height_, width_);
     glEnd();
 
-    /****cara arriba****/
-    glBindTexture(GL_TEXTURE_2D, m_caras[UP]);
+    glBindTexture(GL_TEXTURE_2D, faces_[UP]);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0F, 0.0F);
-    glVertex3f(m_largo, m_alto, -m_ancho);
+    glVertex3f(large_, height_, -width_);
     glTexCoord2f(1.0F, 0.0F);
-    glVertex3f(-m_largo, m_alto, -m_ancho);
+    glVertex3f(-large_, height_, -width_);
     glTexCoord2f(1.0F, 1.0F);
-    glVertex3f(-m_largo, m_alto, m_ancho);
+    glVertex3f(-large_, height_, width_);
     glTexCoord2f(0.0F, 1.0F);
-    glVertex3f(m_largo, m_alto, m_ancho);
+    glVertex3f(large_, height_, width_);
     glEnd();
 
 
-    /****cara abajo****/
-    glBindTexture(GL_TEXTURE_2D, m_caras[DOWN]);
+    glBindTexture(GL_TEXTURE_2D, faces_[DOWN]);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0F, 0.0F);
-    glVertex3f(m_largo, -m_alto, m_ancho);
+    glVertex3f(large_, -height_, width_);
     glTexCoord2f(1.0F, 0.0F);
-    glVertex3f(-m_largo, -m_alto, m_ancho);
+    glVertex3f(-large_, -height_, width_);
     glTexCoord2f(1.0F, 1.0F);
-    glVertex3f(-m_largo, -m_alto, -m_ancho);
+    glVertex3f(-large_, -height_, -width_);
     glTexCoord2f(0.0F, 1.0F);
-    glVertex3f(m_largo, -m_alto, -m_ancho);
+    glVertex3f(large_, -height_, -width_);
     glEnd();
     glPopMatrix();
 
@@ -190,32 +149,15 @@ void SkyBox::render(vector3f poscam) {
     glDisable(GL_TEXTURE_2D);
 }
 
-/**
-* @brief Regresa el alto de la caja
-* @author Fernando Montes de Oca Cespedes
-* @date Saturday, October 20, 2007 1:29:03 PM
-* @retval float  Alto de la caja
-*/
-float SkyBox::getAlto() {
-    return m_alto * 2;
+
+float SkyBox::height() {
+    return height_ * 2;
 }
 
-/**
-* @brief Regresa el largo de la caja
-* @author Fernando Montes de Oca Cespedes
-* @date Saturday, October 20, 2007 1:29:03 PM
-* @retval float  Largo de la caja
-*/
-float SkyBox::getLargo() {
-    return m_largo * 2;
+float SkyBox::large() {
+    return large_ * 2;
 }
 
-/**
-* @brief Regresa el ancho de la caja
-* @author Fernando Montes de Oca Cespedes
-* @date Saturday, October 20, 2007 1:29:03 PM
-* @retval float  ancho de la caja
-*/
-float SkyBox::getAncho() {
-    return m_ancho * 2;
+float SkyBox::width() {
+    return width_ * 2;
 }

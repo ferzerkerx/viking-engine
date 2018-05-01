@@ -32,13 +32,13 @@ VKSkyDome::~VKSkyDome() {
 }
 
 
-void VKSkyDome::render(vector3f poscam) {
-    TexturedSkyDome::render(poscam);
+void VKSkyDome::Render(vector3f poscam) {
+    TexturedSkyDome::Render(poscam);
 }
 
-void VKSkyDome::actualiza(vector3f poscam) {
-    render(poscam);
-    m_sp->actualiza(poscam);
+void VKSkyDome::Update(vector3f poscam) {
+    Render(poscam);
+    m_sp->Update(poscam);
 }
 
 

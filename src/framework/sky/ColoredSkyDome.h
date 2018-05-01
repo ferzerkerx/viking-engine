@@ -1,8 +1,3 @@
-/**
-* @file ColoredSkyDome.h
-* @brief Encabezado de la clase ColoredSkyDome
-* @date Friday, October 19, 2007 9:06:34 PM
-*/
 #ifndef __COLOREDSKYDOME__H__
 #define __COLOREDSKYDOME__H__
 
@@ -12,8 +7,6 @@
 * @class ColoredSkyDome
 * @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 9:05:57 PM
-* @brief Es una clase que representa un SkyDome
-* coloreado, la funcion de coloreado es por default azul claro
 */
 
 class ColoredSkyDome : public SkyDome {
@@ -22,16 +15,16 @@ public:
 
     ColoredSkyDome(float dphi, float dtheta, float r);
 
-    void actualiza(vector3f poscam);
+    void Update(vector3f camera_position) override;
 
 protected:
     ~ColoredSkyDome();
 
-    void render(vector3f poscam);
+    void Render(vector3f camera_position) override;
 
-    void renderDome(vector3f poscam);
+    void RenderDome(vector3f camera_position) override;
 
-    virtual void coloreaDomo();
+    virtual void ColorDome();
 
 };
 

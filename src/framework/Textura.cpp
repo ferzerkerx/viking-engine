@@ -141,7 +141,7 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
     fread(&imageType, sizeof(unsigned char), 1, pFile);    // Leemos tipo de imagen (RLE, RGB, Alpha)
     fseek(pFile, 9, SEEK_CUR);    // Nos saltamos info irrelevante
 
-    // Leemos ancho, alto y_ bits por pixel (16, 24 o 32)
+    // Leemos ancho, height y_ bits por pixel (16, 24 o 32)
     fread(&width, sizeof(unsigned short), 1, pFile);
     fread(&height, sizeof(unsigned short), 1, pFile);
     fread(&bits, sizeof(unsigned char), 1, pFile);

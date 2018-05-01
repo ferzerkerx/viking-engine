@@ -29,8 +29,14 @@ add_executable(viking_engine src/Main.cpp
         src/framework/sky/TexturedSkyDome.cpp
         src/framework/sky/Clouds.h
         src/framework/sky/Clouds.cpp
+        src/framework/sky/StaticClouds.cpp
+        src/framework/sky/StaticClouds.h
+        src/framework/sky/Sky.h
         src/framework/sky/UpdatableClouds.h
         src/framework/sky/UpdatableClouds.cpp
+        src/framework/sky/Perlin.h
+        src/framework/sky/ColoredSkyDome.cpp
+        src/framework/sky/ColoredSkyDome.h
         src/framework/sky/TexturedSkyPlane.h
         src/framework/sky/TexturedSkyPlane.cpp
         src/framework/TextureWriter.h

@@ -1,56 +1,34 @@
-/**
-* @file ColoredSkyDome.cpp
-* @brief Implementacin de la clase ColoredSkyDome
-* @date Saturday, August 11, 2007 10:24:46 PM
-*/
 
 #include "ColoredSkyDome.h"
 #include <cstdio>
 #include <GL/glut.h>
 
-/**
-*@copydoc SkyDome::SkyDome(float r)
-*@brief Colorea el domo por default en azul
-*/
+
 ColoredSkyDome::ColoredSkyDome(float r) : SkyDome(r) {
-    coloreaDomo();
+    ColorDome();
 }
 
 
-/**
-*@copydoc SkyDome::SkyDome(float dphi,float dtheta,float r)
-*@brief Colorea el domo por default en azul
-*/
+
 ColoredSkyDome::ColoredSkyDome(float dphi, float dtheta, float r) : SkyDome(dphi, dtheta, r) {
-    coloreaDomo();
+    ColorDome();
 }
 
-/**
-@brief Destructor de la clase
-*/
-ColoredSkyDome::~ColoredSkyDome() {
+ColoredSkyDome::~ColoredSkyDome() = default;
 
-}
 
-/**
-* @brief Renderea el Domo coloreado
-* @author Fernando Montes de Oca Cespedes
-* @date Friday, October 19, 2007 8:44:26 PM
-* @param poscam vector de la camara
-*/
-void ColoredSkyDome::renderDome(vector3f poscam) {
-
+void ColoredSkyDome::RenderDome(vector3f camera_position) {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
     int i = 0;
     glPushMatrix();
-    glTranslatef(poscam.x, poscam.y, poscam.z);
+    glTranslatef(camera_position.x, camera_position.y, camera_position.z);
     glRotatef(-90.0F, 1.0, 0.0, 0.0F);
     glBegin(GL_TRIANGLE_STRIP);
-    for (i = 0; i < m_num_vert; i++) {
-        glColor3f(m_vrtx[i].color.r, m_vrtx[i].color.g, m_vrtx[i].color.b);
-        glVertex3f(m_vrtx[i].pos.x, m_vrtx[i].pos.y, m_vrtx[i].pos.z);
+    for (i = 0; i < num_vertices_; i++) {
+        glColor3f(vrtex_[i].color.r, vrtex_[i].color.g, vrtex_[i].color.b);
+        glVertex3f(vrtex_[i].pos.x, vrtex_[i].pos.y, vrtex_[i].pos.z);
     }
     glEnd();
     glPopMatrix();
@@ -61,25 +39,18 @@ void ColoredSkyDome::renderDome(vector3f poscam) {
 }
 
 
-/**
-*@copydoc Sky::render(vector3f poscam)
-*@brief Renderea El ColoredSkyDome
-*/
-void ColoredSkyDome::render(vector3f poscam) {
-    renderDome(poscam);
-    renderSun(poscam);
+void ColoredSkyDome::Render(vector3f camera_position) {
+    RenderDome(camera_position);
+    RenderSun(camera_position);
 }
 
-/**
-*@copydoc Sky::actualiza(vector3f poscam)
-*@brief Actualiza los elementos del ColoredSkyDome
-*/
-void ColoredSkyDome::actualiza(vector3f poscam) {
-    render(poscam);
+
+void ColoredSkyDome::Update(vector3f camera_position) {
+    Render(camera_position);
 }
 
-void ColoredSkyDome::coloreaDomo() {
-    for (int i = 0; i < m_num_vert; i++) {
-        m_vrtx[i].color = color3f(0.0, 0.35F, 0.7F);
+void ColoredSkyDome::ColorDome() {
+    for (int i = 0; i < num_vertices_; i++) {
+        vrtex_[i].color = color3f(0.0, 0.35F, 0.7F);
     }
 }

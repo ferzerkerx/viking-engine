@@ -36,16 +36,16 @@ protected:
     float map32_[32 * 32];            //mapa de ruido
     float *map_;                    //mapa que contiene la textura sin alpha
     int text_width_;                //ancho de la textura deseada
-    int text_height_;                //alto de la textura deseado
-    unsigned int m_texture;            //identificador de la textura generada por openGL
+    int text_height_;                //height de la textura deseado
+    unsigned int texture_id_;            //identificador de la textura generada por openGL
 
     virtual void CreateTexture()= 0;
 
     virtual void ForceUpdate()=0;
 
-    void calculaAlpha();
+    void CalculateAlpha();
 
-    void generaTexturaGL();
+    void GeneraGLTexture();
 };
 
 #endif

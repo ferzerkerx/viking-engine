@@ -1,8 +1,3 @@
-/**
-* @file SkyBox.h
-* @brief Encabezado de la clase SkyBox
-* @date Saturday, October 20, 2007 1:28:01 PM
-*/
 #ifndef __SKYBOX_H__
 #define __SKYBOX_H__
 
@@ -12,61 +7,37 @@
 * @class SkyBox
 * @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 1:28:06 PM
-* @brief Esta clase dibuja un cubo texturizado
-* utilizando GL_CLAMP para que no se aprecien los bordes
 */
 
 class SkyBox : public Sky {
 protected:
-    void render(vector3f poscam) override;
+    unsigned int faces_[6];
 
-    unsigned int m_caras[6];    //almacena los identificadores de textura de la caja
-    float m_alto;    //altura/2 de la caja (eje y_ openGL)
-    float m_largo;    //largo/2 de la caja (eje x_ openGL)
-    float m_ancho;    //ancho/2 de la caja (eje z_ openGL)
-
+    float height_;
+    float large_;
+    float width_;
     enum Faces {
         FRONT, BACK, LEFT, RIGHT, UP, DOWN
-    }; // caras de una caja
+    };
+
+    void Render(vector3f camera_position) override;
 
 public:
-    SkyBox(float alto, float largo, float ancho, unsigned int *caras);
+    SkyBox(float height, float large, float width, unsigned int *faces);
 
-    SkyBox(float alto, float largo, float ancho, unsigned int front,
+    SkyBox(float height, float large, float width, unsigned int front,
            unsigned int back, unsigned int left, unsigned int right, unsigned int up, unsigned int down);
 
-    void actualiza(vector3f poscam) override;
+    void Update(vector3f camera_position) override;
 
-    float getAlto();
+    float height();
 
-    float getLargo();
+    float large();
 
-    float getAncho();
+    float width();
 
     ~SkyBox() override;
 
 };
-
-/**
-* @var SkyBox::m_caras
-* @brief almacena los identificadores de textura de la caja
-*/
-
-/**
-* @var SkyBox::m_alto
-* @brief altura/2 de la caja (eje y openGL)
-*/
-
-/**
-* @var SkyBox::m_largo
-* @brief largo/2 de la caja (eje x openGL)
-*/
-
-/**
-* @var SkyBox::m_ancho
-* @brief ancho/2 de la caja (eje z openGL)
-*/
-
-
 
 #endif

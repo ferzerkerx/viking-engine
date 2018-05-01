@@ -1,77 +1,64 @@
 #include "TexturedSkyPlane.h"
 #include <GL/glut.h>
+#include <cmath>
 
-/**
- * @brief Constructor del TexturedSkyPlane
- * @author Fernando Montes de Oca Cespedes 
- * @date Saturday, August 11, 2007 9:55:51 PM
- * @param divisiones La cantidad de divisiones que se quieren ( >= 1 <= 256)
- * @param planet_radius El radio planetario del skyplane 
- * @param atmosphere_radius El Radio atmosfrico del skyplane
- * @param h_tile Escalamiento horizontal de textura
- * @param v_tile Escalamiento vertical de textura
- * @param texture identificador de la textura
- */
+
 TexturedSkyPlane::TexturedSkyPlane(int divisiones, float planet_radius, float atmosphere_radius, float h_tile,
                                    float v_tile, unsigned int texture) {
-    m_divisiones = static_cast<unsigned int>(divisiones);
-    if (m_divisiones < 1) {
-        m_divisiones = 1;
+    divisions_ = static_cast<unsigned int>(divisiones);
+    if (divisions_ < 1) {
+        divisions_ = 1;
     }
-    if (m_divisiones > 256) {
-        m_divisiones = 256;
+    if (divisions_ > 256) {
+        divisions_ = 256;
     }
 
     m_texture = texture;
 
-    m_planet_radius = planet_radius;
-    m_atmosphere_radius = atmosphere_radius;
-    m_num_vertices = (m_divisiones + 1) * (m_divisiones + 1);
-    m_num_indices = m_divisiones * m_divisiones * 2 * 3;
-    m_indices = new unsigned int[m_num_indices];
-    m_vertices = new vertx[m_num_vertices];
-    m_roty_factor = 0.006F;
+    planet_radius_ = planet_radius;
+    atmosphere_radius_ = atmosphere_radius;
+    num_vertex_ = (divisions_ + 1) * (divisions_ + 1);
+    num_indexes_ = divisions_ * divisions_ * 2 * 3;
+    indexes_ = new unsigned int[num_indexes_];
+    vertex_ = new vertx[num_vertex_];
+    roty_factor_ = 0.006F;
 
     m_h_tile = h_tile;
     m_v_tile = v_tile;
 
     m_wind_factor_x = 0.0001F;
     m_wind_factor_y = 0.0001F;
-    m_desface_text_x = 0.0F;
+    texture_delta_x = 0.0F;
     m_desface_text_y = 0.0F;
-    m_rot_text_milli = 10;
+    rot_texture_in_milli_ = 10;
 
-    generaSkyPlane();
-    printf("Hay %d poligonos en el Skyplane\n", m_num_indices / 3);
+    GenerateSkyPlane();
 }
 
 
 TexturedSkyPlane::~TexturedSkyPlane() {
-    delete[] m_indices;
-    delete[] m_vertices;
+    delete[] indexes_;
+    delete[] vertex_;
 }
 
 
-void TexturedSkyPlane::actualiza(vector3f poscam) {
-    render(poscam);
+void TexturedSkyPlane::Update(vector3f poscam) {
+    Render(poscam);
 }
 
-/**
- * @copydoc Sky::render(vector3f poscam)
- * @brief Renderea los vertices del skyplano
- */
-void TexturedSkyPlane::render(vector3f poscam) {
-    if (m_mov_timer.getMilliseconds() >= m_rot_text_milli) {
-        m_mov_timer.reset();
-        m_desface_text_x += m_roty_factor;
-        if (m_desface_text_x >= 360) {
-            m_desface_text_x -= 360;
+
+void TexturedSkyPlane::Render(vector3f poscam) {
+    if (timer_.getMilliseconds() >= rot_texture_in_milli_) {
+        timer_.reset();
+        texture_delta_x += roty_factor_;
+        if (texture_delta_x >= 360) {
+            texture_delta_x -= 360;
         }
     }
 
     glPushMatrix();
-    glTranslatef(poscam.x, poscam.y + m_planet_radius, poscam.z);
-    glRotatef(m_desface_text_x, 0.0, 1.0, 0.0);
+    glTranslatef(poscam.x, poscam.y + planet_radius_, poscam.z);
+    glRotatef(texture_delta_x, 0.0, 1.0, 0.0);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_COLOR);
     glEnable(GL_BLEND);
@@ -82,9 +69,9 @@ void TexturedSkyPlane::render(vector3f poscam) {
 
     glBegin(GL_TRIANGLES);
 
-    for (int i = 0; i < m_num_indices; i++) {
-        glTexCoord2f(m_vertices[m_indices[i]].u, m_vertices[m_indices[i]].v);
-        glVertex3f(m_vertices[m_indices[i]].pos.x, m_vertices[m_indices[i]].pos.y, m_vertices[m_indices[i]].pos.z);
+    for (int i = 0; i < num_indexes_; i++) {
+        glTexCoord2f(vertex_[indexes_[i]].u, vertex_[indexes_[i]].v);
+        glVertex3f(vertex_[indexes_[i]].pos.x, vertex_[indexes_[i]].pos.y, vertex_[indexes_[i]].pos.z);
     }
 
     glEnd();
@@ -97,16 +84,12 @@ void TexturedSkyPlane::render(vector3f poscam) {
 }
 
 
-/**
-*@brief Esta funcin genera el skyplane, calcula
-* los vertices, uv's para texturizacin y los indices
-* para el las divisiones y tamao especificados
-*/
-void TexturedSkyPlane::generaSkyPlane() {
 
-    float plane_size = 2.0F * sqrt((SQR(m_atmosphere_radius) - SQR(m_planet_radius)));
-    float delta = plane_size / (float) m_divisiones;
-    float tex_delta = 2.0F / (float) m_divisiones;
+void TexturedSkyPlane::GenerateSkyPlane() {
+
+    float plane_size = 2.0F * std::sqrt((SQR(atmosphere_radius_) - SQR(planet_radius_)));
+    float delta = plane_size / (float) divisions_;
+    float tex_delta = 2.0F / (float) divisions_;
 
     float x_dist;
     float z_dist;
@@ -117,44 +100,42 @@ void TexturedSkyPlane::generaSkyPlane() {
     int i = 0;
     int j = 0;
 
-    vertx sv; // temporary vertex
+    vertx sv;
 
-    for (i = 0; i <= m_divisiones; i++) {
-        for (j = 0; j <= m_divisiones; j++) {
+    for (i = 0; i <= divisions_; i++) {
+        for (j = 0; j <= divisions_; j++) {
             x_dist = (-0.5F * plane_size) + ((float) j * delta);
             z_dist = (-0.5F * plane_size) + ((float) i * delta);
 
-            x_height = (x_dist * x_dist) / m_atmosphere_radius;
-            z_height = (z_dist * z_dist) / m_atmosphere_radius;
+            x_height = (x_dist * x_dist) / atmosphere_radius_;
+            z_height = (z_dist * z_dist) / atmosphere_radius_;
             height = x_height + z_height;
 
             sv.pos.x = x_dist;
             sv.pos.y = 0.0F - height;
             sv.pos.z = z_dist;
 
-            // Calculate the texture coordinates
             sv.u = m_h_tile * ((float) j * tex_delta * 0.5F);
             sv.v = m_v_tile * (1.0F - (float) i * tex_delta * 0.5F);
 
-            m_vertices[i * (m_divisiones + 1) + j] = sv;
+            vertex_[i * (divisions_ + 1) + j] = sv;
         }
     }
 
-    // Calculate the indices
     int index = 0;
-    for (i = 0; i < m_divisiones; i++) {
-        for (j = 0; j < m_divisiones; j++) {
-            unsigned int startvert = (i * (m_divisiones + 1) + j);
+    for (i = 0; i < divisions_; i++) {
+        for (j = 0; j < divisions_; j++) {
+            unsigned int startvert = (i * (divisions_ + 1) + j);
 
             // tri 1f
-            m_indices[index++] = startvert;
-            m_indices[index++] = startvert + 1;
-            m_indices[index++] = startvert + m_divisiones + 1;
+            indexes_[index++] = startvert;
+            indexes_[index++] = startvert + 1;
+            indexes_[index++] = startvert + divisions_ + 1;
 
             // tri 2
-            m_indices[index++] = startvert + 1;
-            m_indices[index++] = startvert + m_divisiones + 2;
-            m_indices[index++] = startvert + m_divisiones + 1;
+            indexes_[index++] = startvert + 1;
+            indexes_[index++] = startvert + divisions_ + 2;
+            indexes_[index++] = startvert + divisions_ + 1;
         }
     }
 }

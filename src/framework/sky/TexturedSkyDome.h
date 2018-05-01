@@ -1,8 +1,3 @@
-/**
-* @file TexturedSkyDome.h
-* @brief Encabezado de la clase TexturedSkyDome
-* @date Wednesday, August 15, 2007 2:56:06 PM
-*/
 #ifndef __TEXTUREDSKYDOME_H__
 #define __TEXTUREDSKYDOME_H__
 
@@ -13,52 +8,32 @@
 *	@author Fernando Montes de Oca Cespedes.
 *	@version 1.0
 *	@date	09/May/2007
-*	@brief Esta clase es un SkyDome texturizado
 */
 class TexturedSkyDome : public SkyDome {
 protected:
 
-    unsigned int m_textura; //guarda el identificador de la textura a ser usada en el domo
-    float m_h_tile;    //Tile horizontal
-    float m_v_tile;    //Tile vertical
-    void render(vector3f poscam) override;
+    unsigned int texture_id_;
+    float h_tile_;
+    float v_tile_;
+    void Render(vector3f camera_position) override;
 
-    void renderDome(vector3f poscam) override;
+    void RenderDome(vector3f camera_position) override;
 
-    void calculaUV();
+    void CalculateUV();
 
 
 public:
-    TexturedSkyDome(float r, unsigned int id_textura);
+    TexturedSkyDome(float r, unsigned int texture_id);
 
-    TexturedSkyDome(float dphi, float dtheta, float r, unsigned int id_textura);
+    TexturedSkyDome(float dphi, float dtheta, float r, unsigned int texture_id);
 
-    void actualiza(vector3f poscam) override;
+    void Update(vector3f camera_position) override;
 
-    void setTexture(unsigned int id);
+    void set_texture_id(unsigned int texture_id);
 
     ~TexturedSkyDome() override;
 
 };
-
-/**
-* @var TexturedSkyDome::m_textura
-* @brief guarda el identificador de la textura a ser usada en el domo
-*/
-
-/**
-* @var TexturedSkyDome::m_h_tile
-* @brief Tile horizontal
-*/
-
-/**
-* @var TexturedSkyDome::m_v_tile
-* @brief Tile vertical
-*/
-
-
-
-
 
 
 #endif

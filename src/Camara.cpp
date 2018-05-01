@@ -42,7 +42,7 @@ void Camara::PonCam(float posX, float posY, float posZ,
 // Mover vista con el mouse
 void Camara::VistaMouse(int ancho, int alto, int mouseX, int mouseY) {
     int mitX = ancho >> 1;         // Corrimiento binario para obtener la mitad de ancho
-    int mitY = alto >> 1;         // Corrimiento binario para obtener la mitad de alto
+    int mitY = alto >> 1;         // Corrimiento binario para obtener la mitad de height
     float anguloY;             // Direccion vista arriba o abajo
     float anguloZ;             // Rotacin en Y (Izquierda y_ Derecha)
     static float currentRotX = 0.0F;

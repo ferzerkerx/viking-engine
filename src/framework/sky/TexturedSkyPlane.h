@@ -40,32 +40,32 @@ private:
     float m_h_tile;                    //horizontal tile para texturizacion
     float m_v_tile;                    //vertical tile para texturizacion
     unsigned int m_texture;            //textura del TexturedSkyPlane
-    unsigned int m_num_vertices;    //guarda el nmero de vertex
-    unsigned int m_num_indices;        //guarda el nmero de indices
-    unsigned int m_divisiones;        //contiene el nmero de divisiones
-    float m_atmosphere_radius;        //es el radio atmosfrico del TexturedSkyPlane
-    unsigned int *m_indices;        //guarda todos los indices (indica como deben ser dibujados los vertex)
-    vertx *m_vertices;            //guarda todos los vertex
-    float m_planet_radius;            //radio planetario del TexturedSkyPlane
-    float m_roty_factor;            //factor de rotacin en y_(delta)
+    unsigned int num_vertex_;    //guarda el nmero de vertex
+    unsigned int num_indexes_;        //guarda el nmero de indices
+    unsigned int divisions_;        //contiene el nmero de divisiones
+    float atmosphere_radius_;        //es el radio atmosfrico del TexturedSkyPlane
+    unsigned int *indexes_;        //guarda todos los indices (indica como deben ser dibujados los vertex)
+    vertx *vertex_;            //guarda todos los vertex
+    float planet_radius_;            //radio planetario del TexturedSkyPlane
+    float roty_factor_;            //factor de rotacin en y_(delta)
     float m_wind_factor_x;            //define el movimiento de la textura en x_;
     float m_wind_factor_y;            //define el movimiento de la textura en y_;
     unsigned int m_update_text_milli;//define cada cuando se debe actualizar la textura
-    unsigned int m_rot_text_milli; //define cada cuando se debe rotar
-    float m_desface_text_x;            //define la rotacin de la textura en x_
+    unsigned int rot_texture_in_milli_; //define cada cuando se debe rotar
+    float texture_delta_x;            //define la rotacin de la textura en x_
     float m_desface_text_y;            //define la rotacin de la textura en y_
-    Timer m_mov_timer;                //Timer que controla el movimiento de las nubes
+    Timer timer_;                //Timer que controla el movimiento de las nubes
 
-    void render(vector3f poscam) override;
+    void Render(vector3f poscam) override;
 
-    void generaSkyPlane();
+    void GenerateSkyPlane();
 
 
 public:
     TexturedSkyPlane(int divisions, float planet_radius, float atmosphere_radius, float h_tile, float v_tile,
                      unsigned int texture);
 
-    void actualiza(vector3f poscam) override;
+    void Update(vector3f poscam) override;
 
     void setWindFactorX(float wfx);
 

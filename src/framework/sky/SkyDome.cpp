@@ -2,56 +2,37 @@
 #include "SkyDome.h"
 
 
-/**
-*@brief Constructor del domo que usa las divisiones predefinidas, genera el domo
-*inicializa el objeto de nubes (Clouds), e inicializa la posicin del sol
-*@param r es el radio de la esfera
-*/
-SkyDome::SkyDome(float r) : m_r(r) {
-    m_dphi = 5.0F;
-    m_dtheta = 10.0F;
-    m_has_sun_text = false;
-    m_sun_text = -1;
+SkyDome::SkyDome(float r) : r_(r) {
+    dphi_ = 5.0F;
+    dtheta_ = 10.0F;
+    has_sun_texture_ = false;
+    sun_texture_ = 0;
 
-    m_vrtx = nullptr;
-    generaHemiEsfera();
-    m_sun_polar = polar3f(1, 0, m_r - 2);
+    vrtex_ = nullptr;
+    CreateHemiSphere();
+    sun_polar_ = polar3f(1, 0, r_ - 2);
+}
+
+SkyDome::SkyDome(float dphi, float dtheta, float r) : dphi_(dphi), dtheta_(dtheta), r_(r) {
+    has_sun_texture_ = false;
+    sun_texture_ = 0;
+
+    vrtex_ = nullptr;
+    CreateHemiSphere();
+    sun_polar_ = polar3f(0, 0, r_ - 5);
 }
 
 
-/**
-*@brief Constructor del domo que permite definir las divisiones deseadas, genera el domo
-*inicializa el objeto de nubes (Clouds), e inicializa la posicin del sol
-*@param r es el radio de la esfera
-*@param dphi es el delta de phi y define cuantos poligonos tendra la hemiesfera
-*@param dtheta es el delta de theta y define cuantos poligonos tendra la hemisefera
-*/
-SkyDome::SkyDome(float dphi, float dtheta, float r) : m_dphi(dphi), m_dtheta(dtheta), m_r(r) {
-    m_has_sun_text = false;
-    m_sun_text = -1;
-
-    m_vrtx = nullptr;
-    generaHemiEsfera();
-    m_sun_polar = polar3f(0, 0, m_r - 5);
-}
-
-/**
-@brief Destructor de la clase, libera los vertices alojados
-*y destruye objeto de nubes (Clouds)
-*/
 SkyDome::~SkyDome() {
-    delete[] m_vrtx;
-    if (m_has_sun_text) { glDeleteTextures(1, &m_sun_text); }
+    delete[] vrtex_;
+    if (has_sun_texture_) { glDeleteTextures(1, &sun_texture_); }
 }
 
-/**
-*@brief Genera la hemiesfera que representa el SkyDome
-*/
-void SkyDome::generaHemiEsfera() {
-    m_num_vert = (int) ((360.0F / m_dtheta) * (90.0F / m_dphi) *
-                        4.0F);//el 4 es porque se va a dibujar usando GL_TRIANGLE_STRIP
+void SkyDome::CreateHemiSphere() {
+    num_vertices_ = (int) ((360.0F / dtheta_) * (90.0F / dphi_) *
+                        GL_TRIANGLE_STRIP);
 
-    m_vrtx = new vertxDome[m_num_vert];
+    vrtex_ = new VertexDome[num_vertices_];
 
     int i = 0;
     int phi = 0;
@@ -61,75 +42,70 @@ void SkyDome::generaHemiEsfera() {
     float phidrad;
     float thetadrad;
 
-    for (; phi <= 90 - m_dphi; phi += (int) m_dphi) {
-        for (theta = 0; theta <= 360 - m_dtheta; theta += (int) m_dtheta) {
+    for (; phi <= 90 - dphi_; phi += (int) dphi_) {
+        for (theta = 0; theta <= 360 - dtheta_; theta += (int) dtheta_) {
             phirad = phi * RAD;
             thetarad = theta * RAD;
-            phidrad = (phi + m_dphi) * RAD;
-            thetadrad = (theta + m_dtheta) * RAD;
+            phidrad = (phi + dphi_) * RAD;
+            thetadrad = (theta + dtheta_) * RAD;
 
-            /*primer punto segun el teorema**/
-            m_vrtx[i].pos = vector3f(m_r * sinf(phirad) * cosf(thetarad),
-                                     m_r * sinf(phirad) * sinf(thetarad),
-                                     m_r * cosf(phirad));
-            m_vrtx[i].pol = polar3f(phi, theta, m_r);
+            vrtex_[i].pos = vector3f(r_ * sinf(phirad) * cosf(thetarad),
+                                     r_ * sinf(phirad) * sinf(thetarad),
+                                     r_ * cosf(phirad));
+            vrtex_[i].pol = polar3f(phi, theta, r_);
             i++;
 
-            /*Segundo punto segun el teorema**/
-            m_vrtx[i].pos = vector3f(m_r * sinf(phidrad) * cosf(thetarad),
-                                     m_r * sinf(phidrad) * sinf(thetarad),
-                                     m_r * cosf(phidrad));
-            m_vrtx[i].pol = polar3f(phi + m_dphi, theta, m_r);
+            vrtex_[i].pos = vector3f(r_ * sinf(phidrad) * cosf(thetarad),
+                                     r_ * sinf(phidrad) * sinf(thetarad),
+                                     r_ * cosf(phidrad));
+            vrtex_[i].pol = polar3f(phi + dphi_, theta, r_);
             i++;
 
-            /*Tercer punto segun el teorema**/
-            m_vrtx[i].pos = vector3f(m_r * sinf(phirad) * cosf(thetadrad),
-                                     m_r * sinf(phirad) * sinf(thetadrad),
-                                     m_r * cosf(phirad));
-            m_vrtx[i].pol = polar3f(phi, theta + m_dtheta, m_r);
+            vrtex_[i].pos = vector3f(r_ * sinf(phirad) * cosf(thetadrad),
+                                     r_ * sinf(phirad) * sinf(thetadrad),
+                                     r_ * cosf(phirad));
+            vrtex_[i].pol = polar3f(phi, theta + dtheta_, r_);
             i++;
 
             if (phi > -90 && phi < 90) {
-                /*Cuarto punto segun el teorema**/
-                m_vrtx[i].pos = vector3f(m_r * sinf(phidrad) * cosf(thetadrad),
-                                         m_r * sinf(phidrad) * sinf(thetadrad),
-                                         m_r * cosf(phidrad));
-                m_vrtx[i].pol = polar3f(phi + m_dphi, theta + m_dtheta, m_r);
+                vrtex_[i].pos = vector3f(r_ * sinf(phidrad) * cosf(thetadrad),
+                                         r_ * sinf(phidrad) * sinf(thetadrad),
+                                         r_ * cosf(phidrad));
+                vrtex_[i].pol = polar3f(phi + dphi_, theta + dtheta_, r_);
                 i++;
             }
         }
     }
-    printf("hay %d poligonos en la hemiesfera\n", i + 1);
 }
 
 /**
 *@brief Esta funcin coloca una textura para dibujar el sol
-*@param id Es un identificador de textura (debe ser generado por openGL)
+*@param texture_id Es un identificador de textura (debe ser generado por openGL)
 */
-void SkyDome::setSunTexture(unsigned int id) {
-    m_sun_text = id;
-    m_has_sun_text = true;
+void SkyDome::set_sun_texture(unsigned int texture_id) {
+    sun_texture_ = texture_id;
+    has_sun_texture_ = true;
 }
 
 /**
 * @brief Renderea el sol si es que hay textura
 * @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 8:35:41 PM
-* @param poscam Vector de posicion de la camara
+* @param camera_position Vector de posicion de la camara
 */
-void SkyDome::renderSun(vector3f poscam) {
-    if (m_has_sun_text) {
+void SkyDome::RenderSun(vector3f camera_position) {
+    if (has_sun_texture_) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_COLOR);
         glEnable(GL_BLEND);
         glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, m_sun_text);
+        glBindTexture(GL_TEXTURE_2D, sun_texture_);
         glPushMatrix();
-        glTranslatef(poscam.x, poscam.y, poscam.z);
-        m_sun_vector = vector3f(m_sun_polar);
-        m_sun_polar.phi += 0.002F;
-        glTranslatef(m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
+        glTranslatef(camera_position.x, camera_position.y, camera_position.z);
+        sun_vector_ = vector3f(sun_polar_);
+        sun_polar_.phi += 0.002F;
+        glTranslatef(sun_vector_.y, sun_vector_.x, sun_vector_.z);
         glRotatef(-90.0F, 1.0, 0.0, 0.0F);
-        Billboard::BBEsfera(poscam, m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
+        Billboard::BBEsfera(camera_position, sun_vector_.y, sun_vector_.x, sun_vector_.z);
         glBegin(GL_POLYGON);
         glTexCoord2f(0.0, 1.0);
         glVertex3f(-5.0F, 0.0, -5.0F);

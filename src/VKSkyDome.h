@@ -20,7 +20,7 @@ public:
 
     ~VKSkyDome();
 
-    void actualiza(vector3f poscam);
+    void Update(vector3f poscam);
 
     void escribeImagenDeNubes();
 
@@ -28,7 +28,7 @@ private:
     UpdatableClouds *m_ca;    //apuntador a la instancia de Clouds
     TexturedSkyPlane *m_sp;                //apuntador a la instancia de TexturedSkyPlane
     float m_cloud_cover;        //guarda el cover de las nubes
-    void render(vector3f poscam);
+    void Render(vector3f poscam);
 };
 
 /**

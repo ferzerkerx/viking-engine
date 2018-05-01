@@ -163,14 +163,14 @@ void renderScene() {
     if (vkSkyDome) {
         glPushMatrix();
         glTranslatef(0.0F, -15.0F, 0.0F);
-        vkSkyDome->actualiza(camara.getPos());
+        vkSkyDome->Update(camara.getPos());
         glPopMatrix();
     }
 
     if (skyBox) {
         glPushMatrix();
 
-        skyBox->actualiza(camara.getPos());
+        skyBox->Update(camara.getPos());
         glPopMatrix();
     }
 
@@ -258,7 +258,7 @@ void initViking() {
 
     if (useSkyDome) {
         vkSkyDome = new VKSkyDome(15, 15, 70, sky[0]);
-        vkSkyDome->setSunTexture(sun[0]);
+        vkSkyDome->set_sun_texture(sun[0]);
     }
 
     fuente = new Fuente(fontText);

@@ -17,8 +17,8 @@ UpdatableClouds::UpdatableClouds() : Clouds() {
     map_ = new float[text_width_ * text_height_];
     RGBA_text_ = new char[text_width_ * text_height_ * 4];
 
-    Perlin::setNoise(map32_);
-    Perlin::overlapOctaves(map32_, map_, text_width_, text_height_);
+    Perlin::SetNoise(map32_);
+    Perlin::OverlapOctaves(map32_, map_, text_width_, text_height_);
     Perlin::expFilter(map_, text_width_, text_height_, cover_, sharpness_);
     CreateTexture();
 
@@ -40,8 +40,8 @@ UpdatableClouds::UpdatableClouds(float cover, float sharpness, int num_octaves, 
     map_ = new float[text_width_ * text_height_];
     RGBA_text_ = new char[text_width_ * text_height_ * 4];
 
-    Perlin::setNoise(map32_);
-    Perlin::overlapOctaves(map32_, map_, text_width_, text_height_);
+    Perlin::SetNoise(map32_);
+    Perlin::OverlapOctaves(map32_, map_, text_width_, text_height_);
     Perlin::expFilter(map_, text_width_, text_height_, cover_, sharpness_);
     CreateTexture();
 }
@@ -51,7 +51,7 @@ UpdatableClouds::~UpdatableClouds() {
 }
 
 void UpdatableClouds::ForceUpdate() {
-    Perlin::overlapOctaves(map32_, map_, text_width_, text_height_);
+    Perlin::OverlapOctaves(map32_, map_, text_width_, text_height_);
     Perlin::expFilter(map_, text_width_, text_height_, cover_, sharpness_);
     current_octave_ = 0;
     timer_.reset();
@@ -95,7 +95,7 @@ void UpdatableClouds::set_texture_resolution(int width, int height) {
     map_ = new float[text_width_ * text_height_ * 4];
     RGBA_text_ = new char[text_width_ * text_height_ * 4];
     current_octave_ = 0;
-    Perlin::resetOctaves(map_, text_width_, text_height_);
+    Perlin::ResetOctaves(map_, text_width_, text_height_);
 }
 
 int UpdatableClouds::UpdatePerOctave() {
@@ -103,7 +103,7 @@ int UpdatableClouds::UpdatePerOctave() {
 
     if ((current_octave_ < num_octaves_) &&
         (current_millis >= (texture_update_time_in_millis_ / (num_octaves_ + 1)) * current_octave_)) {
-        Perlin::overlapOctave(map32_, map_, text_width_, text_height_, current_octave_,
+        Perlin::OverlapOctave(map32_, map_, text_width_, text_height_, current_octave_,
                               octaves_[current_octave_].scale);
         current_octave_++;
     }
@@ -126,8 +126,8 @@ int UpdatableClouds::UpdatePerCoordinate() {
         (current_millis >= (texture_update_time_in_millis_ / (num_octaves_ + 1)) * current_octave_)) {
 
         for (int y = 0; y < text_height_; y++) {
-            brightness_ = Perlin::interpolate(octaves_[current_octave_].x * octaves_[current_octave_].scale,
-                                               y * octaves_[current_octave_].scale, map32_);
+            brightness_ = Perlin::Interpolate(octaves_[current_octave_].x * octaves_[current_octave_].scale,
+                                              y * octaves_[current_octave_].scale, map32_);
             map_[(y * text_height_) + octaves_[current_octave_].x] += brightness_ / (1 << current_octave_);
 
         }
@@ -152,6 +152,6 @@ int UpdatableClouds::UpdatePerCoordinate() {
 }
 
 void UpdatableClouds::CreateTexture() {
-    Clouds::generaTexturaGL();
-    Perlin::resetOctaves(map_, text_width_, text_height_);
+    Clouds::GeneraGLTexture();
+    Perlin::ResetOctaves(map_, text_width_, text_height_);
 }

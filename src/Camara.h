@@ -32,7 +32,7 @@ public:
     void MovCam(float vel);
 
     void ChecarMov(int key);   // Checa el movimiento de camara con el teclado
-    void Actualizar();  // Se actualiza la camara cada frame
+    void Actualizar();  // Se Update la camara cada frame
     void Vista();        // Implementa gluLookAt
 
     vector3f getPos() { return m_vPos; };
