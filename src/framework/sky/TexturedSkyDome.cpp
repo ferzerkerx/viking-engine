@@ -114,8 +114,8 @@ void TexturedSkyDome::calculaUV() {
             Normalizar(vec_temp);
 
             // Calculo de las coordenadas de la textura en la esfera
-            m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5f;
-            m_vrtx[i].uv.y = m_v_tile * (float) (asinf(vec_temp.y) / PI) + 0.5f;
+            m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+            m_vrtx[i].uv.y = m_v_tile * (float) (asinf(vec_temp.y) / PI) + 0.5F;
             i++;
 
             vec_temp.x = m_vrtx[i].pos.x;
@@ -125,8 +125,8 @@ void TexturedSkyDome::calculaUV() {
             Normalizar(vec_temp);
 
             // Calculo de las coordenadas de la textura en la esfera
-            m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5f;
-            m_vrtx[i].uv.y = m_v_tile * (float) (asinf(vec_temp.y) / PI) + 0.5f;
+            m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+            m_vrtx[i].uv.y = m_v_tile * (float) (asinf(vec_temp.y) / PI) + 0.5F;
             i++;
 
             vec_temp.x = m_vrtx[i].pos.x;
@@ -136,8 +136,8 @@ void TexturedSkyDome::calculaUV() {
             Normalizar(vec_temp);
 
             // Calculo de las coordenadas de la textura en la esfera
-            m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5f;
-            m_vrtx[i].uv.y = m_v_tile * (float) (asinf(vec_temp.y) / PI) + 0.5f;
+            m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+            m_vrtx[i].uv.y = m_v_tile * (float) (asinf(vec_temp.y) / PI) + 0.5F;
             i++;
 
             if (phi > -90 && phi < 90) {
@@ -148,8 +148,8 @@ void TexturedSkyDome::calculaUV() {
                 Normalizar(vec_temp);
 
                 // Calculo de las coordenadas de la textura en la esfera
-                m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5f;
-                m_vrtx[i].uv.y = m_v_tile * (float) (asinf(vec_temp.y) / PI) + 0.5f;
+                m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+                m_vrtx[i].uv.y = m_v_tile * (float) (asinf(vec_temp.y) / PI) + 0.5F;
                 i++;
             }
         }

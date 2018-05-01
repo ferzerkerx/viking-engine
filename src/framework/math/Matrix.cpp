@@ -207,7 +207,9 @@ Matrix Matrix::operator+(Matrix m2) {
         throw std::invalid_argument("error no se pueden sumar las matrices por ser de distinto tamano\n");
     }
 
-    int i = 0, j = 0, **temp;
+    int i = 0;
+    int j = 0;
+    int **temp;
     temp = (int **) malloc(sizeof(int) * renglones);
 
     for (j = 1; j <= renglones; j++) {
@@ -293,7 +295,9 @@ Matrix Matrix::operator*(Matrix m2) {
 }
 
 Matrix Matrix::operator*(int n) {
-    int i = 0, j = 0, **temp;
+    int i = 0;
+    int j = 0;
+    int **temp;
     temp = (int **) malloc(sizeof(int) * renglones);
 
     for (j = 1; j <= renglones; j++) {
@@ -314,7 +318,8 @@ Matrix Matrix::operator*(int n) {
 
 
 Matrix Matrix::operator*=(int n) {
-    int i = 0, j = 0;
+    int i = 0;
+    inr j = 0;
 
     for (j = 1; j <= renglones; j++) {
         for (i = 1; i <= columnas; i++) {

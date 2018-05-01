@@ -18,7 +18,7 @@
 
 class SkyBox : public Sky {
 protected:
-    void render(vector3f poscam);
+    void render(vector3f poscam) override;
 
     unsigned int m_caras[6];    //almacena los identificadores de textura de la caja
     float m_alto;    //altura/2 de la caja (eje y openGL)
@@ -37,7 +37,7 @@ public:
 
     ~SkyBox();
 
-    void actualiza(vector3f poscam);
+    void actualiza(vector3f poscam) override;
 
     float getAlto();
 

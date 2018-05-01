@@ -16,7 +16,7 @@ public:
 
     Matrix(int **dat, int rengl, int cols);
 
-    Matrix(Matrix *m);
+    explicit Matrix(Matrix *m);
 
     ~Matrix();
 

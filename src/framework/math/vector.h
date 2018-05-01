@@ -6,12 +6,12 @@
 struct vector2f {
     vector2f() {}
 
-    vector2f(float S, float T) {
-        s = S;
-        t = T;
+    vector2f(float S, float T) : s(S), t(T){
+
     }
 
-    float s, t;
+    float s;
+    float t;
 };
 
 struct polar3f {
@@ -47,16 +47,14 @@ struct polar3f {
 struct vector3f {
     vector3f() {}
 
-    vector3f(polar3f p) {
+    explicit vector3f(polar3f p) {
         x = p.r * sin(p.phi) * cos(p.theta);
         y = p.r * sin(p.phi) * sin(p.theta);
         z = p.r * cos(p.phi);
     }
 
-    vector3f(float X, float Y, float Z) {
-        x = X;
-        y = Y;
-        z = Z;
+    vector3f(float X, float Y, float Z) : x(X), y(Y), z(Z) {
+
     }
 
     // Operaciones con vectores
@@ -80,7 +78,9 @@ struct vector3f {
         return vector3f(x / num, y / num, z / num);
     }
 
-    float x, y, z;
+    float x;
+    float y;
+    float z;
 };
 
 // Regresa el producto cruzado entre 2 vectores
@@ -115,10 +115,8 @@ static vector3f Normalizar(vector3f vVector) {
 struct color3f {
     color3f() {}
 
-    color3f(float R, float G, float B) {
-        r = R;
-        g = G;
-        b = B;
+    color3f(float R, float G, float B)  : r(R), g(G), b(B){
+
     }
 
     // Operaciones con vectores

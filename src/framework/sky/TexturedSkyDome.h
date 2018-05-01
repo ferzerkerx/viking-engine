@@ -21,9 +21,9 @@ protected:
     unsigned int m_textura; //guarda el identificador de la textura a ser usada en el domo
     float m_h_tile;    //Tile horizontal
     float m_v_tile;    //Tile vertical
-    void render(vector3f poscam);
+    void render(vector3f poscam) override;
 
-    void renderDome(vector3f poscam);
+    void renderDome(vector3f poscam) override;
 
     void calculaUV();
 

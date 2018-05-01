@@ -22,6 +22,17 @@
 */
 #define RAD PI/180.0F
 
+/**
+    *@struct vertxDome
+    *@brief Contiene datos necesarios para cada vertice del domo
+    */
+typedef struct {
+    polar3f pol;        //coordenada polar del vertice
+    vector3f pos;        //posicion del vertice
+    vector3f uv;        //usados para texturizar el domo
+    color3f color;
+} vertxDome;
+
 /**	@class SkyDome
 *	@author Fernando Montes de Oca Cspedes.
 *	@version 1.0
@@ -41,17 +52,6 @@ protected:
     unsigned int m_sun_text; //identificador de la textura del sol
     bool m_has_sun_text;    //indica si tiene textura de sol
 
-    /**
-    *@struct vertxDome
-    *@brief Contiene datos necesarios para cada vertice del domo
-    */
-    typedef struct {
-        polar3f pol;        //coordenada polar del vertice
-        vector3f pos;        //posicion del vertice
-        vector3f uv;        //usados para texturizar el domo
-        color3f color;
-    } vertxDome;
-
     vertxDome *m_vrtx;        //guarda los vertices de nuestro domo
 
     void generaHemiEsfera();
@@ -61,7 +61,7 @@ protected:
     void renderSun(vector3f poscam);
 
 public:
-    SkyDome(float r);
+    explicit SkyDome(float r);
 
     SkyDome(float dphi, float dtheta, float r);
 

@@ -30,11 +30,8 @@ Quaternion::Quaternion() {
 * @param y Componente imaginario j del Quaternion
 * @param z Componente imaginario k del Quaternion
 */
-Quaternion::Quaternion(float w, float x, float y, float z) {
-    this->w = w;
-    this->x = x;
-    this->y = y;
-    this->z = z;
+Quaternion::Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z(z) {
+
 }
 
 /**
@@ -107,7 +104,7 @@ Quaternion::Quaternion(float *matriz, int num_columnas) {
         * y = (t20 - t02)/4w
         * z = (t01 - t10)/4w
         */
-        w = sqrt(trace + 1.0F) * 0.5f;
+        w = sqrt(trace + 1.0F) * 0.5F;
         escala = 4 * w;
         x = (m[6] - m[9]) / escala;
         y = (m[8] - m[2]) / escala;
@@ -124,7 +121,7 @@ Quaternion::Quaternion(float *matriz, int num_columnas) {
             * y = (t01 + t10)/4x
             * z = (t02 + t20)/4x
             */
-            x = sqrt(1.0F + m[0] - m[5] - m[10]) * 0.5f;
+            x = sqrt(1.0F + m[0] - m[5] - m[10]) * 0.5F;
             escala = 4 * x;
             w = (m[6] - m[9]) / escala;
             y = (m[1] + m[4]) / escala;
@@ -139,7 +136,7 @@ Quaternion::Quaternion(float *matriz, int num_columnas) {
             * z = (t12 + t21)/4y
             * w = (t20 - t02)/4y
             */
-            y = sqrt(1.0F + m[5] - m[0] - m[10]) * 0.5f;
+            y = sqrt(1.0F + m[5] - m[0] - m[10]) * 0.5F;
             escala = 4 * y;
             x = (m[1] + m[4]) / escala;
             z = (m[6] + m[9]) / escala;
@@ -156,7 +153,7 @@ Quaternion::Quaternion(float *matriz, int num_columnas) {
             * y = (t12 + t21)/4z
             * w = (t01 - t10)/4z
             */
-            z = sqrt(1.0F + m[10] - m[0] - m[5]) * 0.5f;
+            z = sqrt(1.0F + m[10] - m[0] - m[5]) * 0.5F;
             escala = 4 * z;
             x = (m[2] + m[8]) / escala;
             y = (m[6] + m[9]) / escala;
@@ -441,7 +438,8 @@ Quaternion Quaternion::SLERP(const Quaternion &q1, const Quaternion &q2, float t
     * escala_q1 -> representa por lo que sera multiplicado q1
     * escala_q2 -> representa por lo que sera multiplicado q2
     **/
-    float escala_q1 = 1 - t, escala_q2 = t;
+    float escala_q1 = 1 - t;
+    float escala_q2 = t;
 
 
     // Solamente si el angulo es muy grande hacemos los calculos

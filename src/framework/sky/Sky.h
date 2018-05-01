@@ -19,6 +19,7 @@
 
 class Sky {
 public:
+
     /**
     *@brief Esta funcin actualiza los elementos del objeto Sky
     *@param poscam Es el vector de orientacin de la camara (en este caso es FPS)
@@ -30,6 +31,9 @@ public:
     *@param poscam Es el vector de orientacin de la camara (en este caso es FPS)
     */
     virtual void render(vector3f poscam)=0;
+
+protected:
+    ~Sky() {};
 };
 
 
