@@ -9,32 +9,14 @@
 #include <cstring>
 
 /**
-* @brief Constructor que recibe la ruta del modelo
-* @author Fernando Montes de Oca Cspedes
-* @date Thursday, November 29, 2007 8:39:20 PM
-* @param modelo Ruta hacia el modelo
-*/
-MD2Model::MD2Model(const char *modelo) : MD2Model(modelo, nullptr) {
-}
-
-/**
 * @brief Constrtuctor que recibe la ruta y la textura usada por el modelo MD2
 * @author Fernando Montes de Oca Cspedes
 * @date Thursday, November 29, 2007 8:39:31 PM
-* @param modelo Ruta hacia el modelo
-* @param text Textura usada por el modelo
 */
-MD2Model::MD2Model(const char *modelo, const char *text) {
+MD2Model::MD2Model() {
     m_b_hasAnimation = false;
     m_glCommandBuffer = nullptr;
     num_glCommands = 0;
-
-    m_ml = new MD2Loader(this);
-    ((MD2Loader *) m_ml)->importar(modelo, text);
-    delete m_ml;
-
-    calculaNormales();
-
     currentAnim = STAND;
     currentFrame = 0;
     nextFrame = 0;

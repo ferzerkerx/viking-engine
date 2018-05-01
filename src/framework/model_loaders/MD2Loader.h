@@ -27,12 +27,12 @@
 class MD2Loader : public Model3DLoader {
 
 public:
-    explicit MD2Loader(MD2Model *model);
+     MD2Loader();
     ~MD2Loader() override = default;
 
-    void importar(const char *modelo, const char *textura);
+    Model3D* importar(const char *modelo, const char *textura);
 
-    void importar(const char *modelo) override;
+    Model3D* importar(const char *modelo) override;
 
 private:
 
@@ -93,13 +93,13 @@ private:
 
     void leeMD2Data(md2_header &m_header);
 
-    void convertDataStructures(md2_header &m_header);
+    void convertDataStructures(md2_header &m_header, MD2Model * md2Model);
 
-    void parseAnimations(md2_header &m_header);
+    void parseAnimations(md2_header &m_header, MD2Model *pModel);
 
-    void dameNombreFrame(char *buff, int longitud);
+    void FrameName(char *buff, int longitud);
 
-    void agregaAnimacion(int start, int end, char *name);
+    Animacion agregaAnimacion(int start, int end, char *name);
 
     tMd2Skin *m_pSkins;            // texturas usadas por el modelo
     tMd2TexCoord *m_pTexCoords;    // coordenadas de la textura

@@ -9,6 +9,7 @@
 #include "framework/Framework.h"
 #include "Camara.h"
 #include "VKSkyDome.h"
+#include "framework/model_loaders/ModelFactory.h"
 #include "framework/sky/SkyBox.h"
 #include "framework/model_loaders/MD2Model.h"
 #include "framework/loggers/ConsoleEventLogger.h"
@@ -264,7 +265,7 @@ void initViking() {
     fuente = new Fuente(fontText);
     timer = new Timer();
 
-    knight = new MD2Model("data/modelos/knight.md2", "data/modelos/knight.bmp");
+    knight = ModelFactory::loadMD2("data/modelos/knight.md2", "data/modelos/knight.bmp");
 
     glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
 

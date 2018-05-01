@@ -2,6 +2,7 @@
 CMakeFiles/
 docs/
 cmake-build-debug/
+*.cmake
 
 CMakeCache.txt
 viking_engine.cbp

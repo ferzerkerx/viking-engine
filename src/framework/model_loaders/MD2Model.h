@@ -31,9 +31,7 @@ typedef enum {
 
 class MD2Model : public Model3D {
 public:
-    explicit MD2Model(const char *modelo);
-
-    MD2Model(const char *modelo, const char *text);
+    MD2Model();
 
     ~MD2Model() override;
 
@@ -57,6 +55,8 @@ public:
 
     void setGlCommands(int *com, int num);
 
+    void calculaNormales();
+
 
 private:
     int *m_glCommandBuffer;            //comandos de dibujo de openGL de MD2
@@ -70,8 +70,6 @@ private:
     bool m_b_hasAnimation;                //nos dice si el modelo tiene animacion
 
     float calculaFactorInterpolacion();
-
-    void calculaNormales();
 };
 
 /**

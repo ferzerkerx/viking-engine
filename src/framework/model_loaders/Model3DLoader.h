@@ -9,8 +9,6 @@
 #include "../Textura.h"
 #include "Model3D.h"
 
-class Model3D;
-
 /**
 * @class Model3DLoader
 * @author Fernando Montes de Oca Cspedes
@@ -19,16 +17,12 @@ class Model3D;
 * loaders de modelos3D
 */
 class Model3DLoader {
-protected:
-    Model3D *m_mdl;
 
 public:
-    explicit Model3DLoader(Model3D *mdl) {
-        m_mdl = mdl;
+    Model3DLoader() {
     }
 
     virtual ~Model3DLoader() {
-        m_mdl = nullptr;
     }
 
     /**
@@ -37,7 +31,7 @@ public:
     * @date Friday, November 23, 2007 7:06:23 PM
     * @param modelo El path hacia el archivo que contiene el modelo
     */
-    virtual void importar(const char *modelo) = 0;
+    virtual Model3D* importar(const char *modelo) = 0;
 };
 
 /**

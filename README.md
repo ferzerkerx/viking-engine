@@ -8,7 +8,7 @@ for academic purposes.Project was originally for windows and migrated it to Linu
 - Supports Matrix operations
 - Supports Simple logging
 - Supports to import .bmp, .tga images
-- Supports .md2, .md3 models (no animation)
+- Supports .md2 model (no animation)
 - Supports 2d text render 
 - Allows billboarding on textures
 - It has camera keyboard/mouse  FPS movement

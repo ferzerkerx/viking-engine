@@ -8,7 +8,6 @@
 
 #include <vector>
 #include "../math/vector.h"
-#include "Model3DLoader.h"
 
 struct Face {
     int vert_index[3];            //indices de los vertices que conforman la cara
@@ -49,8 +48,6 @@ struct Object3D {
 };
 
 
-class Model3DLoader;
-
 /**
 * @class Model3D
 * @author Fernando Montes de Oca Cspedes
@@ -63,7 +60,6 @@ class Model3D {
 protected:
     std::vector<Material> m_materials;    //Los materiales del modelo
     std::vector<Object3D> m_objects;    //Los objetos que representan el modelo
-    Model3DLoader *m_ml;                //Un apuntador a un Loader que lea el modelo 3D
 
 public:
     virtual ~Model3D();

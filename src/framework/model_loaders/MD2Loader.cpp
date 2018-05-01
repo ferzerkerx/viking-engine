@@ -5,11 +5,12 @@
 */
 
 #include <cstring>
+#include <cstdio>
 #include "MD2Loader.h"
 #include "../loggers/EventLogger.h"
 
 
-MD2Loader::MD2Loader(MD2Model *model) : Model3DLoader(model) {
+MD2Loader::MD2Loader() : Model3DLoader() {
     m_pSkins = nullptr;
     m_pTexCoords = nullptr;
     m_pTriangles = nullptr;
@@ -18,19 +19,21 @@ MD2Loader::MD2Loader(MD2Model *model) : Model3DLoader(model) {
     m_file = nullptr;
 }
 
-void MD2Loader::importar(const char *modelo) {
-    importar(modelo, nullptr);
+Model3D* MD2Loader::importar(const char *modelo) {
+    return importar(modelo, nullptr);
 }
 
-void MD2Loader::importar(const char *modelo, const char *textura) {
+Model3D* MD2Loader::importar(const char *modelo, const char *textura) {
     FN("MD2::readMD2File(char * modelo)");
-    if (!modelo || !m_mdl) { return; }
+    if (!modelo) {
+        throw std::invalid_argument("No name was spacified.");
+    }
 
     m_file = fopen(modelo, "rb");
 
     if (!m_file) {
         LOG("No existe el archivo: %s", modelo);
-        return;
+        throw std::invalid_argument("No existe el archivo");
     }
     struct md2_header m_header{};
 
@@ -55,11 +58,12 @@ void MD2Loader::importar(const char *modelo, const char *textura) {
 
     if (m_header.ident != IDENT || m_header.version != VERSION) {
         LOG("Error al cargar \"%s\" version de MD2 incorrecta", modelo);
-        return;
+        throw std::invalid_argument("Invalid md2 header");
     }
 
     leeMD2Data(m_header);
-    convertDataStructures(m_header);
+    auto * md2Model = new MD2Model();
+    convertDataStructures(m_header, md2Model);
 
     if (textura) {
         Material texture;
@@ -71,7 +75,7 @@ void MD2Loader::importar(const char *modelo, const char *textura) {
         texture.u_tile = 1;
         texture.v_tile = 1;
 
-        m_mdl->addMaterial(texture);
+        md2Model->addMaterial(texture);
     }
 
     fclose(m_file);
@@ -81,6 +85,10 @@ void MD2Loader::importar(const char *modelo, const char *textura) {
     delete m_pTriangles;
     delete m_pFrames;
     delete m_glCommands;
+
+
+    md2Model->calculaNormales();
+    return md2Model;
 }
 
 
@@ -135,11 +143,11 @@ void MD2Loader::leeMD2Data(md2_header &m_header) {
 
 }
 
-void MD2Loader::convertDataStructures(md2_header &m_header) {
+void MD2Loader::convertDataStructures(md2_header &m_header, MD2Model * md2Model) {
     int j = 0;
     int i = 0;
 
-    parseAnimations(m_header);
+    parseAnimations(m_header, md2Model);
 
     for (i = 0; i < m_header.num_frames; i++) {
         Object3D currentFrame = {0};
@@ -148,10 +156,8 @@ void MD2Loader::convertDataStructures(md2_header &m_header) {
         currentFrame.num_st = m_header.num_st;
         currentFrame.num_faces = m_header.num_tris;
 
-        // Allocate memory for the vertices, texture coordinates and face data.
         currentFrame.vertices = new vector3f[currentFrame.num_verts];
 
-        // Go through all of the vertices and assign them over to our structure
         for (j = 0; j < currentFrame.num_verts; j++) {
             currentFrame.vertices[j].x = m_pFrames[i].pVertices[j].vertex[0];
             currentFrame.vertices[j].y = m_pFrames[i].pVertices[j].vertex[1];
@@ -161,7 +167,7 @@ void MD2Loader::convertDataStructures(md2_header &m_header) {
         delete m_pFrames[i].pVertices;
 
         if (i > 0) {
-            m_mdl->addObject(currentFrame);
+            md2Model->addObject(currentFrame);
             continue;
 
         }
@@ -171,7 +177,7 @@ void MD2Loader::convertDataStructures(md2_header &m_header) {
         // The UV coordinates are not normal UV coordinates, they have a pixel ratio of
         // 0 to 256.  We want it to be a 0 to 1 ratio, so we divide the u value by the
         // skin width and the v value by the skin height.  This gives us our 0 to 1 ratio.
-        // For some reason also, the v coordinate is flipped upside down.  We just subtract
+        // The v coordinate is flipped upside down.  We just subtract
         // the v coordinate from 1 to remedy this problem.
         for (j = 0; j < currentFrame.num_st; j++) {
             currentFrame.text_st[j].s = m_pTexCoords[j].u / float(m_header.skinwidth);
@@ -193,14 +199,14 @@ void MD2Loader::convertDataStructures(md2_header &m_header) {
         }
 
         // Here we add the current object (or frame) to our list object list
-        m_mdl->addObject(currentFrame);
+        md2Model->addObject(currentFrame);
     }
 
-    ((MD2Model *) m_mdl)->setGlCommands(m_glCommands, m_header.num_glcmds);
+    md2Model->setGlCommands(m_glCommands, m_header.num_glcmds);
 }
 
 
-void MD2Loader::parseAnimations(md2_header &m_header) {
+void MD2Loader::parseAnimations(md2_header &m_header, MD2Model *m_mdl) {
     FN("MD2Loader::parseAnimations(md2_header  & m_header)");
     int i = 0;
     int longitud = 0;
@@ -211,7 +217,7 @@ void MD2Loader::parseAnimations(md2_header &m_header) {
         if (i == 0) {
             strcpy(nombre, m_pFrames[i].strName);
             longitud = static_cast<int>(strlen(nombre));
-            dameNombreFrame(nombre, longitud);
+            FrameName(nombre, longitud);
             start = i;
             continue;
         }
@@ -221,24 +227,26 @@ void MD2Loader::parseAnimations(md2_header &m_header) {
             agregaAnimacion(start, i - 1, nombre);
             strcpy(nombre, m_pFrames[i].strName);
             longitud = static_cast<int>(strlen(nombre));
-            dameNombreFrame(nombre, longitud);
+            FrameName(nombre, longitud);
             start = i;
         }
     }
-    agregaAnimacion(start, i - 1, nombre);
+    Animacion animacion = agregaAnimacion(start, i - 1, nombre);
+    m_mdl->addAnimation(animacion);
 }
 
-void MD2Loader::agregaAnimacion(int start, int end, char *name) {
+Animacion MD2Loader::agregaAnimacion(int start, int end, char *name) {
     Animacion anim = {0};
     anim.frame_inicial = start;
     anim.frame_final = end;
     strcpy(anim.nombre, name);
-    ((MD2Model *) m_mdl)->addAnimation(anim);
     LOG("start= %d end= %d nombre = %s", anim.frame_inicial, anim.frame_final, anim.nombre);
+    return anim;
+
 }
 
 
-void MD2Loader::dameNombreFrame(char *buff, int longitud) {
+void MD2Loader::FrameName(char *buff, int longitud) {
     if (buff[longitud - 2] == '0') { buff[longitud - 2] = '\0'; }
     else { buff[longitud - 1] = '\0'; }
 }

@@ -44,7 +44,7 @@ add_executable(viking_engine src/Main.cpp
         src/framework/model_loaders/MD2Model.cpp
         src/framework/model_loaders/MD2Loader.h
         src/framework/model_loaders/MD2Loader.cpp
-        )
+        src/framework/model_loaders/ModelFactory.cpp src/framework/model_loaders/ModelFactory.h)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
