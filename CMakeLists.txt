@@ -29,8 +29,8 @@ add_executable(viking_engine src/Main.cpp
         src/framework/sky/TexturedSkyDome.cpp
         src/framework/sky/Clouds.h
         src/framework/sky/Clouds.cpp
-        src/framework/sky/CloudsActualizables.h
-        src/framework/sky/CloudsActualizables.cpp
+        src/framework/sky/UpdatableClouds.h
+        src/framework/sky/UpdatableClouds.cpp
         src/framework/sky/TexturedSkyPlane.h
         src/framework/sky/TexturedSkyPlane.cpp
         src/framework/TextureWriter.h
@@ -47,7 +47,9 @@ add_executable(viking_engine src/Main.cpp
         src/framework/model_loaders/Md2Model.cpp
         src/framework/model_loaders/MD2Loader.h
         src/framework/model_loaders/MD2Loader.cpp
-        src/framework/model_loaders/ModelFactory.cpp src/framework/model_loaders/ModelFactory.h)
+        src/framework/model_loaders/ModelFactory.cpp
+        src/framework/model_loaders/ModelFactory.h
+        )
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

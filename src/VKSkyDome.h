@@ -1,21 +1,15 @@
-/**
-* @file VKSkyDome.h
-* @brief Encabezado de la clase VKSkyDome
-* @date Friday, October 19, 2007 5:18:25 PM
-*/
 #ifndef __VKSKYDOME_H__
 #define __VKSKYDOME_H__
 
 #include "framework/sky/TexturedSkyDome.h"
 #include "framework/sky/TexturedSkyPlane.h"
-#include "framework/sky/CloudsActualizables.h"
+#include "framework/sky/UpdatableClouds.h"
 
 
 /**
 * @class VKSkyDome
 * @author Fernando Montes de Oca Cespedes
 * @date Friday, October 19, 2007 12:16:55 PM
-* @brief Domo del juego  
 */
 
 class VKSkyDome : public TexturedSkyDome {
@@ -31,7 +25,7 @@ public:
     void escribeImagenDeNubes();
 
 private:
-    CloudsActualizables *m_ca;    //apuntador a la instancia de Clouds
+    UpdatableClouds *m_ca;    //apuntador a la instancia de Clouds
     TexturedSkyPlane *m_sp;                //apuntador a la instancia de TexturedSkyPlane
     float m_cloud_cover;        //guarda el cover de las nubes
     void render(vector3f poscam);

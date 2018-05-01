@@ -11,8 +11,8 @@
 VKSkyDome::VKSkyDome(float r, unsigned int id_textura) : TexturedSkyDome(r, id_textura) {
     LOG(0, "VKSkyDome(float r, unsigned int id_textura)");
     m_cloud_cover = 45.0F;
-    m_ca = new CloudsActualizables();
-    m_sp = new TexturedSkyPlane(16, 50.0F, 90.0F, 1.0F, 1.0F, m_ca->getTextureId());
+    m_ca = new UpdatableClouds();
+    m_sp = new TexturedSkyPlane(16, 50.0F, 90.0F, 1.0F, 1.0F, m_ca->texture_id());
 }
 
 VKSkyDome::VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura) : TexturedSkyDome(dphi, dtheta, r,
@@ -20,8 +20,8 @@ VKSkyDome::VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura)
     FN("VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura)");
     LOG(0, "VKSkyDome creado %f %f %f ", dphi, dtheta, r);
     m_cloud_cover = 45.0F;
-    m_ca = new CloudsActualizables();
-    m_sp = new TexturedSkyPlane(16, 50.0F, 90.0F, 1.0F, 1.0F, m_ca->getTextureId());
+    m_ca = new UpdatableClouds();
+    m_sp = new TexturedSkyPlane(16, 50.0F, 90.0F, 1.0F, 1.0F, m_ca->texture_id());
 }
 
 VKSkyDome::~VKSkyDome() {
@@ -43,7 +43,7 @@ void VKSkyDome::actualiza(vector3f poscam) {
 
 
 void VKSkyDome::escribeImagenDeNubes() {
-    auto *bmpwr = new BMPWriter("test.bmp", m_ca->getTextureWidth(), m_ca->getTextureHeight(), 4, m_ca->getData());
+    auto *bmpwr = new BMPWriter("test.bmp", m_ca->texture_width(), m_ca->texture_height(), 4, m_ca->getData());
     bmpwr->writeTexture();
 
     delete bmpwr;
