@@ -33,11 +33,11 @@ public:
 
     TexturedSkyDome(float dphi, float dtheta, float r, unsigned int id_textura);
 
-    ~TexturedSkyDome();
-
-    void actualiza(vector3f poscam);
+    void actualiza(vector3f poscam) override;
 
     void setTexture(unsigned int id);
+
+    ~TexturedSkyDome() override;
 
 };
 

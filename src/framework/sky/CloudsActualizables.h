@@ -36,13 +36,13 @@ public:
     CloudsActualizables(float cover, float sharpness, int num_octavos, int width, int height,
                         unsigned int up_text_milli);
 
-    ~CloudsActualizables();
+    ~CloudsActualizables() override;
 
     int actualizaPorOctavo();
 
     int actualizaPorCoordenada();
 
-    void forceUpdate();
+    void forceUpdate() override;
 
     void setTextureUpdateTime(int milli);
 

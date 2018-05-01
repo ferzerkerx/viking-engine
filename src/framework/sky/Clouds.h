@@ -34,7 +34,7 @@ public:
     char *getData();
 
 protected:
-    ~Clouds();
+    virtual ~Clouds();
 
     unsigned char m_num_octaves;    //define la cantidad de octavos de perlin que se desea
     float m_sharpness;                //define que tan delgadas son las nubes

@@ -100,7 +100,9 @@ void TexturedSkyDome::calculaUV() {
 
     vector3f vec_temp;
 
-    int i = 0, phi = 0, theta = 0;
+    int i = 0;
+    int phi = 0;
+    int theta = 0;
 
     for (; phi <= 90 - m_dphi; phi += (int) m_dphi) {
         for (theta = 0; theta <= 360 - m_dtheta; theta += (int) m_dtheta) {

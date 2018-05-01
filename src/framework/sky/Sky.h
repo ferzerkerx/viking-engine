@@ -32,8 +32,8 @@ public:
     */
     virtual void render(vector3f poscam)=0;
 
-protected:
-    ~Sky() {};
+public:
+    virtual ~Sky() {};
 };
 
 

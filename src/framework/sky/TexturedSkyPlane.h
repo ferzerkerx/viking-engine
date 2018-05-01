@@ -33,7 +33,8 @@ private:
     */
     typedef struct {
         vector3f pos;                //posicion x,y,z del vertice
-        float u, v;                    //usados para texturizacin
+        float u;
+        float v;                    //usados para texturizacin
     } vertx;
 
     float m_h_tile;                    //horizontal tile para texturizacion
@@ -72,8 +73,7 @@ public:
 
     void setWindFactorXY(float wfx, float wfy);
 
-protected:
-    ~TexturedSkyPlane();
+    ~TexturedSkyPlane() override;
 
 };
 

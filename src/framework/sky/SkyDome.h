@@ -65,9 +65,9 @@ public:
 
     SkyDome(float dphi, float dtheta, float r);
 
-    ~SkyDome();
-
     void setSunTexture(unsigned int id);
+
+    ~SkyDome() override;
 };
 
 /**

@@ -35,8 +35,6 @@ public:
     SkyBox(float alto, float largo, float ancho, unsigned int front,
            unsigned int back, unsigned int left, unsigned int right, unsigned int up, unsigned int down);
 
-    ~SkyBox();
-
     void actualiza(vector3f poscam) override;
 
     float getAlto();
@@ -44,6 +42,8 @@ public:
     float getLargo();
 
     float getAncho();
+
+    ~SkyBox() override;
 
 };
 

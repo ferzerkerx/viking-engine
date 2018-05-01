@@ -15,10 +15,12 @@
 TexturedSkyPlane::TexturedSkyPlane(int divisiones, float planet_radius, float atmosphere_radius, float h_tile,
                                    float v_tile, unsigned int texture) {
     m_divisiones = static_cast<unsigned int>(divisiones);
-    if (m_divisiones < 1)
+    if (m_divisiones < 1) {
         m_divisiones = 1;
-    if (m_divisiones > 256)
+    }
+    if (m_divisiones > 256) {
         m_divisiones = 256;
+    }
 
     m_texture = texture;
 
@@ -119,8 +121,8 @@ void TexturedSkyPlane::generaSkyPlane() {
 
     for (i = 0; i <= m_divisiones; i++) {
         for (j = 0; j <= m_divisiones; j++) {
-            x_dist = (-0.5f * plane_size) + ((float) j * delta);
-            z_dist = (-0.5f * plane_size) + ((float) i * delta);
+            x_dist = (-0.5F * plane_size) + ((float) j * delta);
+            z_dist = (-0.5F * plane_size) + ((float) i * delta);
 
             x_height = (x_dist * x_dist) / m_atmosphere_radius;
             z_height = (z_dist * z_dist) / m_atmosphere_radius;
