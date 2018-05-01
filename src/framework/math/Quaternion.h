@@ -1,8 +1,3 @@
-/**
-* @file Quaternion.h
-* @brief Encabezado de la clase Quaternion
-* @date Friday, October 26, 2007 8:06:39 PM
-*/
 #ifndef __QUATERNION_H__
 #define __QUATERNION_H__
 
@@ -12,9 +7,6 @@
 * @class Quaternion
 * @author Fernando Montes de Oca Cespedes
 * @date Sunday, October 28, 2007 11:54:04 PM
-* @brief Clase que maneja los Quaterniones, hace SLERP y 
-* rotacion de vectores
-* @todo quitar m_buff y toString para el release final
 */
 class Quaternion {
 public:
@@ -22,9 +14,9 @@ public:
 
     Quaternion(float w, float x, float y, float z);
 
-    Quaternion(float theta, vector3f *eje);
+    Quaternion(float theta, vector3f *axis);
 
-    Quaternion(float *matriz, int num_columnas);
+    Quaternion(float *matrix, int size);
 
     bool operator==(const Quaternion &q);
 
@@ -36,7 +28,7 @@ public:
 
     Quaternion operator*(float f);
 
-    vector3f operator*(vector3f p);
+    vector3f operator*(vector3f vector);
 
     Quaternion operator/(float f);
 
@@ -50,59 +42,29 @@ public:
 
     Quaternion &operator/=(float f);
 
-    vector3f rotaVector(vector3f p);
+    vector3f RotateVector(vector3f vector);
 
-    Quaternion normaliza();
+    Quaternion Normalize();
 
-    Quaternion getConjugado();
+    Quaternion Conjugate();
 
-    Quaternion getInversa();
+    Quaternion Inverse();
 
     Quaternion SLERP(const Quaternion &q1, const Quaternion &q2, float t);
 
     float getMagnitud();
 
-    void to4x4Matriz(float *m4x4);
+    void To4x4Matrix(float *m4x4);
 
-    void to3x3Matriz(float *m3x3);
+    void To3x3Matrix(float *m3x3);
 
-    bool isUnitario();
+    bool is_unit();
 
-    char *toString();
-
-    float w; //componente real del Quaternion
-    float x; //componente imaginario i del Quaternion
-    float y; //componente imaginario j del Quaternion
-    float z; //componente imaginario k del Quaternion
+    float w_;
+    float x_;
+    float y_;
+    float z_;
 
 };
-
-/**
-* @var Quaternion::m_buff
-* @brief usada para debug
-*/
-
-/**
-* @var Quaternion::w
-* @brief componente real del Quaternion
-*/
-
-/**
-* @var Quaternion::x
-* @brief componente imaginario i del Quaternion
-*/
-
-/**
-* @var Quaternion::y
-* @brief componente imaginario j del Quaternion
-*/
-
-/**
-* @var Quaternion::z
-* @brief componente imaginario k del Quaternion
-*/
-
-
-
 
 #endif

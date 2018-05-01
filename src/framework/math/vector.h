@@ -56,12 +56,12 @@ struct vector3f {
 
     }
 
-    vector3f operator+(vector3f vVector) {
-        return {vVector.x + x, vVector.y + y, vVector.z + z};
+    vector3f operator+(vector3f vector) {
+        return {vector.x + x, vector.y + y, vector.z + z};
     }
 
-    vector3f operator-(vector3f vVector) {
-        return {x - vVector.x, y - vVector.y, z - vVector.z};
+    vector3f operator-(vector3f vector) {
+        return {x - vector.x, y - vector.y, z - vector.z};
     }
 
     vector3f operator*(float num) {
@@ -96,7 +96,7 @@ static float Point(vector3f v1, vector3f v2) {
 }
 
 static float Magnitude(vector3f normalized) {
-    // magnitude = sqrt(V.x^2 + V.y^2 + V.z^2)
+    // magnitude = sqrt(V.x_^2 + V.y_^2 + V.z_^2)
     return std::sqrt((normalized.x * normalized.x) + (normalized.y * normalized.y) + (normalized.z * normalized.z));
 }
 

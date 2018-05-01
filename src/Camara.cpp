@@ -44,7 +44,7 @@ void Camara::VistaMouse(int ancho, int alto, int mouseX, int mouseY) {
     int mitX = ancho >> 1;         // Corrimiento binario para obtener la mitad de ancho
     int mitY = alto >> 1;         // Corrimiento binario para obtener la mitad de alto
     float anguloY;             // Direccion vista arriba o abajo
-    float anguloZ;             // Rotacin en Y (Izquierda y Derecha)
+    float anguloZ;             // Rotacin en Y (Izquierda y_ Derecha)
     static float currentRotX = 0.0F;
 
     // Si el cursor esta en la mitad no nos movemos
@@ -98,15 +98,15 @@ void Camara::RotarVista(float angulo, float x, float y, float z) {
     // Calculamos el seno coseno del angulo una vez
     float cosTheta = cos(angulo);
     float senTheta = sin(angulo);
-    // Encontramos la nueva pos de x para el nuevo punto rotado
+    // Encontramos la nueva pos de x_ para el nuevo punto rotado
     vNewView.x = (cosTheta + (1 - cosTheta) * x * x) * vView.x;
     vNewView.x += ((1 - cosTheta) * x * y - z * senTheta) * vView.y;
     vNewView.x += ((1 - cosTheta) * x * z + y * senTheta) * vView.z;
-    // Encontramos la nueva pos de y para el nuevo punto rotado
+    // Encontramos la nueva pos de y_ para el nuevo punto rotado
     vNewView.y = ((1 - cosTheta) * x * y + z * senTheta) * vView.x;
     vNewView.y += (cosTheta + (1 - cosTheta) * y * y) * vView.y;
     vNewView.y += ((1 - cosTheta) * y * z - x * senTheta) * vView.z;
-    // Encontramos la nueva pos de z para el nuevo punto rotado
+    // Encontramos la nueva pos de z_ para el nuevo punto rotado
     vNewView.z = ((1 - cosTheta) * x * z - y * senTheta) * vView.x;
     vNewView.z += ((1 - cosTheta) * y * z + x * senTheta) * vView.y;
     vNewView.z += (cosTheta + (1 - cosTheta) * z * z) * vView.z;

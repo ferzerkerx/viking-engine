@@ -21,9 +21,9 @@ protected:
     void render(vector3f poscam) override;
 
     unsigned int m_caras[6];    //almacena los identificadores de textura de la caja
-    float m_alto;    //altura/2 de la caja (eje y openGL)
-    float m_largo;    //largo/2 de la caja (eje x openGL)
-    float m_ancho;    //ancho/2 de la caja (eje z openGL)
+    float m_alto;    //altura/2 de la caja (eje y_ openGL)
+    float m_largo;    //largo/2 de la caja (eje x_ openGL)
+    float m_ancho;    //ancho/2 de la caja (eje z_ openGL)
 
     enum Faces {
         FRONT, BACK, LEFT, RIGHT, UP, DOWN

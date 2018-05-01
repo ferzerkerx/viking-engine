@@ -38,7 +38,7 @@ Camara camara;
 Fuente *fuente;
 VKSkyDome *vkSkyDome;
 SkyBox *skyBox;
-EventLogger *g_Log;
+EventLogger *logger;
 Md2Model *knight;
 
 void initViking();
@@ -232,10 +232,10 @@ void renderScreenText() {
 
 
 void initViking() {
-    g_Log = new ConsoleEventLogger();
+    logger = new ConsoleEventLogger();
     LOG_INIT("TestLog.html");
     FN("initViking()");
-    LOG("El log ha comenzado");
+    LOG("El logger ha comenzado");
 
     camara.PonCam(0.0, 1.0, 10.0, 0.0, 1.0, 9.0, 0.0, 1.0, 0.0);
 
@@ -285,6 +285,6 @@ void shutdownViking() {
     delete vkSkyDome;
     delete skyBox;
     delete knight;
-    LOG_TERM();
-    delete g_Log;
+    LOG_PAUSE();
+    delete logger;
 }

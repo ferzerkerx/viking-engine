@@ -47,7 +47,7 @@ protected:
     float m_dtheta;            //define el delta de theta (0-360) usado para las divisiones
     float m_r;                //radio de la hemiesfera
     int m_num_vert;            //guarda el numero de vertex
-    vector3f m_sun_vector;    //representa la posicion x,y,z del sol
+    vector3f m_sun_vector;    //representa la posicion x_,y_,z_ del sol
     polar3f m_sun_polar;    //representa la posicion del sol en coordenadas polares
     unsigned int m_sun_text; //identificador de la textura del sol
     bool m_has_sun_text;    //indica si tiene textura de sol

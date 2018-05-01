@@ -32,7 +32,7 @@ private:
     *@brief Contiene datos necesarios de cada vertice del Skyplane
     */
     typedef struct {
-        vector3f pos;                //posicion x,y,z del vertice
+        vector3f pos;                //posicion x_,y_,z_ del vertice
         float u;
         float v;                    //usados para texturizacin
     } vertx;
@@ -47,13 +47,13 @@ private:
     unsigned int *m_indices;        //guarda todos los indices (indica como deben ser dibujados los vertex)
     vertx *m_vertices;            //guarda todos los vertex
     float m_planet_radius;            //radio planetario del TexturedSkyPlane
-    float m_roty_factor;            //factor de rotacin en y(delta)
-    float m_wind_factor_x;            //define el movimiento de la textura en x;
-    float m_wind_factor_y;            //define el movimiento de la textura en y;
+    float m_roty_factor;            //factor de rotacin en y_(delta)
+    float m_wind_factor_x;            //define el movimiento de la textura en x_;
+    float m_wind_factor_y;            //define el movimiento de la textura en y_;
     unsigned int m_update_text_milli;//define cada cuando se debe actualizar la textura
     unsigned int m_rot_text_milli; //define cada cuando se debe rotar
-    float m_desface_text_x;            //define la rotacin de la textura en x
-    float m_desface_text_y;            //define la rotacin de la textura en y
+    float m_desface_text_x;            //define la rotacin de la textura en x_
+    float m_desface_text_y;            //define la rotacin de la textura en y_
     Timer m_mov_timer;                //Timer que controla el movimiento de las nubes
 
     void render(vector3f poscam) override;

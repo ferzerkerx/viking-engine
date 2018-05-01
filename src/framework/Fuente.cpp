@@ -17,7 +17,7 @@ Fuente::Fuente(unsigned int *text) : textura(text) {
     glBindTexture(GL_TEXTURE_2D, *textura);
 
     for (i = 0; i < 256; i++) {
-        /*asignamos las coordenadas(x,y)de nuestro caracter*/
+        /*asignamos las coordenadas(x_,y_)de nuestro caracter*/
         cx = float(i % 16) / 16.0F;
         cy = float(i / 16) / 16.0F;
 

@@ -6,60 +6,28 @@
 
 #include "ConsoleEventLogger.h"
 
-#ifdef LOGGING
+#ifdef ENABLE_LOGGING
 
-/**
-* @brief Imprime el texto en consola ignorando las banderas
-* @author Fernando Montes de Oca Cespedes
-* @date Tuesday, October 23, 2007 4:07:57 PM
-* @param buffer Texto a escribir en consola
-* @param flags Banderas para impresion
-* @warning Esta funcion ignora las banderas
-*/
-void ConsoleEventLogger::lOutput(const char *buffer, unsigned int flags) {
+
+void ConsoleEventLogger::Output(const char *buffer, unsigned int flags) {
     printf(" %s\n", buffer);
 }
 
-/**
-* @brief Imprime la funcion invocada en consola
-* @author Fernando Montes de Oca Cespedes
-* @date Tuesday, October 23, 2007 4:07:57 PM
-* @param str nombre de la funcion
-*/
-void ConsoleEventLogger::lStartCallStackLevel(const char *str) {
+void ConsoleEventLogger::StartCallStackLevel(const char *str) {
     printf("%s\n", str);
 }
 
-/**
-* @brief Imprime un salto de linea despues de la impresion del callStack
-* @author Fernando Montes de Oca Cespedes
-* @date Tuesday, October 23, 2007 4:12:12 PM
-*/
-void ConsoleEventLogger::lEndStackCallLevel() {
+void ConsoleEventLogger::EndStackCallLevel() {
     printf("\n");
 }
 
-/**
-* @brief Imprime el texto de actualizacion
-* @author Fernando Montes de Oca Cespedes
-* @date Tuesday, October 23, 2007 4:28:51 PM
-* @param hours Horas transcurridas
-* @param minutes Minutos transcurridos
-* @param seconds Segundos transcurridos
-* @param hundrethSeconds Centesimas de segundos transcurridos
-*/
-void ConsoleEventLogger::lUpdate(int hours, int minutes, int seconds, int hundrethSeconds) {
-    printf("Actualizacion = %d, Tiempo = %.2d:%.2d:%.2d.%.2d\n", m_updateCount, hours, minutes, seconds,
+void ConsoleEventLogger::Update(int hours, int minutes, int seconds, int hundrethSeconds) {
+    printf("Actualizacion = %d, Tiempo = %.2d:%.2d:%.2d.%.2d\n", update_count_, hours, minutes, seconds,
            hundrethSeconds);
 }
 
 
-/**
-* @brief Como es consola el flush no tiene ningun efecto
-* @author Fernando Montes de Oca Cespedes
-* @date Tuesday, October 23, 2007 4:12:12 PM
-*/
-void ConsoleEventLogger::flush() {
+void ConsoleEventLogger::Flush() {
     //Nothing to do here
 }
 

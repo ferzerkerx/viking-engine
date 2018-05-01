@@ -15,7 +15,7 @@
 *(usado para actualizacin eficiente por coordenada)
 */
 struct octave {
-    int x;                        //lleva la ultima x por ser actualizada
+    int x;                        //lleva la ultima x_ por ser actualizada
     float scale;                //contiene la escala de cada octavo
 };
 
@@ -56,11 +56,11 @@ public:
 
 private:
     Timer m_text_timer;        //Timer que ayuda a saber cada cuando debe actualizarse la textura
-    float m_brightness;        //guarda el valor del ruido interpolado(solo en actualizacin x coordenada)
+    float m_brightness;        //guarda el valor del ruido interpolado(solo en actualizacin x_ coordenada)
     unsigned int m_update_text_milli;//define cada cuando se debe actualizar la textura
     unsigned char m_actual_octave;    //define el octavo actual (usado para actualizacin eficiente)
 
-    octave *m_octaves;                    //guarda todos los octavos y sus datos
+    octave *m_octaves;                    //guarda todos los octavos y_ sus datos
 
     void generaTextura() override;
 

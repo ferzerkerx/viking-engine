@@ -87,7 +87,7 @@ void Textura::CreaBMP(unsigned int textureArray[], const char *strFileName, int 
 void Textura::CreaTGA(unsigned int textureArray[], const char *strFileName, int textureID) {
 
     // Apuntador a datos de la imagen
-    tImageTGA *pImage = CargaTGA(strFileName);    // Carga imagen y guarda los datos
+    tImageTGA *pImage = CargaTGA(strFileName);    // Carga imagen y_ guarda los datos
 
     if (pImage == nullptr) {         // Checamos que se cargue la imagen
         return;
@@ -115,7 +115,7 @@ void Textura::CreaTGA(unsigned int textureArray[], const char *strFileName, int 
     free(pImage);
 }
 
-// Carga la imagen TGA y regresa sus datos
+// Carga la imagen TGA y_ regresa sus datos
 tImageTGA *Textura::CargaTGA(const char *filename) {
 
     tImageTGA *pImageData = nullptr;        // Datos de la imagen
@@ -141,7 +141,7 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
     fread(&imageType, sizeof(unsigned char), 1, pFile);    // Leemos tipo de imagen (RLE, RGB, Alpha)
     fseek(pFile, 9, SEEK_CUR);    // Nos saltamos info irrelevante
 
-    // Leemos ancho, alto y bits por pixel (16, 24 o 32)
+    // Leemos ancho, alto y_ bits por pixel (16, 24 o 32)
     fread(&width, sizeof(unsigned short), 1, pFile);
     fread(&height, sizeof(unsigned short), 1, pFile);
     fread(&bits, sizeof(unsigned char), 1, pFile);
@@ -151,7 +151,7 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
     if (imageType != TGA_RLE) {    // Checamos si la imagen tiene compresin
         if (bits == 24 || bits == 32) {    // Checamos si es de 24 o 32 bits
             channels = bits / 8;    // Calculamos canal (3-4)
-            stride = channels * width;    // Calculamos stride y le hacemos espacio en memoria
+            stride = channels * width;    // Calculamos stride y_ le hacemos espacio en memoria
             pImageData->data = new unsigned char[stride * height];
 
             for (int y = 0; y < height; y++) {    // Cargamos pixeles linea por linea
@@ -159,7 +159,7 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
                 unsigned char *pLine = &(pImageData->data[stride * y]);
                 fread(pLine, static_cast<size_t>(stride), 1, pFile);    // Leemos la linea actual
 
-                // Cambiamos B y R porque TGA se guardan como BGR en lugar de RGB
+                // Cambiamos B y_ R porque TGA se guardan como BGR en lugar de RGB
                 for (i = 0; i < stride; i += channels) {
                     int temp = pLine[i];
                     pLine[i] = pLine[i + 2];
@@ -182,12 +182,12 @@ tImageTGA *Textura::CargaTGA(const char *filename) {
 
                 // Para convertir a 16-bit a R, G, B, necesitamos aislar cada color, como
                 // 0x1f = 11111 en binario, 5 bits estan reservados en cada unsigned short
-                // para R, G y B. Cambiamos los valores por 3 para obtener el color final.
+                // para R, G y_ B. Cambiamos los valores por 3 para obtener el color final.
                 b = (pixels & 0x1f) << 3;
                 g = ((pixels >> 5) & 0x1f) << 3;
                 r = ((pixels >> 10) & 0x1f) << 3;
 
-                // Asignamos color al arreglo y cambiamos B por R al mismo tiempo.
+                // Asignamos color al arreglo y_ cambiamos B por R al mismo tiempo.
                 pImageData->data[i * 3 + 0] = static_cast<unsigned char>(r);
                 pImageData->data[i * 3 + 1] = static_cast<unsigned char>(g);
                 pImageData->data[i * 3 + 2] = static_cast<unsigned char>(b);
