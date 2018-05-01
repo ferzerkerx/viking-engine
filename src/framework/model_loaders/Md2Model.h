@@ -55,7 +55,7 @@ public:
 
 
 private:
-    int *m_glCommand_buffer_;
+    int *glCommand_buffer_;
     int num_glCommands_;
     int current_animation_;
     int current_frame_;

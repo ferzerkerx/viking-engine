@@ -1,9 +1,3 @@
-/**
-* @file MD2Loader.cpp
-* @brief Implementacin de la clase MD2
-* @date Thursday, November 01, 2007 7:42:08 AM
-*/
-
 #include <cstring>
 #include <cstdio>
 #include "MD2Loader.h"
@@ -32,8 +26,8 @@ Model3d *MD2Loader::load(const char *md2_file_name, const char *texture_file_nam
     file_ = fopen(md2_file_name, "rb");
 
     if (!file_) {
-        LOG("No existe el archivo: %s", md2_file_name);
-        throw std::invalid_argument("No existe el archivo");
+        LOG("File not found: %s", md2_file_name);
+        throw std::invalid_argument("File not found");
     }
     struct Md2Header m_header{};
 
@@ -170,32 +164,23 @@ void MD2Loader::PopulateModelInformation(Md2Header &md2_header, Md2Model *md2_Mo
         }
 
         current_object.texture_st = new vector2f[current_object.num_st];
-        // Go through all of the uv coordinates and assign them over to our structure.
-        // The UV coordinates are not normal UV coordinates, they have a pixel ratio of
-        // 0 to 256.  We want it to be a 0 to 1 ratio, so we divide the u value by the
-        // skin width and the v value by the skin height.  This gives us our 0 to 1 ratio.
-        // The v coordinate is flipped upside down.  We just subtract
-        // the v coordinate from 1 to remedy this problem.
+
         for (j = 0; j < current_object.num_st; j++) {
             current_object.texture_st[j].s = texture_coordinates_[j].u / float(md2_header.skin_width);
             current_object.texture_st[j].t = 1 - texture_coordinates_[j].v / float(md2_header.skin_height);
         }
 
         current_object.faces = new Face[current_object.num_faces];
-        // Go through all of the face data and assign it over to OUR structure
         for (j = 0; j < current_object.num_faces; j++) {
-            // Assign the vertex indices to our face data
             current_object.faces[j].vert_index[0] = faces_[j].vertex_indexes[0];
             current_object.faces[j].vert_index[1] = faces_[j].vertex_indexes[1];
             current_object.faces[j].vert_index[2] = faces_[j].vertex_indexes[2];
 
-            // Assign the texture coord indices to our face data
             current_object.faces[j].st_index[0] = faces_[j].texture_indexes[0];
             current_object.faces[j].st_index[1] = faces_[j].texture_indexes[1];
             current_object.faces[j].st_index[2] = faces_[j].texture_indexes[2];
         }
 
-        // Here we add the current object (or frame) to our list object list
         md2_Model->AddObject(current_object);
     }
 
@@ -236,7 +221,6 @@ Animation MD2Loader::AddAnimation(int start, int end, char *name) {
     animation.initial_frame = start;
     animation.final_frame = end;
     strcpy(animation.name, name);
-    LOG("start= %d end= %d name = %s", animation.initial_frame, animation.final_frame, animation.name);
     return animation;
 
 }

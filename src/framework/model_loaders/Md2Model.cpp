@@ -14,7 +14,7 @@
 */
 Md2Model::Md2Model() {
     hasAnimation_ = false;
-    m_glCommand_buffer_ = nullptr;
+    glCommand_buffer_ = nullptr;
     num_glCommands_ = 0;
     current_animation_ = STAND;
     current_frame_ = 0;
@@ -32,7 +32,7 @@ Md2Model::~Md2Model() {
     while (!animations_.empty()) {
         animations_.pop_back();
     }
-    delete m_glCommand_buffer_;
+    delete glCommand_buffer_;
 }
 
 
@@ -44,11 +44,11 @@ Md2Model::~Md2Model() {
 void Md2Model::Render() {
     if (objects.empty()) return;
 
-    float t = 0.0F;
+    float interpolation_factor = 0.0F;
     int i = 0;
-    int j = 0;
-    int index = 0;
-    int index2 = 0;
+    int faces_number = 0;
+    int vertex_index = 0;
+    int textture_index = 0;
 
     if (hasAnimation_) {
         next_frame_ = (current_frame_ + 1) % animations_[current_animation_].final_frame;
@@ -59,7 +59,7 @@ void Md2Model::Render() {
     Object3D *next_frame = &objects[next_frame_];
     Object3D *first_frame = &objects[0];
 
-    if (hasAnimation_) { t = CalculateInterpolationFactor(); }
+    if (hasAnimation_) { interpolation_factor = CalculateInterpolationFactor(); }
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
@@ -70,25 +70,28 @@ void Md2Model::Render() {
     }
 
     glBegin(GL_TRIANGLES);
-    for (j = 0; j < frame->num_faces; j++) {
+    for (faces_number = 0; faces_number < frame->num_faces; faces_number++) {
         for (i = 0; i < 3; i++) {
-            index = first_frame->faces[j].vert_index[i];
-            index2 = first_frame->faces[j].st_index[i];
+            vertex_index = first_frame->faces[faces_number].vert_index[i];
+            textture_index = first_frame->faces[faces_number].st_index[i];
 
             if (frame->normal) {
-                glNormal3f(frame->normal[index].x, frame->normal[index].y, frame->normal[index].z);
+                glNormal3f(frame->normal[vertex_index].x, frame->normal[vertex_index].y, frame->normal[vertex_index].z);
             }
 
             if (first_frame->texture_st && !materials_.empty()) {
-                glTexCoord2f(first_frame->texture_st[index2].s, first_frame->texture_st[index2].t);
+                glTexCoord2f(first_frame->texture_st[textture_index].s, first_frame->texture_st[textture_index].t);
             }
 
             if (hasAnimation_) {
-                glVertex3f(frame->vertex[index].x + t * (next_frame->vertex[index].x - frame->vertex[index].x),
-                           frame->vertex[index].y + t * (next_frame->vertex[index].y - frame->vertex[index].y),
-                           frame->vertex[index].z + t * (next_frame->vertex[index].z - frame->vertex[index].z));
+                glVertex3f(frame->vertex[vertex_index].x +
+                           interpolation_factor * (next_frame->vertex[vertex_index].x - frame->vertex[vertex_index].x),
+                           frame->vertex[vertex_index].y +
+                           interpolation_factor * (next_frame->vertex[vertex_index].y - frame->vertex[vertex_index].y),
+                           frame->vertex[vertex_index].z +
+                           interpolation_factor * (next_frame->vertex[vertex_index].z - frame->vertex[vertex_index].z));
             } else {
-                glVertex3f(frame->vertex[index].x, frame->vertex[index].y, frame->vertex[index].z);
+                glVertex3f(frame->vertex[vertex_index].x, frame->vertex[vertex_index].y, frame->vertex[vertex_index].z);
             }
         }
     }
@@ -123,96 +126,54 @@ void Md2Model::set_current_animation(Md2Animation md2Animation) {
     next_frame_ = (current_frame_ + 1) % animations_[current_animation_].final_frame;
 }
 
-/**
-* @brief Regresamos la animacion actual
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:44:19 PM
-* @retval MD2_anim La animacion actual
-*/
 Md2Animation Md2Model::current_animation() {
     return *((Md2Animation *) &current_animation_);
 }
 
-/**
-* @brief Coloca la siguiente animacion disponible
-* regresa a la primer animacion si es que no hay otra
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:44:47 PM
-*/
 void Md2Model::NextAnimation() {
     current_animation_++;
     set_current_animation(*((Md2Animation *) &current_animation_));
 }
 
-/**
-* @brief Coloca la animacion anterior disponible
-* regresa a la ultima animacion si es que no hay otra
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:44:47 PM
-*/
 void Md2Model::PreviousAnimation() {
     current_animation_--;
     set_current_animation(*((Md2Animation *) &current_animation_));
 }
 
 
-/**
-* @brief Metodo que calcula el factor de interpolacion entre
-* frames de acuerdo al tiempo y a la velocidad de la animacion
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:45:50 PM
-* @retval float Valor que va de 0.0F a 1.0F representando el factor
-* de interpolacion de un frame a otro
-*/
 float Md2Model::CalculateInterpolationFactor() {
-    float t = timer_.getMilliseconds() / (1000.0F / animation_speed_);
+    float factor = timer_.getMilliseconds() / (1000.0F / animation_speed_);
 
     if (timer_.getMilliseconds() >= (1000.0F / animation_speed_)) {
         current_frame_ = next_frame_;
         next_frame_ = (current_frame_ + 1) % animations_[current_animation_].final_frame;
         timer_.reset();
     }
-    if (t > 1.0F) { t = 1.0F; }
-    return t;
+    if (factor > 1.0F) {
+        factor = 1.0F;
+    }
+    return factor;
 }
 
-/**
-* @brief Metodo que cambia la velocidad de la animacion
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:47:01 PM
-* @param speed Velocidad nueva
-*/
 void Md2Model::set_animation_speed(float speed) {
     animation_speed_ = speed;
     if (animation_speed_ < 0.0F) { animation_speed_ = 0.0F; }
 }
 
 
-/**
-* @brief Metodo que llena los comandos de OpenGL incluidos en el
-* MD2
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:47:43 PM
-* @param com Apuntador a los comandos de OpenGL
-* @param num Numero de comandos
-*/
 void Md2Model::set_GlCommands(int *com, int num) {
-    if (num_glCommands_ > 0) { delete m_glCommand_buffer_; }
-    m_glCommand_buffer_ = new int[num];
-    memcpy(m_glCommand_buffer_, com, static_cast<size_t>(num * 4));
+    if (num_glCommands_ > 0) { delete glCommand_buffer_; }
+    glCommand_buffer_ = new int[num];
+    memcpy(glCommand_buffer_, com, static_cast<size_t>(num * 4));
     num_glCommands_ = num;
 }
 
-/**
-* @brief Dibuja el modelo usando comandos de OpenGL tambien lo anima
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:48:40 PM
-*/
+
 void Md2Model::RenderWithOpenGlCommands() {
 
-    if (objects.empty() || !m_glCommand_buffer_) return;
+    if (objects.empty() || !glCommand_buffer_) return;
 
-    int *ptricmds = m_glCommand_buffer_;
+    int *command_buffer_ = glCommand_buffer_;
     float t = 0.0F;
     if (hasAnimation_) {
         next_frame_ = (current_frame_ + 1) % animations_[current_animation_].final_frame;
@@ -232,36 +193,42 @@ void Md2Model::RenderWithOpenGlCommands() {
         glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(materials_[0].texture_id));
     }
 
-    while (int i = *(ptricmds++)) {
+    while (int i = *(command_buffer_++)) {
         if (i < 0) {
             glBegin(GL_TRIANGLE_FAN);
             i = -i;
         } else { glBegin(GL_TRIANGLE_STRIP); }
 
 
-        for (; i > 0; i--, ptricmds += 3) {
-            // ptricmds[0] : textura  s
-            // ptricmds[1] : textura t
-            // ptricmds[2] : indice del vertice
+        int s_index = 0;
+        int t_index = 1;
+        int vertex_index = 2;
+        for (; i > 0; i--, command_buffer_ += 3) {
             if (!materials_.empty()) {
-                glTexCoord2f(((float *) ptricmds)[0], 1.0F - ((float *) ptricmds)[1]);
+                glTexCoord2f(((float *) command_buffer_)[s_index], 1.0F - ((float *) command_buffer_)[t_index]);
             }
 
             if (frame->normal) {
-                glNormal3f(frame->normal[ptricmds[2]].x, frame->normal[ptricmds[2]].y,
-                           frame->normal[ptricmds[2]].z);
+                glNormal3f(frame->normal[command_buffer_[vertex_index]].x,
+                           frame->normal[command_buffer_[vertex_index]].y,
+                           frame->normal[command_buffer_[vertex_index]].z);
             }
 
             if (hasAnimation_) {
-                glVertex3f(frame->vertex[ptricmds[2]].x +
-                           t * (next_frame->vertex[ptricmds[2]].x - frame->vertex[ptricmds[2]].x),
-                           frame->vertex[ptricmds[2]].y +
-                           t * (next_frame->vertex[ptricmds[2]].y - frame->vertex[ptricmds[2]].y),
-                           frame->vertex[ptricmds[2]].z +
-                           t * (next_frame->vertex[ptricmds[2]].z - frame->vertex[ptricmds[2]].z));
+                float x = frame->vertex[command_buffer_[vertex_index]].x +
+                          t * (next_frame->vertex[command_buffer_[vertex_index]].x -
+                               frame->vertex[command_buffer_[vertex_index]].x);
+                float y = frame->vertex[command_buffer_[vertex_index]].y +
+                          t * (next_frame->vertex[command_buffer_[vertex_index]].y -
+                               frame->vertex[command_buffer_[vertex_index]].y);
+                float z = frame->vertex[command_buffer_[vertex_index]].z +
+                          t * (next_frame->vertex[command_buffer_[vertex_index]].z -
+                               frame->vertex[command_buffer_[vertex_index]].z);
+                glVertex3f(x, y, z);
             } else {
-                glVertex3f(frame->vertex[ptricmds[2]].x, frame->vertex[ptricmds[2]].y,
-                           frame->vertex[ptricmds[2]].z);
+                glVertex3f(frame->vertex[command_buffer_[vertex_index]].x,
+                           frame->vertex[command_buffer_[vertex_index]].y,
+                           frame->vertex[command_buffer_[vertex_index]].z);
             }
         }
 
@@ -273,48 +240,42 @@ void Md2Model::RenderWithOpenGlCommands() {
     glDisable(GL_CULL_FACE);
 }
 
-/**
-* @brief Metodo que calcula las normales para cada cara de cada 
-* objeto del modelo
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:50:12 PM
-*/
+
 void Md2Model::updateNormalVector() {
-    vector3f vVector1;
-    vector3f vVector2;
-    vector3f vNormal;
-    vector3f vPoly[3];
+    vector3f vector;
+    vector3f auxiliar;
+    vector3f normal;
+    vector3f polygon[3];
 
     if (objects.empty()) return;
 
     Object3D *first = &(objects[0]);
 
-    for (auto &m_object : objects) {
-
-        Object3D *obj = &m_object;
-        auto *normales = new vector3f[obj->num_faces];
-        auto *pTempNormals = new vector3f[obj->num_faces];
+    for (auto &object : objects) {
+        Object3D *obj = &object;
+        auto *normals = new vector3f[obj->num_faces];
+        auto *temp_normals = new vector3f[obj->num_faces];
         obj->normal = new vector3f[obj->num_verts];
 
         for (int i = 0; i < first->num_faces; i++) {
 
-            vPoly[0] = obj->vertex[first->faces[i].vert_index[0]];
-            vPoly[1] = obj->vertex[first->faces[i].vert_index[1]];
-            vPoly[2] = obj->vertex[first->faces[i].vert_index[2]];
+            polygon[0] = obj->vertex[first->faces[i].vert_index[0]];
+            polygon[1] = obj->vertex[first->faces[i].vert_index[1]];
+            polygon[2] = obj->vertex[first->faces[i].vert_index[2]];
 
-            vVector1 = vPoly[0] - vPoly[2];
-            vVector2 = vPoly[2] - vPoly[1];
+            vector = polygon[0] - polygon[2];
+            auxiliar = polygon[2] - polygon[1];
 
-            vNormal = Cruzado(vVector1, vVector2);
-            pTempNormals[i] = vNormal;
-            vNormal = Normalizar(vNormal);
+            normal = Cruzado(vector, auxiliar);
+            temp_normals[i] = normal;
+            normal = Normalizar(normal);
 
-            normales[i] = vNormal;
+            normals[i] = normal;
         }
 
 
-        vector3f vSum(0.0F, 0.0F, 0.0F);
-        vector3f vZero = vSum;
+        vector3f sumVector(0.0F, 0.0F, 0.0F);
+        vector3f zero = sumVector;
         int shared = 0;
 
         for (int i = 0; i < obj->num_verts; i++) {
@@ -324,20 +285,20 @@ void Md2Model::updateNormalVector() {
                     first->faces[j].vert_index[1] == i ||
                     first->faces[j].vert_index[2] == i) {
 
-                    vSum = vSum + pTempNormals[j];
+                    sumVector = sumVector + temp_normals[j];
                     shared++;
                 }
             }
 
 
-            obj->normal[i] = vSum / float(-shared);
+            obj->normal[i] = sumVector / float(-shared);
             obj->normal[i] = Normalizar(obj->normal[i]) * (-1.0F);
 
-            vSum = vZero;
+            sumVector = zero;
             shared = 0;
         }
 
-        delete[] pTempNormals;
-        delete[] normales;
+        delete[] temp_normals;
+        delete[] normals;
     }
 }
