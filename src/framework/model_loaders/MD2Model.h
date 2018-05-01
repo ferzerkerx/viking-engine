@@ -35,13 +35,13 @@ public:
 
     MD2Model(const char *modelo, const char *text);
 
-    ~MD2Model();
+    ~MD2Model() override;
 
-    void render();
+    void render() override;
 
     void renderWithOpenGlCommands();
 
-    void actualiza();
+    void actualiza() override;
 
     void addAnimation(Animacion anim);
 

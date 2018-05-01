@@ -23,11 +23,11 @@ protected:
     Model3D *m_mdl;
 
 public:
-    Model3DLoader(Model3D *mdl) {
+    explicit Model3DLoader(Model3D *mdl) {
         m_mdl = mdl;
     }
 
-    ~Model3DLoader() {
+    virtual ~Model3DLoader() {
         m_mdl = nullptr;
     }
 

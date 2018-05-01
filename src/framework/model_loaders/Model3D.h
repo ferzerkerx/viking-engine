@@ -66,7 +66,7 @@ protected:
     Model3DLoader *m_ml;                //Un apuntador a un Loader que lea el modelo 3D
 
 public:
-    ~Model3D();
+    virtual ~Model3D();
 
     void addObject(Object3D obj);
 

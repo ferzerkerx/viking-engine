@@ -28,6 +28,7 @@ class MD2Loader : public Model3DLoader {
 
 public:
     explicit MD2Loader(MD2Model *model);
+    ~MD2Loader() override = default;
 
     void importar(const char *modelo, const char *textura);
 
