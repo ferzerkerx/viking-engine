@@ -47,11 +47,11 @@ void Billboard::BBEsfera(vector3f camP, float objPosX, float objPosY, float objP
     lookAt.y = 0;
     lookAt.z = 1;
 
-    objACamProj = Normalizar(objACamProj);
+    objACamProj = Normalize(objACamProj);
 
-    upAux = Cruzado(lookAt, objACamProj);
+    upAux = Cross(lookAt, objACamProj);
 
-    cosAngulo = Punto(lookAt, objACamProj);
+    cosAngulo = Point(lookAt, objACamProj);
 
     if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
         glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), upAux.x, upAux.y, upAux.z);
@@ -61,9 +61,9 @@ void Billboard::BBEsfera(vector3f camP, float objPosX, float objPosY, float objP
     objACam.y = camP.y - objPosY;
     objACam.z = camP.z - objPosZ;
 
-    objACam = Normalizar(objACam);
+    objACam = Normalize(objACam);
 
-    cosAngulo = Punto(objACamProj, objACam);
+    cosAngulo = Point(objACamProj, objACam);
 
     if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
         if (objACam.y < 0) {
@@ -121,11 +121,11 @@ void Billboard::BBCilindro(vector3f camP, float objPosX, float objPosY, float ob
     lookAt.y = 0;
     lookAt.z = 1;
 
-    objACamProj = Normalizar(objACamProj);
+    objACamProj = Normalize(objACamProj);
 
-    upAux = Cruzado(lookAt, objACamProj);
+    upAux = Cross(lookAt, objACamProj);
 
-    cosAngulo = Punto(lookAt, objACamProj);
+    cosAngulo = Point(lookAt, objACamProj);
 
     if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
         glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), upAux.x, upAux.y, upAux.z);

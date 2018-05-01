@@ -110,7 +110,7 @@ void TexturedSkyDome::calculaUV() {
             vec_temp.y = m_vrtx[i].pos.y;
             vec_temp.z = m_vrtx[i].pos.z;
 
-            Normalizar(vec_temp);
+            Normalize(vec_temp);
 
             // Calculo de las coordenadas de la textura en la esfera
             m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
@@ -121,7 +121,7 @@ void TexturedSkyDome::calculaUV() {
             vec_temp.y = m_vrtx[i].pos.y;
             vec_temp.z = m_vrtx[i].pos.z;
 
-            Normalizar(vec_temp);
+            Normalize(vec_temp);
 
             // Calculo de las coordenadas de la textura en la esfera
             m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
@@ -132,7 +132,7 @@ void TexturedSkyDome::calculaUV() {
             vec_temp.y = m_vrtx[i].pos.y;
             vec_temp.z = m_vrtx[i].pos.z;
 
-            Normalizar(vec_temp);
+            Normalize(vec_temp);
 
             // Calculo de las coordenadas de la textura en la esfera
             m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
@@ -144,7 +144,7 @@ void TexturedSkyDome::calculaUV() {
                 vec_temp.y = m_vrtx[i].pos.y;
                 vec_temp.z = m_vrtx[i].pos.z;
 
-                Normalizar(vec_temp);
+                Normalize(vec_temp);
 
                 // Calculo de las coordenadas de la textura en la esfera
                 m_vrtx[i].uv.x = m_h_tile * (float) (atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;

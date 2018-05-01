@@ -65,8 +65,8 @@ void Camara::VistaMouse(int ancho, int alto, int mouseX, int mouseY) {
         currentRotX = 1.0F;
         if (lastRotX != 1.0F) {    // Rotar por el angulo restante
             // Obtenemos eje de rotacion
-            vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
-            vAxis = Normalizar(vAxis);
+            vector3f vAxis = Cross(m_vView - m_vPos, m_vUpVec);
+            vAxis = Normalize(vAxis);
             // Rotamos camara por el angulo restante (1.0F - lastRotX)
             RotarVista(1.0F - lastRotX, vAxis.x, vAxis.y, vAxis.z);
         }
@@ -75,14 +75,14 @@ void Camara::VistaMouse(int ancho, int alto, int mouseX, int mouseY) {
     else if (currentRotX < -1.0F) {
         currentRotX = -1.0F;
         if (lastRotX != -1.0F) {    // Rotar por el angulo restante
-            vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
-            vAxis = Normalizar(vAxis);
+            vector3f vAxis = Cross(m_vView - m_vPos, m_vUpVec);
+            vAxis = Normalize(vAxis);
             // Rotamos ( -1.0F - lastRotX)
             RotarVista(-1.0F - lastRotX, vAxis.x, vAxis.y, vAxis.z);
         }
     } else { // Rotamos en cualquier direccin
-        vector3f vAxis = Cruzado(m_vView - m_vPos, m_vUpVec);
-        vAxis = Normalizar(vAxis);
+        vector3f vAxis = Cross(m_vView - m_vPos, m_vUpVec);
+        vAxis = Normalize(vAxis);
         // Rotar sobre el eje perpendicular
         RotarVista(anguloZ, vAxis.x, vAxis.y, vAxis.z);
     }
@@ -132,7 +132,7 @@ void Camara::MovCam(float vel) {
     vector3f vVector = m_vView - m_vPos; // Obtener vector de vista actual
 
     // Normalizamos el vector de vista para tener la misma vel en todos los movs
-    vVector = Normalizar(vVector);
+    vVector = Normalize(vVector);
 
     m_vPos.x += vVector.x * vel;
     m_vPos.z += vVector.z * vel;
@@ -162,8 +162,8 @@ void Camara::ChecarMov(int key) {
 
 // Actualizamos el movimiento de la camara 
 void Camara::Actualizar() {
-    vector3f vCruz = Cruzado(m_vView - m_vPos, m_vUpVec);
-    m_vStrafe = Normalizar(vCruz); // Normalizamos el vector strafe
+    vector3f vCruz = Cross(m_vView - m_vPos, m_vUpVec);
+    m_vStrafe = Normalize(vCruz); // Normalizamos el vector strafe
 }
 
 // Posicionamos la camara en opengl

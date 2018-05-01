@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 #file(GLOB_RECURSE sources **/*.cpp **/*.h)
 #add_executable(viking_engine ${sources})
 add_executable(viking_engine src/Main.cpp
+        src/framework/math/vector.h
         src/Camara.h
         src/Camara.cpp
         src/VKSkyDome.h

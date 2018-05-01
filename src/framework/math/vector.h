@@ -1,153 +1,146 @@
 #ifndef _VEC_H
 #define _VEC_H
 
-#include <math.h>
+#include <cmath>
 
 struct vector2f {
-    vector2f() {}
+    vector2f() = default;
 
-    vector2f(float S, float T) : s(S), t(T){
+    vector2f(float S, float T) : s(S), t(T) {
 
     }
 
-    float s;
-    float t;
+    float s{};
+    float t{};
 };
 
 struct polar3f {
-    polar3f() {}
+    polar3f() = default;
 
     polar3f(float ph, float th, float rad) : phi(ph), theta(th), r(rad) {
 
     }
 
-    // Operaciones con vectores
     polar3f operator+(polar3f p) {
-        return polar3f(p.phi + phi, p.theta + theta, p.r + r);
+        return {p.phi + phi, p.theta + theta, p.r + r};
     }
 
     polar3f operator-(polar3f p) {
-        return polar3f(phi - p.phi, theta - p.theta, r - p.r);
+        return {phi - p.phi, theta - p.theta, r - p.r};
     }
 
     polar3f operator*(float num) {
-        return polar3f(phi * num, theta * num, r * num);
+        return {phi * num, theta * num, r * num};
     }
 
     polar3f operator/(float num) {
-        return polar3f(phi / num, theta / num, r / num);
+        return {phi / num, theta / num, r / num};
     }
 
-    float phi;
-    float theta;
-    float r;
+    float phi{};
+    float theta{};
+    float r{};
 };
 
 
 struct vector3f {
-    vector3f() {}
+    vector3f() = default;
 
     explicit vector3f(polar3f p) {
-        x = p.r * sin(p.phi) * cos(p.theta);
-        y = p.r * sin(p.phi) * sin(p.theta);
-        z = p.r * cos(p.phi);
+        x = p.r * std::sin(p.phi) * std::cos(p.theta);
+        y = p.r * std::sin(p.phi) * std::sin(p.theta);
+        z = p.r * std::cos(p.phi);
     }
 
     vector3f(float X, float Y, float Z) : x(X), y(Y), z(Z) {
 
     }
 
-    // Operaciones con vectores
     vector3f operator+(vector3f vVector) {
-        return vector3f(vVector.x + x, vVector.y + y, vVector.z + z);
+        return {vVector.x + x, vVector.y + y, vVector.z + z};
     }
 
     vector3f operator-(vector3f vVector) {
-        return vector3f(x - vVector.x, y - vVector.y, z - vVector.z);
+        return {x - vVector.x, y - vVector.y, z - vVector.z};
     }
 
     vector3f operator*(float num) {
-        return vector3f(x * num, y * num, z * num);
+        return {x * num, y * num, z * num};
     }
 
     vector3f operator*(vector3f vVector) {
-        return vector3f(x * vVector.x, y * vVector.y, z * vVector.z);
+        return {x * vVector.x, y * vVector.y, z * vVector.z};
     }
 
     vector3f operator/(float num) {
-        return vector3f(x / num, y / num, z / num);
+        return {x / num, y / num, z / num};
     }
 
-    float x;
-    float y;
-    float z;
+    float x{};
+    float y{};
+    float z{};
 };
 
-// Regresa el producto cruzado entre 2 vectores
-static vector3f Cruzado(vector3f vVector1, vector3f vVector2) {
-    vector3f vNormal;
+static vector3f Cross(vector3f v1, vector3f v2) {
+    vector3f normal;
 
-    vNormal.x = ((vVector1.y * vVector2.z) - (vVector1.z * vVector2.y));
-    vNormal.y = ((vVector1.z * vVector2.x) - (vVector1.x * vVector2.z));
-    vNormal.z = ((vVector1.x * vVector2.y) - (vVector1.y * vVector2.x));
+    normal.x = ((v1.y * v2.z) - (v1.z * v2.y));
+    normal.y = ((v1.z * v2.x) - (v1.x * v2.z));
+    normal.z = ((v1.x * v2.y) - (v1.y * v2.x));
 
-    return vNormal;
+    return normal;
 }
 
-// regresa el producto punto entre 2 vectores
-static float Punto(vector3f v1, vector3f v2) {
+static float Point(vector3f v1, vector3f v2) {
     return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
-// Regresa la magnitud del vector
-static float Magnitud(vector3f vNorm) {
-    // magnitud = sqrt(V.x^2 + V.y^2 + V.z^2)
-    return (float) sqrt((vNorm.x * vNorm.x) + (vNorm.y * vNorm.y) + (vNorm.z * vNorm.z));
+static float Magnitude(vector3f normalized) {
+    // magnitude = sqrt(V.x^2 + V.y^2 + V.z^2)
+    return std::sqrt((normalized.x * normalized.x) + (normalized.y * normalized.y) + (normalized.z * normalized.z));
 }
 
-// Regresa vector normalizado (vector de longitud 1)
-static vector3f Normalizar(vector3f vVector) {
-    float magnitud = Magnitud(vVector);
-    vVector = vVector / magnitud;
-    return vVector;
+static vector3f Normalize(vector3f v1) {
+    float magnitude = Magnitude(v1);
+    v1 = v1 / magnitude;
+    return v1;
 }
 
 struct color3f {
-    color3f() {}
+    color3f() = default;
 
-    color3f(float R, float G, float B)  : r(R), g(G), b(B){
+    color3f(float R, float G, float B) : r(R), g(G), b(B) {
 
     }
 
-    // Operaciones con vectores
     color3f operator+(color3f c) {
-        return color3f(c.r + r, c.g + g, c.b + b);
+        return {c.r + r, c.g + g, c.b + b};
     }
 
     color3f operator-(color3f c) {
-        return color3f(r - c.r, g - c.g, b - c.b);
+        return {r - c.r, g - c.g, b - c.b};
     }
 
     color3f operator*(float num) {
-        return color3f(r * num, g * num, b * num);
+        return {r * num, g * num, b * num};
     }
 
     color3f operator*(color3f c) {
-        return color3f(r * c.r, g * c.g, b * c.b);
+        return {r * c.r, g * c.g, b * c.b};
     }
 
     color3f operator/(float num) {
-        return color3f(r / num, g / num, b / num);
+        return {r / num, g / num, b / num};
     }
 
     void exposure(float exps) {
         exp = exps;
     }
 
-    float r;
-    float g;
-    float b;
-    float exp;
+    float r{};
+    float g{};
+    float b{};
+    float exp{};
 };
 
 

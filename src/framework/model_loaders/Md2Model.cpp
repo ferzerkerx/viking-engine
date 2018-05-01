@@ -266,9 +266,9 @@ void Md2Model::updateNormalVector() {
             vector = polygon[0] - polygon[2];
             auxiliar = polygon[2] - polygon[1];
 
-            normal = Cruzado(vector, auxiliar);
+            normal = Cross(vector, auxiliar);
             temp_normals[i] = normal;
-            normal = Normalizar(normal);
+            normal = Normalize(normal);
 
             normals[i] = normal;
         }
@@ -292,7 +292,7 @@ void Md2Model::updateNormalVector() {
 
 
             obj->normal[i] = sumVector / float(-shared);
-            obj->normal[i] = Normalizar(obj->normal[i]) * (-1.0F);
+            obj->normal[i] = Normalize(obj->normal[i]) * (-1.0F);
 
             sumVector = zero;
             shared = 0;
