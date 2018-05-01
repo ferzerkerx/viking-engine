@@ -16,6 +16,14 @@
 */
 #define SQR(x)(x*x)
 
+/**
+    *@struct vertx
+    *@brief Contiene datos necesarios de cada vertice del Skyplane
+    */
+typedef struct vertx {
+    vector3f pos;                //posicion x,y,z del vertice
+    float u, v;                    //usados para texturizacin
+};
 
 /**
 * @class TexturedSkyPlane
@@ -27,15 +35,6 @@
 */
 class TexturedSkyPlane : public Sky {
 private:
-    /**
-    *@struct vertx
-    *@brief Contiene datos necesarios de cada vertice del Skyplane
-    */
-    typedef struct {
-        vector3f pos;                //posicion x,y,z del vertice
-        float u, v;                    //usados para texturizacin
-    } vertx;
-
     float m_h_tile;                    //horizontal tile para texturizacion
     float m_v_tile;                    //vertical tile para texturizacion
     unsigned int m_texture;            //textura del TexturedSkyPlane

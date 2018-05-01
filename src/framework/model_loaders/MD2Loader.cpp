@@ -202,7 +202,8 @@ void MD2Loader::convertDataStructures(md2_header &m_header) {
 
 void MD2Loader::parseAnimations(md2_header &m_header) {
     FN("MD2Loader::parseAnimations(md2_header  & m_header)");
-    int i = 0, longitud = 0;
+    int i = 0;
+    int longitud = 0;
     int start = 0;
     char nombre[20] = {0};
 
@@ -215,7 +216,7 @@ void MD2Loader::parseAnimations(md2_header &m_header) {
             continue;
         }
 
-        if ((longitud != strlen(m_pFrames[i].strName) || (strstr(m_pFrames[i].strName, nombre) == nullptr))) {
+        if (longitud != strlen(m_pFrames[i].strName) || (strstr(m_pFrames[i].strName, nombre) == nullptr)) {
 
             agregaAnimacion(start, i - 1, nombre);
             strcpy(nombre, m_pFrames[i].strName);

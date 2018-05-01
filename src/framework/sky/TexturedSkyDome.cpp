@@ -13,8 +13,7 @@
 *@brief Inicializa la textura
 *@param id_textura El identificador de la textura
 */
-TexturedSkyDome::TexturedSkyDome(float r, unsigned int id_textura) : SkyDome(r) {
-    m_textura = id_textura;
+TexturedSkyDome::TexturedSkyDome(float r, unsigned int id_textura) : SkyDome(r), m_textura(id_textura) {
     m_v_tile = 1.0F;
     m_h_tile = 1.0F;
 
@@ -27,9 +26,8 @@ TexturedSkyDome::TexturedSkyDome(float r, unsigned int id_textura) : SkyDome(r) 
 *@brief Inicializa la textura
 *@param id_textura El identificador de la textura
 */
-TexturedSkyDome::TexturedSkyDome(float dphi, float dtheta, float r, unsigned int id_textura) : SkyDome(dphi, dtheta,
-                                                                                                       r) {
-    m_textura = id_textura;
+TexturedSkyDome::TexturedSkyDome(float dphi, float dtheta, float r, unsigned int id_textura) :
+        SkyDome(dphi, dtheta, r), m_textura(id_textura) {
     m_v_tile = 1.0F;
     m_h_tile = 1.0F;
 

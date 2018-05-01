@@ -53,9 +53,13 @@ void SkyDome::generaHemiEsfera() {
 
     m_vrtx = new vertxDome[m_num_vert];
 
-    int i = 0, phi = 0, theta = 0;
-    float phirad, thetarad;
-    float phidrad, thetadrad;
+    int i = 0;
+    int phi = 0;
+    int theta = 0;
+    float phirad;
+    float thetarad;
+    float phidrad;
+    float thetadrad;
 
     for (; phi <= 90 - m_dphi; phi += (int) m_dphi) {
         for (theta = 0; theta <= 360 - m_dtheta; theta += (int) m_dtheta) {
@@ -122,7 +126,7 @@ void SkyDome::renderSun(vector3f poscam) {
         glPushMatrix();
             glTranslatef(poscam.x, poscam.y, poscam.z);
             m_sun_vector = vector3f(m_sun_polar);
-            m_sun_polar.phi += 0.002f;
+            m_sun_polar.phi += 0.002F;
             glTranslatef(m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);
             glRotatef(-90.0F, 1.0, 0.0, 0.0F);
             Billboard::BBEsfera(poscam, m_sun_vector.y, m_sun_vector.x, m_sun_vector.z);

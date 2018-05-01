@@ -28,13 +28,13 @@ TexturedSkyPlane::TexturedSkyPlane(int divisiones, float planet_radius, float at
     m_num_indices = m_divisiones * m_divisiones * 2 * 3;
     m_indices = new unsigned int[m_num_indices];
     m_vertices = new vertx[m_num_vertices];
-    m_roty_factor = 0.006f;
+    m_roty_factor = 0.006F;
 
     m_h_tile = h_tile;
     m_v_tile = v_tile;
 
-    m_wind_factor_x = 0.0001f;
-    m_wind_factor_y = 0.0001f;
+    m_wind_factor_x = 0.0001F;
+    m_wind_factor_y = 0.0001F;
     m_desface_text_x = 0.0F;
     m_desface_text_y = 0.0F;
     m_rot_text_milli = 10;
@@ -59,7 +59,6 @@ void TexturedSkyPlane::actualiza(vector3f poscam) {
  * @brief Renderea los vertices del skyplano
  */
 void TexturedSkyPlane::render(vector3f poscam) {
-    //glMatrixMode(GL_MODELVIEW);
     if (m_mov_timer.getMilliseconds() >= m_rot_text_milli) {
         m_mov_timer.reset();
         m_desface_text_x += m_roty_factor;
@@ -113,7 +112,8 @@ void TexturedSkyPlane::generaSkyPlane() {
     float z_height;
     float height;
 
-    int i = 0, j = 0;
+    int i = 0;
+    int j = 0;
 
     vertx sv; // temporary vertex
 
