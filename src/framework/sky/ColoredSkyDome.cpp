@@ -1,4 +1,3 @@
-
 #include "ColoredSkyDome.h"
 #include <cstdio>
 #include <GL/glut.h>
@@ -7,7 +6,6 @@
 ColoredSkyDome::ColoredSkyDome(float r) : SkyDome(r) {
     ColorDome();
 }
-
 
 
 ColoredSkyDome::ColoredSkyDome(float dphi, float dtheta, float r) : SkyDome(dphi, dtheta, r) {
@@ -26,9 +24,9 @@ void ColoredSkyDome::RenderDome(vector3f camera_position) {
     glTranslatef(camera_position.x, camera_position.y, camera_position.z);
     glRotatef(-90.0F, 1.0, 0.0, 0.0F);
     glBegin(GL_TRIANGLE_STRIP);
-    for (i = 0; i < num_vertices_; i++) {
-        glColor3f(vrtex_[i].color.r, vrtex_[i].color.g, vrtex_[i].color.b);
-        glVertex3f(vrtex_[i].pos.x, vrtex_[i].pos.y, vrtex_[i].pos.z);
+    for (i = 0; i < num_vertices(); i++) {
+        glColor3f(vertex_dome()[i].color.r, vertex_dome()[i].color.g, vertex_dome()[i].color.b);
+        glVertex3f(vertex_dome()[i].pos.x, vertex_dome()[i].pos.y, vertex_dome()[i].pos.z);
     }
     glEnd();
     glPopMatrix();
@@ -50,7 +48,7 @@ void ColoredSkyDome::Update(vector3f camera_position) {
 }
 
 void ColoredSkyDome::ColorDome() {
-    for (int i = 0; i < num_vertices_; i++) {
-        vrtex_[i].color = color3f(0.0, 0.35F, 0.7F);
+    for (int i = 0; i < num_vertices(); i++) {
+        vertex_dome()[i].color = color3f(0.0, 0.35F, 0.7F);
     }
 }

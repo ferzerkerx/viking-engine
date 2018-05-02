@@ -24,7 +24,7 @@ typedef struct {
 */
 class SkyDome : public Sky {
 
-protected:
+private:
     float dphi_;
     float dtheta_;
     float r_;
@@ -33,9 +33,30 @@ protected:
     polar3f sun_polar_;
     unsigned int sun_texture_;
     bool has_sun_texture_;
+    VertexDome *vertex_dome_;
 
-    VertexDome *vrtex_;
 
+protected:
+public:
+    float dphi() const;
+
+    float dtheta() const;
+
+    float r() const;
+
+    int num_vertices() const;
+
+    const vector3f &sun_vector() const;
+
+    const polar3f &sun_polar() const;
+
+    unsigned int sun_texture() const;
+
+    bool has_sun_texture() const;
+
+    VertexDome *vertex_dome() const;
+
+protected:
     void CreateHemiSphere();
 
     virtual void RenderDome(vector3f camera_position) = 0;

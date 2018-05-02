@@ -8,7 +8,7 @@ SkyDome::SkyDome(float r) : r_(r) {
     has_sun_texture_ = false;
     sun_texture_ = 0;
 
-    vrtex_ = nullptr;
+    vertex_dome_ = nullptr;
     CreateHemiSphere();
     sun_polar_ = polar3f(1, 0, r_ - 2);
 }
@@ -17,14 +17,14 @@ SkyDome::SkyDome(float dphi, float dtheta, float r) : dphi_(dphi), dtheta_(dthet
     has_sun_texture_ = false;
     sun_texture_ = 0;
 
-    vrtex_ = nullptr;
+    vertex_dome_ = nullptr;
     CreateHemiSphere();
     sun_polar_ = polar3f(0, 0, r_ - 5);
 }
 
 
 SkyDome::~SkyDome() {
-    delete[] vrtex_;
+    delete[] vertex_dome_;
     if (has_sun_texture_) { glDeleteTextures(1, &sun_texture_); }
 }
 
@@ -32,7 +32,7 @@ void SkyDome::CreateHemiSphere() {
     num_vertices_ = (int) ((360.0F / dtheta_) * (90.0F / dphi_) *
                         GL_TRIANGLE_STRIP);
 
-    vrtex_ = new VertexDome[num_vertices_];
+    vertex_dome_ = new VertexDome[num_vertices_];
 
     int i = 0;
     int phi = 0;
@@ -52,29 +52,29 @@ void SkyDome::CreateHemiSphere() {
             phidrad = (phi + dphi_) * RAD;
             thetadrad = (theta + dtheta_) * RAD;
 
-            vrtex_[i].pos = vector3f(r_ * sinf(phirad) * cosf(thetarad),
+            vertex_dome_[i].pos = vector3f(r_ * sinf(phirad) * cosf(thetarad),
                                      r_ * sinf(phirad) * sinf(thetarad),
                                      r_ * cosf(phirad));
-            vrtex_[i].pol = polar3f(phi, theta, r_);
+            vertex_dome_[i].pol = polar3f(phi, theta, r_);
             i++;
 
-            vrtex_[i].pos = vector3f(r_ * sinf(phidrad) * cosf(thetarad),
+            vertex_dome_[i].pos = vector3f(r_ * sinf(phidrad) * cosf(thetarad),
                                      r_ * sinf(phidrad) * sinf(thetarad),
                                      r_ * cosf(phidrad));
-            vrtex_[i].pol = polar3f(phi + dphi_, theta, r_);
+            vertex_dome_[i].pol = polar3f(phi + dphi_, theta, r_);
             i++;
 
-            vrtex_[i].pos = vector3f(r_ * sinf(phirad) * cosf(thetadrad),
+            vertex_dome_[i].pos = vector3f(r_ * sinf(phirad) * cosf(thetadrad),
                                      r_ * sinf(phirad) * sinf(thetadrad),
                                      r_ * cosf(phirad));
-            vrtex_[i].pol = polar3f(phi, theta + dtheta_, r_);
+            vertex_dome_[i].pol = polar3f(phi, theta + dtheta_, r_);
             i++;
 
             if (phi > -90 && phi < 90) {
-                vrtex_[i].pos = vector3f(r_ * sinf(phidrad) * cosf(thetadrad),
+                vertex_dome_[i].pos = vector3f(r_ * sinf(phidrad) * cosf(thetadrad),
                                          r_ * sinf(phidrad) * sinf(thetadrad),
                                          r_ * cosf(phidrad));
-                vrtex_[i].pol = polar3f(phi + dphi_, theta + dtheta_, r_);
+                vertex_dome_[i].pol = polar3f(phi + dphi_, theta + dtheta_, r_);
                 i++;
             }
         }
@@ -114,4 +114,40 @@ void SkyDome::RenderSun(vector3f camera_position) {
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
     }
+}
+
+float SkyDome::dphi() const {
+    return dphi_;
+}
+
+float SkyDome::dtheta() const {
+    return dtheta_;
+}
+
+float SkyDome::r() const {
+    return r_;
+}
+
+int SkyDome::num_vertices() const {
+    return num_vertices_;
+}
+
+const vector3f &SkyDome::sun_vector() const {
+    return sun_vector_;
+}
+
+const polar3f &SkyDome::sun_polar() const {
+    return sun_polar_;
+}
+
+unsigned int SkyDome::sun_texture() const {
+    return sun_texture_;
+}
+
+bool SkyDome::has_sun_texture() const {
+    return has_sun_texture_;
+}
+
+VertexDome *SkyDome::vertex_dome() const {
+    return vertex_dome_;
 }

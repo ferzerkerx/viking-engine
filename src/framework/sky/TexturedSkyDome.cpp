@@ -38,9 +38,9 @@ void TexturedSkyDome::RenderDome(vector3f camera_position) {
     glTranslatef(camera_position.x, camera_position.y, camera_position.z);
     glRotatef(-90.0F, 1.0, 0.0, 0.0F);
     glBegin(GL_TRIANGLE_STRIP);
-    for (i = 0; i < num_vertices_; i++) {
-        glTexCoord2f(vrtex_[i].uv.x, vrtex_[i].uv.y);
-        glVertex3f(vrtex_[i].pos.x, vrtex_[i].pos.y, vrtex_[i].pos.z);
+    for (i = 0; i < num_vertices(); i++) {
+        glTexCoord2f(vertex_dome()[i].uv.x, vertex_dome()[i].uv.y);
+        glVertex3f(vertex_dome()[i].pos.x, vertex_dome()[i].pos.y, vertex_dome()[i].pos.z);
     }
     glEnd();
     glPopMatrix();
@@ -66,51 +66,51 @@ void TexturedSkyDome::CalculateUV() {
     int phi = 0;
     int theta = 0;
 
-    auto dtetha_aux = static_cast<int>(dtheta_);
-    auto dphi_aux = static_cast<int>(dphi_);
+    auto dtetha_aux = static_cast<int>(dtheta());
+    auto dphi_aux = static_cast<int>(dphi());
 
     for (; phi <= 90 - dphi_aux; phi += dphi_aux) {
         for (theta = 0; theta <= 360 - dtetha_aux; theta += dtetha_aux) {
 
-            vec_temp.x = vrtex_[i].pos.x;
-            vec_temp.y = vrtex_[i].pos.y;
-            vec_temp.z = vrtex_[i].pos.z;
+            vec_temp.x = vertex_dome()[i].pos.x;
+            vec_temp.y = vertex_dome()[i].pos.y;
+            vec_temp.z = vertex_dome()[i].pos.z;
 
             Normalize(vec_temp);
 
-            vrtex_[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
-            vrtex_[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
+            vertex_dome()[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+            vertex_dome()[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
             i++;
 
-            vec_temp.x = vrtex_[i].pos.x;
-            vec_temp.y = vrtex_[i].pos.y;
-            vec_temp.z = vrtex_[i].pos.z;
+            vec_temp.x = vertex_dome()[i].pos.x;
+            vec_temp.y = vertex_dome()[i].pos.y;
+            vec_temp.z = vertex_dome()[i].pos.z;
 
             Normalize(vec_temp);
 
-            vrtex_[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
-            vrtex_[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
+            vertex_dome()[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+            vertex_dome()[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
             i++;
 
-            vec_temp.x = vrtex_[i].pos.x;
-            vec_temp.y = vrtex_[i].pos.y;
-            vec_temp.z = vrtex_[i].pos.z;
+            vec_temp.x = vertex_dome()[i].pos.x;
+            vec_temp.y = vertex_dome()[i].pos.y;
+            vec_temp.z = vertex_dome()[i].pos.z;
 
             Normalize(vec_temp);
 
-            vrtex_[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
-            vrtex_[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
+            vertex_dome()[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+            vertex_dome()[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
             i++;
 
             if (phi > -90 && phi < 90) {
-                vec_temp.x = vrtex_[i].pos.x;
-                vec_temp.y = vrtex_[i].pos.y;
-                vec_temp.z = vrtex_[i].pos.z;
+                vec_temp.x = vertex_dome()[i].pos.x;
+                vec_temp.y = vertex_dome()[i].pos.y;
+                vec_temp.z = vertex_dome()[i].pos.z;
 
                 Normalize(vec_temp);
 
-                vrtex_[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
-                vrtex_[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
+                vertex_dome()[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+                vertex_dome()[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
                 i++;
             }
         }
@@ -120,54 +120,54 @@ void TexturedSkyDome::CalculateUV() {
 }
 
 void TexturedSkyDome::AdjustUVRanges() const {
-    for (int j = 0; j < num_vertices_ - 3; j++) {
+    for (int j = 0; j < num_vertices() - 3; j++) {
 
-        if (vrtex_[j].uv.x - vrtex_[j + 1].uv.x > 0.9F) {
-            vrtex_[j + 1].uv.x += 1.0F;
+        if (vertex_dome()[j].uv.x - vertex_dome()[j + 1].uv.x > 0.9F) {
+            vertex_dome()[j + 1].uv.x += 1.0F;
         }
 
-        if (vrtex_[j + 1].uv.x - vrtex_[j].uv.x > 0.9F) {
-            vrtex_[j].uv.x += 1.0F;
+        if (vertex_dome()[j + 1].uv.x - vertex_dome()[j].uv.x > 0.9F) {
+            vertex_dome()[j].uv.x += 1.0F;
         }
 
-        if (vrtex_[j].uv.x - vrtex_[j + 2].uv.x > 0.9F) {
-            vrtex_[j + 2].uv.x += 1.0F;
+        if (vertex_dome()[j].uv.x - vertex_dome()[j + 2].uv.x > 0.9F) {
+            vertex_dome()[j + 2].uv.x += 1.0F;
         }
 
-        if (vrtex_[j + 2].uv.x - vrtex_[j].uv.x > 0.9F) {
-            vrtex_[j].uv.x += 1.0F;
+        if (vertex_dome()[j + 2].uv.x - vertex_dome()[j].uv.x > 0.9F) {
+            vertex_dome()[j].uv.x += 1.0F;
         }
 
-        if (vrtex_[j + 1].uv.x - vrtex_[j + 2].uv.x > 0.9F) {
-            vrtex_[j + 2].uv.x += 1.0F;
+        if (vertex_dome()[j + 1].uv.x - vertex_dome()[j + 2].uv.x > 0.9F) {
+            vertex_dome()[j + 2].uv.x += 1.0F;
         }
 
-        if (vrtex_[j + 2].uv.x - vrtex_[j + 1].uv.x > 0.9F) {
-            vrtex_[j + 1].uv.x += 1.0F;
+        if (vertex_dome()[j + 2].uv.x - vertex_dome()[j + 1].uv.x > 0.9F) {
+            vertex_dome()[j + 1].uv.x += 1.0F;
         }
 
-        if (vrtex_[j].uv.y - vrtex_[j + 1].uv.y > 0.8F) {
-            vrtex_[j + 1].uv.y += 1.0F;
+        if (vertex_dome()[j].uv.y - vertex_dome()[j + 1].uv.y > 0.8F) {
+            vertex_dome()[j + 1].uv.y += 1.0F;
         }
 
-        if (vrtex_[j + 1].uv.y - vrtex_[j].uv.y > 0.8F) {
-            vrtex_[j].uv.y += 1.0F;
+        if (vertex_dome()[j + 1].uv.y - vertex_dome()[j].uv.y > 0.8F) {
+            vertex_dome()[j].uv.y += 1.0F;
         }
 
-        if (vrtex_[j].uv.y - vrtex_[j + 2].uv.y > 0.8F) {
-            vrtex_[j + 2].uv.y += 1.0F;
+        if (vertex_dome()[j].uv.y - vertex_dome()[j + 2].uv.y > 0.8F) {
+            vertex_dome()[j + 2].uv.y += 1.0F;
         }
 
-        if (vrtex_[j + 2].uv.y - vrtex_[j].uv.y > 0.8F) {
-            vrtex_[j].uv.y += 1.0F;
+        if (vertex_dome()[j + 2].uv.y - vertex_dome()[j].uv.y > 0.8F) {
+            vertex_dome()[j].uv.y += 1.0F;
         }
 
-        if (vrtex_[j + 1].uv.y - vrtex_[j + 2].uv.y > 0.8F) {
-            vrtex_[j + 2].uv.y += 1.0F;
+        if (vertex_dome()[j + 1].uv.y - vertex_dome()[j + 2].uv.y > 0.8F) {
+            vertex_dome()[j + 2].uv.y += 1.0F;
         }
 
-        if (vrtex_[j + 2].uv.y - vrtex_[j + 1].uv.y > 0.8F) {
-            vrtex_[j + 1].uv.y += 1.0F;
+        if (vertex_dome()[j + 2].uv.y - vertex_dome()[j + 1].uv.y > 0.8F) {
+            vertex_dome()[j + 1].uv.y += 1.0F;
         }
     }
 }
