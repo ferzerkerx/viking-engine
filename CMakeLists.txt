@@ -19,8 +19,8 @@ add_executable(viking_engine src/Main.cpp
         src/framework/Fuente.cpp
         src/framework/Timer.h
         src/framework/Timer.cpp
-        src/framework/Textura.h
-        src/framework/Textura.cpp
+        src/framework/Texture.h
+        src/framework/Texture.cpp
         src/framework/BMPWriter.h
         src/framework/BMPWriter.cpp
         src/framework/sky/SkyDome.h

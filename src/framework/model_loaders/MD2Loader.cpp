@@ -61,9 +61,9 @@ Model3d *MD2Loader::load(const char *md2_file_name, const char *texture_file_nam
     if (texture_file_name) {
         Material material;
         strcpy(material.name, texture_file_name);
-        Textura t;
+        Texture t;
         unsigned int tex[1];
-        t.CrearTextura(tex, texture_file_name, 0);
+        t.LoadTexture(tex, texture_file_name, 0);
         material.texture_id = tex[0];
         material.u_tile = 1;
         material.v_tile = 1;

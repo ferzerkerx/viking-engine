@@ -11,34 +11,36 @@
 
 #include <cstring>
 #include <stdexcept>
-#include "Textura.h"
+#include "Texture.h"
 #include "GL/glut.h"
 
 
-Textura::Textura() {
+Texture::Texture() {
     hasAlpha = false;
 }
 
-void Textura::CrearTextura(unsigned int textureArray[], const char *strFileName, int textureID) {
-    if (!strFileName)        // Sale si no es un name de archivo vlido
-        return;
+void Texture::LoadTexture(unsigned int *textureArray, const char *strFileName, int textureID) {
+    if (!strFileName) {
+        throw std::invalid_argument("Empty filename");
+    }
 
-    const char *pdest = strrchr(strFileName, '.');        // encuentra '.'
-    if (pdest[0])        // Avanzamos uno mas que '.'
-        pdest++;
+    const char *file_extension = strrchr(strFileName, '.');
+    if (file_extension[0]) {
+        file_extension++;
+    }
 
-    if (!strcmp(pdest, "bmp")) {
+    if (!strcmp(file_extension, "bmp")) {
         LoadBmp(textureArray, strFileName, textureID);
         hasAlpha = false;
         printf("Creating texture: %s \n", strFileName);
-    } else if (!strcmp(pdest, "tga")) {
+    } else if (!strcmp(file_extension, "tga")) {
         LoadTga(textureArray, strFileName, textureID);
         hasAlpha = true;
         printf("Creating texture: %s \n", strFileName);
     }
 }
 
-void Textura::LoadBmp(unsigned int *textureArray, const char *strFileName, int textureID) {
+void Texture::LoadBmp(unsigned int *textureArray, const char *strFileName, int textureID) {
     int width;
     int height;
 
@@ -81,7 +83,7 @@ void Textura::LoadBmp(unsigned int *textureArray, const char *strFileName, int t
     free(data);
 }
 
-void Textura::LoadTga(unsigned int *textureArray, const char *strFileName, int textureID) {
+void Texture::LoadTga(unsigned int *textureArray, const char *strFileName, int textureID) {
 
     tImageTGA *pImage = LoadTga(strFileName);
 
@@ -103,13 +105,13 @@ void Textura::LoadTga(unsigned int *textureArray, const char *strFileName, int t
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
     delete[] pImage->data;
 
     free(pImage);
 }
 
-tImageTGA *Textura::LoadTga(const char *filename) {
+tImageTGA *Texture::LoadTga(const char *filename) {
 
     tImageTGA *pImageData = nullptr;
     unsigned short width = 0;
@@ -118,21 +120,18 @@ tImageTGA *Textura::LoadTga(const char *filename) {
     unsigned char imageType = 0;
     unsigned char color_depth = 0;
     FILE *pFile = nullptr;
-    int channels = 0;
-    int stride = 0;
-    int i = 0;
 
     if ((pFile = fopen(filename, "rb")) == nullptr) {
         printf("TGA: %s \n", filename);
         throw std::invalid_argument("File not found");
     }
 
-    pImageData = (tImageTGA *) malloc(sizeof(tImageTGA));    
+    pImageData = (tImageTGA *) malloc(sizeof(tImageTGA));
 
-    fread(&length, sizeof(unsigned char), 1, pFile);    
+    fread(&length, sizeof(unsigned char), 1, pFile);
     fseek(pFile, 1, SEEK_CUR);
-    fread(&imageType, sizeof(unsigned char), 1, pFile); 
-    fseek(pFile, 9, SEEK_CUR);    
+    fread(&imageType, sizeof(unsigned char), 1, pFile);
+    fseek(pFile, 9, SEEK_CUR);
 
     fread(&width, sizeof(unsigned short), 1, pFile);
     fread(&height, sizeof(unsigned short), 1, pFile);
@@ -140,56 +139,38 @@ tImageTGA *Textura::LoadTga(const char *filename) {
 
     fseek(pFile, length + 1, SEEK_CUR);
 
+    if (color_depth != 32 && color_depth != 24 && color_depth != 15) {
+        throw std::invalid_argument("Color depth not supported for image only 32, 24 and 16");
+    }
+
     bool is_compressed_image = imageType == TGA_RLE;
     if (!is_compressed_image) {
-        if (color_depth == 24 || color_depth == 32) {
-            channels = color_depth / 8;
-            stride = channels * width;
-            pImageData->data = new unsigned char[stride * height];
-
-            for (int y = 0; y < height; y++) {
-                unsigned char *pLine = &(pImageData->data[stride * y]);
-                fread(pLine, static_cast<size_t>(stride), 1, pFile);
-
-                for (i = 0; i < stride; i += channels) {
-                    int temp = pLine[i];
-                    pLine[i] = pLine[i + 2];
-                    pLine[i + 2] = static_cast<unsigned char>(temp);
-                }
-            }
-        } else if (color_depth == 16) {
-            unsigned short pixels = 0;
-            int r = 0;
-            int g = 0;
-            int b = 0;
-
-            channels = 3;
-            stride = channels * width;
-            pImageData->data = new unsigned char[stride * height];
-
-            for (int i = 0; i < width * height; i++) {
-                fread(&pixels, sizeof(unsigned short), 1, pFile);
-                b = (pixels & 0x1f) << 3;
-                g = ((pixels >> 5) & 0x1f) << 3;
-                r = ((pixels >> 10) & 0x1f) << 3;
-
-                pImageData->data[i * 3 + 0] = static_cast<unsigned char>(r);
-                pImageData->data[i * 3 + 1] = static_cast<unsigned char>(g);
-                pImageData->data[i * 3 + 2] = static_cast<unsigned char>(b);
-            }
-        } else {
-            return nullptr;
-        }
+        ProcessUnCompressedTga(pImageData, width, height, color_depth, pFile);
     } else {
-        unsigned char rleID = 0;
-        int colorsRead = 0;
-        channels = color_depth / 8;
-        stride = channels * width;
+        ProcessCompressedTga(pImageData, width, height, color_depth, pFile);
 
-        pImageData->data = new unsigned char[stride * height];
-        auto *pColors = new unsigned char[channels];
+    }
 
-        while (i < width * height) {
+    fclose(pFile);
+
+    return pImageData;
+}
+
+void Texture::ProcessCompressedTga(tImageTGA *pImageData, unsigned short width, unsigned short height,
+                                   unsigned char color_depth, FILE *pFile) const {
+
+    int channels = 0;
+    int stride = 0;
+    int i = 0;
+    unsigned char rleID = 0;
+    int colorsRead = 0;
+    channels = color_depth / 8;
+    stride = channels * width;
+
+    pImageData->data = new unsigned char[stride * height];
+    auto *pColors = new unsigned char[channels];
+
+    while (i < width * height) {
             fread(&rleID, sizeof(unsigned char), 1, pFile);
 
             if (rleID < 128) {
@@ -228,14 +209,58 @@ tImageTGA *Textura::LoadTga(const char *filename) {
             }
         }
 
-        delete[] pColors;
-    }
+    delete[] pColors;
 
-    fclose(pFile);
+    pImageData->channels = channels;
+    pImageData->sizeX = width;
+    pImageData->sizeY = height;
+}
+
+void Texture::ProcessUnCompressedTga(tImageTGA *pImageData, unsigned short width, unsigned short height,
+                                     unsigned char color_depth, FILE *pFile) const {
+    int channels = 0;
+    int stride = 0;
+    int i = 0;
+
+    if (color_depth == 24 || color_depth == 32) {
+        channels = color_depth / 8;
+        stride = channels * width;
+        pImageData->data = new unsigned char[stride * height];
+
+        for (int y = 0; y < height; y++) {
+            unsigned char *pLine = &(pImageData->data[stride * y]);
+            fread(pLine, static_cast<size_t>(stride), 1, pFile);
+
+            for (i = 0; i < stride; i += channels) {
+                int temp = pLine[i];
+                pLine[i] = pLine[i + 2];
+                pLine[i + 2] = static_cast<unsigned char>(temp);
+            }
+        }
+    } else if (color_depth == 16) {
+        unsigned short pixels = 0;
+        int r = 0;
+        int g = 0;
+        int b = 0;
+
+        channels = 3;
+        stride = channels * width;
+        pImageData->data = new unsigned char[stride * height];
+
+        for (int i = 0; i < width * height; i++) {
+            fread(&pixels, sizeof(unsigned short), 1, pFile);
+            b = (pixels & 0x1f) << 3;
+            g = ((pixels >> 5) & 0x1f) << 3;
+            r = ((pixels >> 10) & 0x1f) << 3;
+
+            pImageData->data[i * 3 + 0] = static_cast<unsigned char>(r);
+            pImageData->data[i * 3 + 1] = static_cast<unsigned char>(g);
+            pImageData->data[i * 3 + 2] = static_cast<unsigned char>(b);
+        }
+    }
 
     pImageData->channels = channels;
     pImageData->sizeX = width;
     pImageData->sizeY = height;
 
-    return pImageData;
 }

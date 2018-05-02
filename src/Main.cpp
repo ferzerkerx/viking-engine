@@ -33,7 +33,7 @@ unsigned int sky[1];
 unsigned int sun[1];
 
 Timer *timer;
-Textura textura;
+Texture textura;
 Camara camara;
 Fuente *fuente;
 VKSkyDome *vkSkyDome;
@@ -239,19 +239,19 @@ void initViking() {
 
     camara.PonCam(0.0, 1.0, 10.0, 0.0, 1.0, 9.0, 0.0, 1.0, 0.0);
 
-    textura.CrearTextura(floorTexture, "data/piso.bmp", 0);
-    textura.CrearTextura(fontText, "data/Fuente/fuente.bmp", 0);
-    textura.CrearTextura(sky, "data/skydome/image5.bmp", 0);
-    textura.CrearTextura(sun, "data/sol_mixteco.tga", 0);
+    textura.LoadTexture(floorTexture, "data/piso.bmp", 0);
+    textura.LoadTexture(fontText, "data/Fuente/fuente.bmp", 0);
+    textura.LoadTexture(sky, "data/skydome/image5.bmp", 0);
+    textura.LoadTexture(sun, "data/sol_mixteco.tga", 0);
 
     if (useSkybox) {
         unsigned int skybox_text[6];//FRONT,BACK,LEFT,RIGHT,UP,DOWN
-        textura.CrearTextura(skybox_text, "data/skydome/image1.bmp", 0);
-        textura.CrearTextura(skybox_text, "data/skydome/image2.bmp", 1);
-        textura.CrearTextura(skybox_text, "data/skydome/image3.bmp", 2);
-        textura.CrearTextura(skybox_text, "data/skydome/image4.bmp", 3);
-        textura.CrearTextura(skybox_text, "data/skydome/image5.bmp", 4);
-        textura.CrearTextura(skybox_text, "data/skydome/image6.bmp", 5);
+        textura.LoadTexture(skybox_text, "data/skydome/image1.bmp", 0);
+        textura.LoadTexture(skybox_text, "data/skydome/image2.bmp", 1);
+        textura.LoadTexture(skybox_text, "data/skydome/image3.bmp", 2);
+        textura.LoadTexture(skybox_text, "data/skydome/image4.bmp", 3);
+        textura.LoadTexture(skybox_text, "data/skydome/image5.bmp", 4);
+        textura.LoadTexture(skybox_text, "data/skydome/image6.bmp", 5);
 
         skyBox = new SkyBox(50.0F, 100.0F, 120.0F, skybox_text);
     }

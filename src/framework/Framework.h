@@ -4,7 +4,7 @@
 #include "math/vector.h"
 #include "math/Matrix.h"
 #include "Fuente.h"
-#include "Textura.h"
+#include "Texture.h"
 #include "Timer.h"
 #include "Billboard.h"
 #include "loggers/EventLogger.h"

@@ -27,23 +27,31 @@ struct tImageTGA {            // Estructura de TGA
 };
 
 
-class Textura {
+class Texture {
 
 public:
 
     bool hasAlpha;
 
-    Textura();
+    Texture();
 
-    ~Textura() {};
+    ~Texture() {};
 
-    void CrearTextura(unsigned int textureArray[], const char *strFileName, int textureID);
+    void LoadTexture(unsigned int *textureArray, const char *strFileName, int textureID);
 
     void LoadBmp(unsigned int *textureArray, const char *strFileName, int textureID);
 
     void LoadTga(unsigned int *textureArray, const char *strFileName, int textureID);
 
     tImageTGA *LoadTga(const char *filename);
+
+    void
+    ProcessUnCompressedTga(tImageTGA *pImageData, unsigned short width, unsigned short height, unsigned char color_depth,
+                           FILE *pFile) const;
+
+    void ProcessCompressedTga(tImageTGA *pImageData, unsigned short width, unsigned short height, unsigned char color_depth,
+                              FILE *pFile) const;
 };
+
 
 #endif

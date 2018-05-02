@@ -1,7 +1,7 @@
 #ifndef __MODEL3DLOADER__H__
 #define __MODEL3DLOADER__H__
 
-#include "../Textura.h"
+#include "../Texture.h"
 #include "Model3d.h"
 
 /**
