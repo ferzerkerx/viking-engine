@@ -1,19 +1,22 @@
 #include "ColoredSkyDome.h"
-#include <cstdio>
 #include <GL/glut.h>
 
-
 ColoredSkyDome::ColoredSkyDome(float r) : SkyDome(r) {
-    ColorDome();
+    ColorDome(vertex_dome(), num_vertices())
 }
 
 
 ColoredSkyDome::ColoredSkyDome(float dphi, float dtheta, float r) : SkyDome(dphi, dtheta, r) {
-    ColorDome();
+    ColorDome(vertex_dome(), num_vertices());
+}
+
+static void ColoredSkyDome::ColorDome(VertexDome *vertexDome, int num_verices) const {
+    for (int i = 0; i < num_verices; i++) {
+        vertexDome[i].color = color3f(0.0, 0.35F, 0.7F);
+    }
 }
 
 ColoredSkyDome::~ColoredSkyDome() = default;
-
 
 void ColoredSkyDome::RenderDome(vector3f camera_position) {
     glEnable(GL_CULL_FACE);
@@ -45,10 +48,4 @@ void ColoredSkyDome::Render(vector3f camera_position) {
 
 void ColoredSkyDome::Update(vector3f camera_position) {
     Render(camera_position);
-}
-
-void ColoredSkyDome::ColorDome() {
-    for (int i = 0; i < num_vertices(); i++) {
-        vertex_dome()[i].color = color3f(0.0, 0.35F, 0.7F);
-    }
 }

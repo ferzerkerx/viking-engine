@@ -18,14 +18,13 @@ public:
     void Update(vector3f camera_position) override;
 
 protected:
-    ~ColoredSkyDome();
+    ~ColoredSkyDome() override;
 
     void Render(vector3f camera_position) override;
 
     void RenderDome(vector3f camera_position) override;
 
-    virtual void ColorDome();
-
+    static void ColorDome(VertexDome *vertexDome, int num_verices) const;
 };
 
 #endif

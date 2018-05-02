@@ -10,12 +10,13 @@
 */
 
 class SkyBox : public Sky {
-protected:
+private:
     unsigned int faces_[6];
-
     float height_;
     float large_;
     float width_;
+
+protected:
     enum Faces {
         FRONT, BACK, LEFT, RIGHT, UP, DOWN
     };
