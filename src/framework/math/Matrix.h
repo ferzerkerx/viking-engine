@@ -4,11 +4,11 @@
 class Matrix {
 
 private:
-    int columnas;
-    int renglones;
+    int columns_;
+    int rows_;
     std::map<int, std::vector<int> > data;
 
-    int determinante(int i, int j);
+    int Determinant(int i, int j);
 
 
 public:
@@ -20,9 +20,9 @@ public:
 
     ~Matrix();
 
-    int getNumCols();
+    int columns();
 
-    int getNumRengl();
+    int rows();
 
     int MatDet2x2(int **m);
 
@@ -44,11 +44,11 @@ public:
 
     Matrix operator-=(Matrix m2);
 
-    int determinante();
+    int Determinant();
 
-    void setData(int *m1, int rengl, int cols);
+    void set_data(int *m1, int rows, int cols);
 
-    void setData(int **m1, int rengl, int cols);
+    void set_data(int **m1, int rengl, int cols);
 
     int getVal(int rengl, int cols);
 
@@ -58,17 +58,17 @@ public:
 
     std::vector<int> getVector(int n);
 
-    std::vector<int> getRengl(int n);
+    std::vector<int> rows(int n);
 
     void quitaVector(int n);
 
     void quitaRengl(int n);
 
-    void addRengl(std::vector<int> v);
+    void AddRow(std::vector<int> v);
 
-    void print();
+    void Print();
 
-    Matrix getMatrizCofactores();
+    Matrix CofactorMatrix();
 
 };
 

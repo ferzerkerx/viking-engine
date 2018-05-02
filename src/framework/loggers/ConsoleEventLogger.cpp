@@ -16,7 +16,7 @@ void ConsoleEventLogger::EndStackCallLevel() {
 }
 
 void ConsoleEventLogger::Update(int hours, int minutes, int seconds, int hundrethSeconds) {
-    printf("Update = %d, Time = %.2d:%.2d:%.2d.%.2d\n", update_count_, hours, minutes, seconds,
+    printf("Update = %d, Time = %.2d:%.2d:%.2d.%.2d\n", update_count(), hours, minutes, seconds,
            hundrethSeconds);
 }
 

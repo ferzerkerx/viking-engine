@@ -1,74 +1,70 @@
 #include "Matrix.h"
 #include <malloc.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstdio>
-#include <math.h>
+#include <cmath>
 
 
 Matrix::Matrix() {
-    renglones = 0;
-    columnas = 0;
+    rows_ = 0;
+    columns_ = 0;
 }
 
 
 Matrix::Matrix(int **dat, int rengl, int cols) {
-    renglones = 0;
-    columnas = 0;
-    setData(dat, rengl, cols);
+    rows_ = 0;
+    columns_ = 0;
+    set_data(dat, rengl, cols);
 }
 
 Matrix::Matrix(Matrix *m) {
-    renglones = 0;
-    columnas = 0;
+    rows_ = 0;
+    columns_ = 0;
     int i = 0;
     std::vector<int> temp;
-    for (i = 1; i <= m->getNumCols(); i++) {
+    for (i = 1; i <= m->columns(); i++) {
         temp = m->getVector(i);
-        if (!temp.size() == 0) {
+        if (temp.empty() == 0) {
             addVector(temp);
         }
     }
 }
 
-Matrix::~Matrix() {
-
-
-}
+Matrix::~Matrix() = default;
 
 int Matrix::MatDet2x2(int **m) {
     return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0]);
 }
 
 int Matrix::MatDet3x3(int **m) {
-
     int posit = (m[0][0] * m[1][1] * m[2][2]) + (m[1][0] * m[2][1] * m[0][2]) + (m[2][0] * m[0][1] * m[1][2]);
     int negativ = (m[0][2] * m[1][1] * m[2][0]) + (m[1][2] * m[2][1] * m[0][0]) + (m[2][2] * m[1][0] * m[0][1]);
     return (posit - negativ);
 
 }
 
-void Matrix::setData(int *m1, int rengl, int cols) {
+void Matrix::set_data(int *m1, int rows, int cols) {
     int i = 0;
     int j = 0;
 
-    if (data.size() != 0) {
+    if (!data.empty()) {
         limpia();
     }
     std::vector<int> temp;
-    for (; i < rengl; i++) {
+    for (; i < rows; i++) {
         for (j = 0; j < cols; j++) {
             temp.push_back(*(m1 + (i * cols) + j));
         }
-        addRengl(temp);
+        AddRow(temp);
         temp.clear();
     }
 }
 
-void Matrix::setData(int **m1, int rengl, int cols) {
+void Matrix::set_data(int **m1, int rengl, int cols) {
     int i = 0;
     int j = 0;
 
-    if (data.size() != 0) {
+    if (!data.empty()) {
         limpia();
     }
     std::vector<int> temp;
@@ -76,42 +72,42 @@ void Matrix::setData(int **m1, int rengl, int cols) {
         for (j = 0; j < cols; j++) {
             temp.push_back(m1[i][j]);
         }
-        addRengl(temp);
+        AddRow(temp);
         temp.clear();
     }
 }
 
 void Matrix::limpia() {
     data.clear();
-    renglones = 0;
-    columnas = 0;
+    rows_ = 0;
+    columns_ = 0;
 }
 
 void Matrix::addVector(std::vector<int> v) {
-    if (columnas > 0) {
-        if (renglones != v.size()) {
-            throw std::out_of_range("Error no puedo meter vectores de diferente tamano\n");
+    if (columns_ > 0) {
+        if (rows_ != v.size()) {
+            throw std::out_of_range("Vector has different size than matrix\n");
         }
     } else {
-        renglones = v.size();
+        rows_ = static_cast<int>(v.size());
     }
-    columnas++;
-    data[columnas - 1] = v;
+    columns_++;
+    data[columns_ - 1] = v;
 }
 
-void Matrix::addRengl(std::vector<int> v) {
-    if (renglones > 0) {
-        if (columnas != v.size()) {
-            throw std::out_of_range("Error no puedo meter renglones de diferente tamano\n");
+void Matrix::AddRow(std::vector<int> v) {
+    if (rows_ > 0) {
+        if (columns_ != v.size()) {
+            throw std::out_of_range("Row has a different size than matrix\n");
         }
     } else {
         std::vector<int> temp;
-        for (columnas = 0; columnas < v.size(); columnas++) {
-            data[columnas] = temp;
+        for (columns_ = 0; columns_ < v.size(); columns_++) {
+            data[columns_] = temp;
         }
-        columnas = v.size();
+        columns_ = static_cast<int>(v.size());
     }
-    renglones++;
+    rows_++;
 
     int i = 0;
     std::map<int, std::vector<int> >::iterator miter;
@@ -125,55 +121,55 @@ void Matrix::addRengl(std::vector<int> v) {
 
 
 void Matrix::quitaVector(int n) {
-    if (n < 1 || n > columnas) {
-        throw std::out_of_range("n es mayor del numero de columnas\n");
+    if (n < 1 || n > columns_) {
+        throw std::out_of_range("n bigger than number of columns\n");
     }
-    columnas--;
+    columns_--;
     int i = n - 1;
     data.erase(n - 1);
-    for (; i < columnas; i++) {
+    for (; i < columns_; i++) {
         data[i] = data[i + 1];
     }
 }
 
 void Matrix::quitaRengl(int n) {
-    if (n < 1 || n > renglones) {
-        throw std::out_of_range("n es mayor del numero de renglones\n");
+    if (n < 1 || n > rows_) {
+        throw std::out_of_range("n is bigger than number of rows\n");
     }
-    renglones--;
+    rows_--;
     int i = 0;
     std::vector<int>::iterator viter;
-    for (i = 1; i <= columnas; i++) {
+    for (i = 1; i <= columns_; i++) {
         viter = data[i - 1].begin() + (n - 1);
         data[i - 1].erase(viter);
     }
 }
 
 std::vector<int> Matrix::getVector(int n) {
-    if (n < 1 || n > columnas) {
-        throw std::out_of_range("n es mayor del numero de columnas\n");
+    if (n < 1 || n > columns_) {
+        throw std::out_of_range("n bigger than number of columns\n");
     }
     return data[n - 1];
 }
 
-std::vector<int> Matrix::getRengl(int n) {
-    if (n < 1 || n > renglones) {
-        throw std::out_of_range("n es mayor del numero de renglones\n");
+std::vector<int> Matrix::rows(int n) {
+    if (n < 1 || n > rows_) {
+        throw std::out_of_range("n is bigger than number of rows\n");
     }
     std::vector<int> temp;
     int i = 0;
-    for (i = 1; i <= columnas; i++) {
-        temp.push_back(data[i - 1].at(n));
+    for (i = 1; i <= columns_; i++) {
+        temp.push_back(data[i - 1].at(static_cast<unsigned long>(n)));
     }
     return temp;
 }
 
-void Matrix::print() {
+void Matrix::Print() {
 
     std::map<int, std::vector<int> >::const_iterator miter;
     int j = 0;
 
-    for (; j < renglones; j++) {
+    for (; j < rows_; j++) {
         for (miter = data.begin(); miter != data.end(); miter++) {
             printf("%d ", miter->second[j]);
         }
@@ -182,45 +178,45 @@ void Matrix::print() {
 }
 
 
-int Matrix::getNumCols() {
-    return columnas;
+int Matrix::columns() {
+    return columns_;
 }
 
-int Matrix::getNumRengl() {
-    return renglones;
+int Matrix::rows() {
+    return rows_;
 }
 
 int Matrix::getVal(int rengl, int cols) {
-    if (rengl > renglones || rengl < 1) {
-        throw std::out_of_range("rengl no valido\n");
+    if (rengl > rows_ || rengl < 1) {
+        throw std::out_of_range("invalid row\n");
     }
 
-    if (cols > columnas || cols < 1) {
-        throw std::out_of_range("col no valido\n");
+    if (cols > columns_ || cols < 1) {
+        throw std::out_of_range("invalid column\n");
     }
 
-    return data[cols - 1].at(rengl - 1);
+    return data[cols - 1].at(static_cast<unsigned long>(rengl - 1));
 }
 
 Matrix Matrix::operator+(Matrix m2) {
-    if (renglones != m2.getNumRengl() || columnas != m2.getNumCols()) {
-        throw std::invalid_argument("error no se pueden sumar las matrices por ser de distinto tamano\n");
+    if (rows_ != m2.rows() || columns_ != m2.columns()) {
+        throw std::invalid_argument("Matrixes have different sizes\n");
     }
 
     int i = 0;
     int j = 0;
     int **temp;
-    temp = (int **) malloc(sizeof(int) * renglones);
+    temp = (int **) malloc(sizeof(int) * rows_);
 
-    for (j = 1; j <= renglones; j++) {
-        temp[j - 1] = (int *) malloc(sizeof(int) * columnas);
-        for (i = 1; i <= columnas; i++) {
+    for (j = 1; j <= rows_; j++) {
+        temp[j - 1] = (int *) malloc(sizeof(int) * columns_);
+        for (i = 1; i <= columns_; i++) {
             temp[j - 1][i - 1] = getVal(j, i) + m2.getVal(j, i);
         }
     }
-    Matrix res(temp, renglones, columnas);
+    Matrix res(temp, rows_, columns_);
 
-    for (i = 0; i < renglones; i++) {
+    for (i = 0; i < rows_; i++) {
         free(temp[i]);
     }
     free(temp);
@@ -228,24 +224,24 @@ Matrix Matrix::operator+(Matrix m2) {
 }
 
 Matrix Matrix::operator-(Matrix m2) {
-    if (renglones != m2.getNumRengl() || columnas != m2.getNumCols()) {
-        throw std::invalid_argument("error no se pueden restar las matrices por ser de distinto tamano\n");
+    if (rows_ != m2.rows() || columns_ != m2.columns()) {
+        throw std::invalid_argument("Matrixes have different sizes\n");
     }
 
     int i = 0;
     int j = 0;
     int **temp;
-    temp = (int **) malloc(sizeof(int) * renglones);
+    temp = (int **) malloc(sizeof(int) * rows_);
 
-    for (j = 1; j <= renglones; j++) {
-        temp[j - 1] = (int *) malloc(sizeof(int) * columnas);
-        for (i = 1; i <= columnas; i++) {
+    for (j = 1; j <= rows_; j++) {
+        temp[j - 1] = (int *) malloc(sizeof(int) * columns_);
+        for (i = 1; i <= columns_; i++) {
             temp[j - 1][i - 1] = getVal(j, i) - m2.getVal(j, i);
         }
     }
-    Matrix res(temp, renglones, columnas);
+    Matrix res(temp, rows_, columns_);
 
-    for (i = 0; i < renglones; i++) {
+    for (i = 0; i < rows_; i++) {
         free(temp[i]);
     }
     free(temp);
@@ -254,8 +250,8 @@ Matrix Matrix::operator-(Matrix m2) {
 }
 
 Matrix Matrix::operator*(Matrix m2) {
-    if (columnas != m2.getNumRengl()) {
-        throw std::invalid_argument("error no se pueden multiplicat las matrices por ser de distinto tamano\n");
+    if (columns_ != m2.rows()) {
+        throw std::invalid_argument("Matrixes have different sizes\n");
     }
 
     int i = 0;
@@ -263,31 +259,31 @@ Matrix Matrix::operator*(Matrix m2) {
     int resul = 0;
     int k = 0;
     int l = 0;
-    temp = (int **) malloc(sizeof(int) * renglones);
+    temp = (int **) malloc(sizeof(int) * rows_);
 
-    for (i = 0; i < renglones; i++) {
-        temp[i] = (int *) malloc(sizeof(int) * m2.getNumCols());
+    for (i = 0; i < rows_; i++) {
+        temp[i] = (int *) malloc(sizeof(int) * m2.columns());
     }
 
     i = 1;
-    for (k = 1; k <= renglones; k++) {
+    for (k = 1; k <= rows_; k++) {
         resul = 0;
-        for (l = 1; l <= columnas; l++) {
+        for (l = 1; l <= columns_; l++) {
             resul += getVal(k, l) * m2.getVal(l, i);
-            if (l == columnas) {
+            if (l == columns_) {
                 temp[k - 1][i - 1] = resul;
             }
         }
         i++;
-        if (i <= m2.getNumCols()) {
+        if (i <= m2.columns()) {
             k--;
         } else {
             i = 1;
         }
     }
-    Matrix res(temp, renglones, m2.getNumCols());
+    Matrix res(temp, rows_, m2.columns());
 
-    for (i = 0; i < renglones; i++) {
+    for (i = 0; i < rows_; i++) {
         free(temp[i]);
     }
     free(temp);
@@ -298,18 +294,18 @@ Matrix Matrix::operator*(int n) {
     int i = 0;
     int j = 0;
     int **temp;
-    temp = (int **) malloc(sizeof(int) * renglones);
+    temp = (int **) malloc(sizeof(int) * rows_);
 
-    for (j = 1; j <= renglones; j++) {
-        temp[j - 1] = (int *) malloc(sizeof(int) * columnas);
-        for (i = 1; i <= columnas; i++) {
+    for (j = 1; j <= rows_; j++) {
+        temp[j - 1] = (int *) malloc(sizeof(int) * columns_);
+        for (i = 1; i <= columns_; i++) {
             temp[j - 1][i - 1] = getVal(j, i) * n;
 
         }
     }
-    Matrix res(temp, renglones, columnas);
+    Matrix res(temp, rows_, columns_);
 
-    for (i = 0; i < renglones; i++) {
+    for (i = 0; i < rows_; i++) {
         free(temp[i]);
     }
     free(temp);
@@ -319,11 +315,11 @@ Matrix Matrix::operator*(int n) {
 
 Matrix Matrix::operator*=(int n) {
     int i = 0;
-    inr j = 0;
+    int j = 0;
 
-    for (j = 1; j <= renglones; j++) {
-        for (i = 1; i <= columnas; i++) {
-            data[i - 1].at(j) *= n;
+    for (j = 1; j <= rows_; j++) {
+        for (i = 1; i <= columns_; i++) {
+            data[i - 1].at(static_cast<unsigned long>(j)) *= n;
         }
     }
     return *this;
@@ -344,51 +340,51 @@ Matrix Matrix::operator-=(Matrix m2) {
     return *this;
 }
 
-int Matrix::determinante() {
+int Matrix::Determinant() {
 
-    if (renglones == 1 && columnas == 1) {
+    if (rows_ == 1 && columns_ == 1) {
         return getVal(1, 1);
     }
-    Matrix cofactores = getMatrizCofactores();
+    Matrix cofactores = CofactorMatrix();
 
     int res = 0;
     int i = 0;
     int j = 1;
 
-    for (i = 1; i <= renglones; i++) {
+    for (i = 1; i <= rows_; i++) {
         res += cofactores.getVal(i, j) * getVal(i, j);
     }
 
     return res;
 }
 
-int Matrix::determinante(int i, int j) {
-    if (renglones == 1 && columnas == 1) {
+int Matrix::Determinant(int i, int j) {
+    if (rows_ == 1 && columns_ == 1) {
         return getVal(1, 1);
     }
-    Matrix nueva(this);
-    nueva.quitaRengl(i);
-    nueva.quitaVector(j);
-    nueva.print();
-    return nueva.determinante();
+    Matrix copy(this);
+    copy.quitaRengl(i);
+    copy.quitaVector(j);
+    copy.Print();
+    return copy.Determinant();
 
 }
 
-Matrix Matrix::getMatrizCofactores() {
+Matrix Matrix::CofactorMatrix() {
     int i = 0;
     int j = 0;
     int **temp;
 
-    temp = (int **) malloc(sizeof(int *) * renglones);
-    for (i = 1; i <= renglones; i++) {
-        temp[i - 1] = (int *) malloc(sizeof(int) * columnas);
-        for (j = 1; j <= columnas; j++) {
-            temp[i - 1][j - 1] = (int) pow(-1, (i + j)) * determinante(i, j);
+    temp = (int **) malloc(sizeof(int *) * rows_);
+    for (i = 1; i <= rows_; i++) {
+        temp[i - 1] = (int *) malloc(sizeof(int) * columns_);
+        for (j = 1; j <= columns_; j++) {
+            temp[i - 1][j - 1] = (int) pow(-1, (i + j)) * Determinant(i, j);
         }
     }
 
-    Matrix cof(temp, renglones, columnas);
-    for (i = 0; i < renglones; i++) {
+    Matrix cof(temp, rows_, columns_);
+    for (i = 0; i < rows_; i++) {
         free(temp[i]);
     }
     free(temp);

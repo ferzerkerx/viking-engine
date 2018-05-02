@@ -147,4 +147,8 @@ void EventLogger::LogCallStack() {
     }
 }
 
+unsigned int EventLogger::update_count() const {
+    return update_count_;
+}
+
 #endif // ENABLE_LOGGING

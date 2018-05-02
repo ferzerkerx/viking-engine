@@ -80,8 +80,10 @@ protected:
 
     void LogCallStack();
 
-    unsigned int update_count_;
+    unsigned int update_count() const;
+
 private:
+    unsigned int update_count_;
     CallStackVector call_stack_vector_;
     bool has_logged_event_;
     unsigned int previous_stack_level_;

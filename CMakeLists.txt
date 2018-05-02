@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD 11)
 #add_executable(viking_engine ${sources})
 add_executable(viking_engine src/Main.cpp
         src/framework/math/vector.h
+        src/framework/math/Matrix.h
+        src/framework/math/Matrix.cpp
         src/framework/math/Quaternion.h
         src/framework/math/Quaternion.cpp
         src/Camara.h
