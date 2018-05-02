@@ -9,5 +9,11 @@ TextureWriter::TextureWriter(const char *file_name) {
 }
 
 TextureWriter::~TextureWriter() {
-    if (out_) { out_.close(); }
+    if (out_) {
+        out_.close();
+    }
+}
+
+std::ofstream &TextureWriter::out()  {
+    return out_;
 }

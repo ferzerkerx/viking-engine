@@ -43,8 +43,9 @@ void SkyDome::CreateHemiSphere() {
     float thetadrad;
 
     auto dtetha_aux = static_cast<int>(dtheta_);
+    auto dphi_aux = static_cast<int>(dphi_);
 
-    for (; phi <= 90 - dphi_; phi += (int) dphi_) {
+    for (; phi <= 90 - dphi_aux; phi += dphi_aux) {
         for (theta = 0; theta <= 360 - dtetha_aux; theta += dtetha_aux) {
             phirad = phi * RAD;
             thetarad = theta * RAD;

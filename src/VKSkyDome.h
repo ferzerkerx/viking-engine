@@ -20,7 +20,7 @@ public:
 
     ~VKSkyDome() override;
 
-    void Update(vector3f poscam) override;
+    void Update(vector3f camera_position) override;
 
     void WriteCloudImage();
 

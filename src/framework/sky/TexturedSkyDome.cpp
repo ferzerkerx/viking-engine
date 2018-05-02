@@ -67,8 +67,9 @@ void TexturedSkyDome::CalculateUV() {
     int theta = 0;
 
     auto dtetha_aux = static_cast<int>(dtheta_);
+    auto dphi_aux = static_cast<int>(dphi_);
 
-    for (; phi <= 90 - dphi_; phi += (int) dphi_) {
+    for (; phi <= 90 - dphi_aux; phi += dphi_aux) {
         for (theta = 0; theta <= 360 - dtetha_aux; theta += dtetha_aux) {
 
             vec_temp.x = vrtex_[i].pos.x;

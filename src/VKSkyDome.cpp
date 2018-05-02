@@ -26,13 +26,9 @@ VKSkyDome::~VKSkyDome() {
 }
 
 
-void VKSkyDome::Render(vector3f camera_position) {
-    TexturedSkyDome::Render(camera_position);
-}
-
-void VKSkyDome::Update(vector3f poscam) {
-    Render(poscam);
-    textured_sky_plane_->Update(poscam);
+void VKSkyDome::Update(vector3f camera_position) {
+    Render(camera_position);
+    textured_sky_plane_->Update(camera_position);
 }
 
 

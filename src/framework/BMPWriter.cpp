@@ -38,18 +38,19 @@ void BMPWriter::WriteTexture() {
 }
 
 void BMPWriter::WriteFileHeader() {
-    out_.write((char *) &file_header_, sizeof(struct BITMAPFILEHEADER));
-    out_.write((char *) &file_header_.bfType, 2);
-    out_.write((char *) &file_header_.bfSize, 4);
-    out_.write((char *) &file_header_.bfReserved1, 2);
-    out_.write((char *) &file_header_.bfReserved2, 2);
-    out_.write((char *) &file_header_.bfOffBits, 4);
+    std::ofstream &ofstream = out();
+    ofstream.write((char *) &file_header_, sizeof(struct BITMAPFILEHEADER));
+    ofstream.write((char *) &file_header_.bfType, 2);
+    ofstream.write((char *) &file_header_.bfSize, 4);
+    ofstream.write((char *) &file_header_.bfReserved1, 2);
+    ofstream.write((char *) &file_header_.bfReserved2, 2);
+    ofstream.write((char *) &file_header_.bfOffBits, 4);
 
 }
 
 
 void BMPWriter::WriteInfoHeader() {
-    out_.write((char *) &info_header_, sizeof(struct BITMAPINFOHEADER));
+    out().write((char *) &info_header_, sizeof(struct BITMAPINFOHEADER));
 }
 
 
@@ -62,18 +63,20 @@ void BMPWriter::WriteData() {
     int g = 0;
     int b = 0;
 
+    std::ofstream &ofstream = out();
+
     for (i = 0; i < info_header_.biWidth; i++) {
         for (j = 0; j < info_header_.biHeight; j++) {
 
             if (data_ != nullptr) {
                 offset = static_cast<int>(i * (info_header_.biHeight * color_depth_) + (j * color_depth_));
-                out_.write(&data_[offset + 1], 1);//b
-                out_.write(&data_[offset], 1);//g
-                out_.write(&data_[offset + 2], 1);//r
+                ofstream.write(&data_[offset + 1], 1);//b
+                ofstream.write(&data_[offset], 1);//g
+                ofstream.write(&data_[offset + 2], 1);//r
             } else {
-                out_.write((char *) &b, 1);//b
-                out_.write((char *) &g, 1);//g
-                out_.write((char *) &r, 1);//r
+                ofstream.write((char *) &b, 1);//b
+                ofstream.write((char *) &g, 1);//g
+                ofstream.write((char *) &r, 1);//r
             }
         }
     }

@@ -9,8 +9,12 @@
 * @date Saturday, October 20, 2007 4:47:49 PM
 */
 class TextureWriter {
-protected:
+private:
     std::ofstream out_;
+
+protected:
+
+    std::ofstream &out();
 
     virtual ~TextureWriter();
 
