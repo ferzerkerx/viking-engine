@@ -26,10 +26,10 @@ TexturedSkyPlane::TexturedSkyPlane(int divisiones, float planet_radius, float at
     m_h_tile = h_tile;
     m_v_tile = v_tile;
 
-    m_wind_factor_x = 0.0001F;
-    m_wind_factor_y = 0.0001F;
+    wind_factor_x_ = 0.0001F;
+    wind_factor_y_ = 0.0001F;
     texture_delta_x = 0.0F;
-    m_desface_text_y = 0.0F;
+    delta_texture_y_ = 0.0F;
     rot_texture_in_milli_ = 10;
 
     GenerateSkyPlane();
@@ -42,14 +42,14 @@ TexturedSkyPlane::~TexturedSkyPlane() {
 }
 
 
-void TexturedSkyPlane::Update(vector3f poscam) {
-    Render(poscam);
+void TexturedSkyPlane::Update(vector3f camera_position) {
+    Render(camera_position);
 }
 
 
 void TexturedSkyPlane::Render(vector3f poscam) {
-    if (timer_.getMilliseconds() >= rot_texture_in_milli_) {
-        timer_.reset();
+    if (timer_.Milliseconds() >= rot_texture_in_milli_) {
+        timer_.Reset();
         texture_delta_x += roty_factor_;
         if (texture_delta_x >= 360) {
             texture_delta_x -= 360;
@@ -125,43 +125,30 @@ void TexturedSkyPlane::GenerateSkyPlane() {
     int index = 0;
     for (i = 0; i < divisions_; i++) {
         for (j = 0; j < divisions_; j++) {
-            unsigned int startvert = (i * (divisions_ + 1) + j);
+            unsigned int start_vert = (i * (divisions_ + 1) + j);
 
-            // tri 1f
-            indexes_[index++] = startvert;
-            indexes_[index++] = startvert + 1;
-            indexes_[index++] = startvert + divisions_ + 1;
+            indexes_[index++] = start_vert;
+            indexes_[index++] = start_vert + 1;
+            indexes_[index++] = start_vert + divisions_ + 1;
 
-            // tri 2
-            indexes_[index++] = startvert + 1;
-            indexes_[index++] = startvert + divisions_ + 2;
-            indexes_[index++] = startvert + divisions_ + 1;
+            indexes_[index++] = start_vert + 1;
+            indexes_[index++] = start_vert + divisions_ + 2;
+            indexes_[index++] = start_vert + divisions_ + 1;
         }
     }
 }
 
-/**
-*@brief Cambia el factor de viento en x
-*@param wfx Es el delta de movimiento de la textura en x
-*/
-void TexturedSkyPlane::setWindFactorX(float wfx) {
-    m_wind_factor_x = wfx;
+
+void TexturedSkyPlane::set_wind_factor_x(float wfx) {
+    wind_factor_x_ = wfx;
 }
 
-/**
-*@brief Cambia el factor de viento en y
-*@param wfy Es el delta de movimiento de la textura en y
-*/
-void TexturedSkyPlane::setWindFactorY(float wfy) {
-    m_wind_factor_y = wfy;
+
+void TexturedSkyPlane::set_wind_factor_y(float wfy) {
+    wind_factor_y_ = wfy;
 }
 
-/**
-*@brief Cambia el factor de viento en 'x' y 'y'
-*@param wfx Es el delta de movimiento de la textura en x
-*@param wfy Es el delta de movimiento de la textura en y
-*/
-void TexturedSkyPlane::setWindFactorXY(float wfx, float wfy) {
-    m_wind_factor_x = wfx;
-    m_wind_factor_y = wfy;
+void TexturedSkyPlane::set_wind_factor_XY(float wfx, float wfy) {
+    wind_factor_x_ = wfx;
+    wind_factor_y_ = wfy;
 }

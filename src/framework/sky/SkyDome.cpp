@@ -78,21 +78,11 @@ void SkyDome::CreateHemiSphere() {
     }
 }
 
-/**
-*@brief Esta funcin coloca una textura para dibujar el sol
-*@param texture_id Es un identificador de textura (debe ser generado por openGL)
-*/
 void SkyDome::set_sun_texture(unsigned int texture_id) {
     sun_texture_ = texture_id;
     has_sun_texture_ = true;
 }
 
-/**
-* @brief Renderea el sol si es que hay textura
-* @author Fernando Montes de Oca Cespedes
-* @date Friday, October 19, 2007 8:35:41 PM
-* @param camera_position Vector de posicion de la camara
-*/
 void SkyDome::RenderSun(vector3f camera_position) {
     if (has_sun_texture_) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_COLOR);
@@ -105,7 +95,7 @@ void SkyDome::RenderSun(vector3f camera_position) {
         sun_polar_.phi += 0.002F;
         glTranslatef(sun_vector_.y, sun_vector_.x, sun_vector_.z);
         glRotatef(-90.0F, 1.0, 0.0, 0.0F);
-        Billboard::BBEsfera(camera_position, sun_vector_.y, sun_vector_.x, sun_vector_.z);
+        Billboard::BBSphere(camera_position, sun_vector_.y, sun_vector_.x, sun_vector_.z);
         glBegin(GL_POLYGON);
         glTexCoord2f(0.0, 1.0);
         glVertex3f(-5.0F, 0.0, -5.0F);

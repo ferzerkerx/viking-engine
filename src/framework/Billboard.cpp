@@ -1,93 +1,82 @@
 #include "GL/gl.h"
 #include "Billboard.h"
+#include <cmath>
 
-/**
-*@brief Genera un billboarding no real, el objeto no enfrenta la camara sino un plano perpendicular a la
-*camara. Es el ms fcil de implementar. Es billboard de tipo esfrico o de punto.
- */
-void Billboard::BBFalsoEsfera() {
-    float modelview[16];
+void Billboard::BBFalseSphere() {
+    float model_view[16];
     int i;
     int j;
 
-    glPushMatrix();    // Guardamos la matriz modelview actual
-    glGetFloatv(GL_MODELVIEW_MATRIX, modelview); // Obtenemos la matriz modelview actual
-    // Nos movemos dentro de la matriz modelview
-    for (i = 0; i < 3; i++)
+    glPushMatrix();
+    glGetFloatv(GL_MODELVIEW_MATRIX, model_view);
+    for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
-            if (i == j)
-                modelview[i * 4 + j] = 1.0;
-            else
-                modelview[i * 4 + j] = 0.0;
+            if (i == j) {
+                model_view[i * 4 + j] = 1.0;
+            }
+            else {
+                model_view[i * 4 + j] = 0.0;
+            }
         }
-    glLoadMatrixf(modelview); // Asignamos la matriz modelview
+    }
+    glLoadMatrixf(model_view);
 }
 
-/**
-*@brief Genera billboarding real de tipo esfrico o punto, se puede enfrentar un objeto a cualquier posicin u objeto.
-*@param camP Vector de posicin de la cmara.
-*@param objPosX Posicin en X del objeto que tendr el efecto de billboarding.
-*@param objPosY Posicin en Y del objeto que tendr el efecto de billboarding.
-*@param objPosZ Posicin en Z del objeto que tendr el efecto de billboarding.
-*/
-void Billboard::BBEsfera(vector3f camP, float objPosX, float objPosY, float objPosZ) {
 
-    vector3f lookAt;
-    vector3f objACamProj;
+void Billboard::BBSphere(vector3f camera_position, float obj_pos_x, float obj_pos_y, float obj_pos_z) {
+
+    vector3f look_at;
+    vector3f obj_camera_projection;
     vector3f objACam;
-    vector3f upAux;
-    float cosAngulo;
+    vector3f up_aux;
+    float cos_angulo;
 
     glPushMatrix();
-    objACamProj.x = camP.x - objPosX;
-    objACamProj.y = 0;
-    objACamProj.z = camP.z - objPosZ;
+    obj_camera_projection.x = camera_position.x - obj_pos_x;
+    obj_camera_projection.y = 0;
+    obj_camera_projection.z = camera_position.z - obj_pos_z;
 
-    lookAt.x = 0;
-    lookAt.y = 0;
-    lookAt.z = 1;
+    look_at.x = 0;
+    look_at.y = 0;
+    look_at.z = 1;
 
-    objACamProj = Normalize(objACamProj);
+    obj_camera_projection = Normalize(obj_camera_projection);
 
-    upAux = Cross(lookAt, objACamProj);
+    up_aux = Cross(look_at, obj_camera_projection);
 
-    cosAngulo = Point(lookAt, objACamProj);
+    cos_angulo = Point(look_at, obj_camera_projection);
 
-    if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
-        glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), upAux.x, upAux.y, upAux.z);
+    if ((cos_angulo < 0.9999) && (cos_angulo > -0.9999)) {
+        glRotatef((float) (std::acos(cos_angulo) * 180 / 3.1416), up_aux.x, up_aux.y, up_aux.z);
     }
 
-    objACam.x = camP.x - objPosX;
-    objACam.y = camP.y - objPosY;
-    objACam.z = camP.z - objPosZ;
+    objACam.x = camera_position.x - obj_pos_x;
+    objACam.y = camera_position.y - obj_pos_y;
+    objACam.z = camera_position.z - obj_pos_z;
 
     objACam = Normalize(objACam);
 
-    cosAngulo = Point(objACamProj, objACam);
+    cos_angulo = Point(obj_camera_projection, objACam);
 
-    if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
+    if ((cos_angulo < 0.9999) && (cos_angulo > -0.9999)) {
         if (objACam.y < 0) {
-            glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), 1, 0, 0);
+            glRotatef((float) (std::acos(cos_angulo) * 180 / 3.1416), 1, 0, 0);
         } else {
-            glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), -1, 0, 0);
+            glRotatef((float) (std::acos(cos_angulo) * 180 / 3.1416), -1, 0, 0);
         }
     }
 
 }
 
-/**
-*@brief Genera un billboarding no real, el objeto no enfrenta la camara sino un plano perpendicular a 
-*la camara, version cilindro, el 'up vector' no cambia.
-*/
-void Billboard::BBFalsoCilindro() {
+
+void Billboard::BBFalseCylinder() {
     float modelview[16];
     int i;
     int j;
 
-    glPushMatrix(); // Guardamos la matriz modelview actual
-    glGetFloatv(GL_MODELVIEW_MATRIX, modelview); // Obtenemos la matriz modelview actual
-    // Nos movemos dentro de la matriz modelview
-    for (i = 0; i < 3; i += 2) // Nos saltamos la columna del up vector (2da.)
+    glPushMatrix();
+    glGetFloatv(GL_MODELVIEW_MATRIX, modelview);
+    for (i = 0; i < 3; i += 2) {
         for (j = 0; j < 3; j++) {
             if (i == j) {
                 modelview[i * 4 + j] = 1.0;
@@ -95,47 +84,39 @@ void Billboard::BBFalsoCilindro() {
                 modelview[i * 4 + j] = 0.0;
             }
         }
-    glLoadMatrixf(modelview); // Asignamos la matriz modelview
+
+    }
+    glLoadMatrixf(modelview);
 }
 
-/**
-*@brief Genera billboarding real, se puede enfrentar un objeto a cualquier posicin u objeto, es te tipo esfrico (slo rota en el eje Y).
-*@param camP Vector de posicin de la cmara.
-*@param objPosX Posicin en X del objeto que tendr el efecto de billboarding.
-*@param objPosY Posicin en Y del objeto que tendr el efecto de billboarding.
-*@param objPosZ Posicin en Z del objeto que tendr el efecto de billboarding.
-*/
-void Billboard::BBCilindro(vector3f camP, float objPosX, float objPosY, float objPosZ) {
+void Billboard::BBCylinder(vector3f camera_position, float obj_pos_x, float obj_pos_y, float obj_pos_z) {
 
-    float cosAngulo;
-    vector3f objACamProj;
-    vector3f lookAt;
-    vector3f upAux;
+    float cos_angulo;
+    vector3f obj_camera_projection;
+    vector3f look_at;
+    vector3f up_aux;
 
     glPushMatrix();
-    objACamProj.x = camP.x - objPosX;
-    objACamProj.y = 0;
-    objACamProj.z = camP.z - objPosZ;
+    obj_camera_projection.x = camera_position.x - obj_pos_x;
+    obj_camera_projection.y = 0;
+    obj_camera_projection.z = camera_position.z - obj_pos_z;
 
-    lookAt.x = 0;
-    lookAt.y = 0;
-    lookAt.z = 1;
+    look_at.x = 0;
+    look_at.y = 0;
+    look_at.z = 1;
 
-    objACamProj = Normalize(objACamProj);
+    obj_camera_projection = Normalize(obj_camera_projection);
 
-    upAux = Cross(lookAt, objACamProj);
+    up_aux = Cross(look_at, obj_camera_projection);
 
-    cosAngulo = Point(lookAt, objACamProj);
+    cos_angulo = Point(look_at, obj_camera_projection);
 
-    if ((cosAngulo < 0.9999) && (cosAngulo > -0.9999)) {
-        glRotatef((float) (acos(cosAngulo) * 180 / 3.1416), upAux.x, upAux.y, upAux.z);
+    if ((cos_angulo < 0.9999) && (cos_angulo > -0.9999)) {
+        glRotatef((float) (std::acos(cos_angulo) * 180 / 3.1416), up_aux.x, up_aux.y, up_aux.z);
     }
 }
 
-/**
-*@brief Hace un pop de la matriz modelview para cerrar el billboarding.
-*/
+
 void Billboard::BBFin() {
-    // Reasignar la matriz modelview antes guardada
     glPopMatrix();
 }

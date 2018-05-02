@@ -1,8 +1,3 @@
-/**
-* @file MD2Model.h
-* @brief Encabezado de la clase MD2Model
-* @date Friday, November 02, 2007 12:12:57 AM
-*/
 #ifndef __MD2MODEL__H__
 #define __MD2MODEL__H__
 

@@ -1,17 +1,7 @@
-/**
-* @file MD2Model.cpp
-* @brief Implementacin de la clase MD2Model
-* @date Friday, November 02, 2007 12:11:58 AM
-*/
 #include "Md2Model.h"
 #include <GL/glut.h>
 #include <cstring>
 
-/**
-* @brief Constrtuctor que recibe la ruta y la textura usada por el modelo MD2
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:39:31 PM
-*/
 Md2Model::Md2Model() {
     hasAnimation_ = false;
     glCommand_buffer_ = nullptr;
@@ -22,12 +12,6 @@ Md2Model::Md2Model() {
     animation_speed_ = 1.0F;
 }
 
-
-/**
-* @brief Destructor que libera las animaciones y los comandos utilizados
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:41:19 PM
-*/
 Md2Model::~Md2Model() {
     while (!animations_.empty()) {
         animations_.pop_back();
@@ -35,14 +19,10 @@ Md2Model::~Md2Model() {
     delete glCommand_buffer_;
 }
 
-
-/**
-* @brief Dibuja el modelo en el frame actual
-* @author Fernando Montes de Oca Cespedes
-* @date Thursday, November 29, 2007 8:41:44 PM
-*/
 void Md2Model::Render() {
-    if (objects.empty()) return;
+    if (objects.empty()) {
+        return;
+    }
 
     float interpolation_factor = 0.0F;
     int i = 0;
@@ -52,7 +32,9 @@ void Md2Model::Render() {
 
     if (hasAnimation_) {
         next_frame_ = (current_frame_ + 1) % animations_[current_animation_].final_frame;
-        if (next_frame_ == 0) { next_frame_ = animations_[current_animation_].initial_frame; }
+        if (next_frame_ == 0) {
+            next_frame_ = animations_[current_animation_].initial_frame;
+        }
     }
 
     Object3D *frame = &objects[current_frame_];
@@ -142,12 +124,12 @@ void Md2Model::PreviousAnimation() {
 
 
 float Md2Model::CalculateInterpolationFactor() {
-    float factor = timer_.getMilliseconds() / (1000.0F / animation_speed_);
+    float factor = timer_.Milliseconds() / (1000.0F / animation_speed_);
 
-    if (timer_.getMilliseconds() >= (1000.0F / animation_speed_)) {
+    if (timer_.Milliseconds() >= (1000.0F / animation_speed_)) {
         current_frame_ = next_frame_;
         next_frame_ = (current_frame_ + 1) % animations_[current_animation_].final_frame;
-        timer_.reset();
+        timer_.Reset();
     }
     if (factor > 1.0F) {
         factor = 1.0F;
@@ -174,7 +156,7 @@ void Md2Model::RenderWithOpenGlCommands() {
     if (objects.empty() || !glCommand_buffer_) return;
 
     int *command_buffer_ = glCommand_buffer_;
-    float t = 0.0F;
+    float interpolation_factor = 0.0F;
     if (hasAnimation_) {
         next_frame_ = (current_frame_ + 1) % animations_[current_animation_].final_frame;
         if (next_frame_ == 0) { next_frame_ = animations_[current_animation_].initial_frame; }
@@ -183,7 +165,9 @@ void Md2Model::RenderWithOpenGlCommands() {
     Object3D *frame = &objects[current_frame_];
     Object3D *next_frame = &objects[next_frame_];
 
-    if (hasAnimation_) { t = CalculateInterpolationFactor(); }
+    if (hasAnimation_) {
+        interpolation_factor = CalculateInterpolationFactor();
+    }
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
@@ -216,13 +200,13 @@ void Md2Model::RenderWithOpenGlCommands() {
 
             if (hasAnimation_) {
                 float x = frame->vertex[command_buffer_[vertex_index]].x +
-                          t * (next_frame->vertex[command_buffer_[vertex_index]].x -
+                          interpolation_factor * (next_frame->vertex[command_buffer_[vertex_index]].x -
                                frame->vertex[command_buffer_[vertex_index]].x);
                 float y = frame->vertex[command_buffer_[vertex_index]].y +
-                          t * (next_frame->vertex[command_buffer_[vertex_index]].y -
+                          interpolation_factor * (next_frame->vertex[command_buffer_[vertex_index]].y -
                                frame->vertex[command_buffer_[vertex_index]].y);
                 float z = frame->vertex[command_buffer_[vertex_index]].z +
-                          t * (next_frame->vertex[command_buffer_[vertex_index]].z -
+                          interpolation_factor * (next_frame->vertex[command_buffer_[vertex_index]].z -
                                frame->vertex[command_buffer_[vertex_index]].z);
                 glVertex3f(x, y, z);
             } else {

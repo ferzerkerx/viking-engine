@@ -1,8 +1,3 @@
-/**
-* @file BMPWriter.h
-* @brief Encabezado de la clase BMPWriter
-* @date Saturday, October 20, 2007 5:50:37 PM
-*/
 #ifndef __BMPWRITER_H__
 #define __BMPWRITER_H__
 
@@ -28,54 +23,35 @@ struct BITMAPINFOHEADER {                        //start 	size 	name 			stdvalue
     long biYPelsPerMeter;    // 43 		4 		biYPelsPerMeter 	0 		specifies the the vertical pixels per meter on the designated targer device, usually set to zero.
     int biClrUsed;            // 47 		4 		biClrUsed 			0 		specifies the number of colors used in the bitmap, if set to zero the number of colors is calculated using the biBitCount member.
     int biClrImportant;        // 51 		4 		biClrImportant 		0 		specifies the number of color that are 'important' for the bitmap, if set to zero, all colors are important.
-};    //representa un BITMAPINFOHEADER
+};
 
 
 /**
 * @class BMPWriter
 * @author Fernando Montes de Oca Cespedes
 * @date Saturday, October 20, 2007 5:50:41 PM
-* @brief Clase qeu escribe BMP's de 24 bits 
+
 */
 class BMPWriter : public TextureWriter {
 private:
-    void escribeFileHeader();
+    void WriteFileHeader();
 
-    void escribeInfoHeader();
+    void WriteInfoHeader();
 
-    void escribeData();
+    void WriteData();
 
-    BITMAPFILEHEADER m_file_header; //representa un BITMAPFILEHEADER
-
-    struct BITMAPINFOHEADER m_info_header;    //representa un BITMAPINFOHEADER
-
-    const char *m_data; //apuntador a los datos de la imagen(colores)
-    int m_prof;        //representa el numero de colores 3 = RGB, 4 = RGBA
+    BITMAPFILEHEADER file_header_;
+    struct BITMAPINFOHEADER info_header_;
+    const char *data_;
+    int color_depth_;
 
 public:
-    void writeTexture() override;
+    void WriteTexture() override;
 
     BMPWriter(const char *file, int width, int height, int prof, char *data);
 
-    ~BMPWriter();
+    ~BMPWriter() override;
 
 };
-
-
-/**
-* @var BMPWriter::m_file_header
-* @brief representa un BITMAPFILEHEADER
-*/
-
-/**
-* @var BMPWriter::m_data
-* @brief apuntador a los datos de la imagen(colores)
-*/
-
-/**
-* @var BMPWriter::m_prof
-* @brief representa el numero de colores 3 = RGB, 4 = RGBA
-*/
-
 
 #endif

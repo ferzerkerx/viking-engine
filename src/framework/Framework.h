@@ -1,9 +1,3 @@
-/**
-* @file Framework.h
-* @brief Contiene los encabezados de todas las clases bsicas
-* que permiten desarrollar el juego
-* @date Saturday, August 11, 2007 10:11:36 PM
-*/
 #ifndef __FRAMEWORK__H__
 #define __FRAMEWORK__H__
 

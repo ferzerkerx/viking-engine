@@ -1,8 +1,3 @@
-/**
-* @file Model3DLoader.h
-* @brief Encabezado de la clase Model3DLoader
-* @date Saturday, November 03, 2007 11:14:40 AM
-*/
 #ifndef __MODEL3DLOADER__H__
 #define __MODEL3DLOADER__H__
 

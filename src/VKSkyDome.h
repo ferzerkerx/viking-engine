@@ -14,37 +14,24 @@
 
 class VKSkyDome : public TexturedSkyDome {
 public:
-    VKSkyDome(float r, unsigned int id_textura);
+    VKSkyDome(float r, unsigned int id_texture);
 
     VKSkyDome(float dphi, float dtheta, float r, unsigned int id_textura);
 
-    ~VKSkyDome();
+    ~VKSkyDome() override;
 
-    void Update(vector3f poscam);
+    void Update(vector3f poscam) override;
 
-    void escribeImagenDeNubes();
+    void WriteCloudImage();
 
 private:
-    UpdatableClouds *m_ca;    //apuntador a la instancia de Clouds
-    TexturedSkyPlane *m_sp;                //apuntador a la instancia de TexturedSkyPlane
-    float m_cloud_cover;        //guarda el cover de las nubes
-    void Render(vector3f poscam);
+    UpdatableClouds *updatable_clouds_;
+    TexturedSkyPlane *textured_sky_plane_;
+    float cloud_cover_;
+
+    protected:
+    void Render(vector3f camera_position) override;
 };
-
-/**
-* @var VKSkyDome::m_ca
-* @brief apuntador a la instancia de Clouds
-*/
-
-/**
-* @var VKSkyDome::m_sp
-* @brief apuntador a la instancia de TexturedSkyPlane
-*/
-
-/**
-* @var VKSkyDome::m_cloud_cover
-* @brief guarda el cover de las nubes
-*/
 
 
 #endif

@@ -1,8 +1,3 @@
-/**
-* @file Model3D.h
-* @brief Encabezado de la clase Model3D
-* @date Saturday, November 03, 2007 11:14:28 AM
-*/
 #ifndef __MODEL3D_H__
 #define __MODEL3D_H__
 

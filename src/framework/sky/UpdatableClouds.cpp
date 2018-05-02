@@ -54,7 +54,7 @@ void UpdatableClouds::ForceUpdate() {
     Perlin::OverlapOctaves(map32_, map_, text_width_, text_height_);
     Perlin::expFilter(map_, text_width_, text_height_, cover_, sharpness_);
     current_octave_ = 0;
-    timer_.reset();
+    timer_.Reset();
 }
 
 void UpdatableClouds::set_texture_update_time(int milliseconds) {
@@ -99,7 +99,7 @@ void UpdatableClouds::set_texture_resolution(int width, int height) {
 }
 
 int UpdatableClouds::UpdatePerOctave() {
-    int current_millis = timer_.getMilliseconds();
+    int current_millis = timer_.Milliseconds();
 
     if ((current_octave_ < num_octaves_) &&
         (current_millis >= (texture_update_time_in_millis_ / (num_octaves_ + 1)) * current_octave_)) {
@@ -108,8 +108,8 @@ int UpdatableClouds::UpdatePerOctave() {
         current_octave_++;
     }
 
-    if ((current_octave_ == num_octaves_) && (timer_.getMilliseconds() >= texture_update_time_in_millis_)) {
-        timer_.reset();
+    if ((current_octave_ == num_octaves_) && (timer_.Milliseconds() >= texture_update_time_in_millis_)) {
+        timer_.Reset();
         Perlin::expFilter(map_, text_width_, text_height_, cover_, sharpness_);
         current_octave_ = 0;
         CreateTexture();
@@ -120,7 +120,7 @@ int UpdatableClouds::UpdatePerOctave() {
 }
 
 int UpdatableClouds::UpdatePerCoordinate() {
-    int current_millis = timer_.getMilliseconds();
+    int current_millis = timer_.Milliseconds();
 
     if ((current_octave_ < num_octaves_) &&
         (current_millis >= (texture_update_time_in_millis_ / (num_octaves_ + 1)) * current_octave_)) {
@@ -140,8 +140,8 @@ int UpdatableClouds::UpdatePerCoordinate() {
         }
     }
 
-    if ((current_octave_ == num_octaves_) && timer_.getMilliseconds() >= texture_update_time_in_millis_) {
-        timer_.reset();
+    if ((current_octave_ == num_octaves_) && timer_.Milliseconds() >= texture_update_time_in_millis_) {
+        timer_.Reset();
         Perlin::expFilter(map_, text_width_, text_height_, cover_, sharpness_);
         current_octave_ = 0;
         CreateTexture();

@@ -28,14 +28,6 @@ Quaternion::Quaternion(float theta, vector3f *axis) {
     z_ = axis->z * std::sin(theta / 2.0F);
 }
 
-/**
-* @brief Crea un Quaternion a partir de un arreglo
-* que representa una matriz
-* @author Fernando Montes de Oca Cespedes
-* @date Monday, October 29, 2007 12:03:45 AM
-* @param matrix Arreglo que representa una matriz de 3x3 o 4x4
-* @param size Especifica si la matriz es de 3x3 o de 4x4
-*/
 Quaternion::Quaternion(float *matrix, int size) {
 
     if (!matrix || ((size != 3) && (size != 4))) return;
