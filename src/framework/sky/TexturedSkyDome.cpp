@@ -60,8 +60,6 @@ void TexturedSkyDome::Update(vector3f camera_position) {
 }
 
 void TexturedSkyDome::CalculateUV() {
-    vector3f vec_temp;
-
     int i = 0;
     int phi = 0;
     int theta = 0;
@@ -71,52 +69,31 @@ void TexturedSkyDome::CalculateUV() {
 
     for (; phi <= 90 - dphi_aux; phi += dphi_aux) {
         for (theta = 0; theta <= 360 - dtetha_aux; theta += dtetha_aux) {
-
-            vec_temp.x = vertex_dome()[i].pos.x;
-            vec_temp.y = vertex_dome()[i].pos.y;
-            vec_temp.z = vertex_dome()[i].pos.z;
-
-            Normalize(vec_temp);
-
-            vertex_dome()[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
-            vertex_dome()[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
-            i++;
-
-            vec_temp.x = vertex_dome()[i].pos.x;
-            vec_temp.y = vertex_dome()[i].pos.y;
-            vec_temp.z = vertex_dome()[i].pos.z;
-
-            Normalize(vec_temp);
-
-            vertex_dome()[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
-            vertex_dome()[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
-            i++;
-
-            vec_temp.x = vertex_dome()[i].pos.x;
-            vec_temp.y = vertex_dome()[i].pos.y;
-            vec_temp.z = vertex_dome()[i].pos.z;
-
-            Normalize(vec_temp);
-
-            vertex_dome()[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
-            vertex_dome()[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
-            i++;
+            for(int k =0; k < 3; k++ ) {
+                CalculateUVForPolygon(i);
+                i++;
+            }
 
             if (phi > -90 && phi < 90) {
-                vec_temp.x = vertex_dome()[i].pos.x;
-                vec_temp.y = vertex_dome()[i].pos.y;
-                vec_temp.z = vertex_dome()[i].pos.z;
-
-                Normalize(vec_temp);
-
-                vertex_dome()[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
-                vertex_dome()[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
+                CalculateUVForPolygon(i);
                 i++;
             }
         }
     }
 
     AdjustUVRanges();
+}
+
+void TexturedSkyDome::CalculateUVForPolygon(int i) const {
+    vector3f vec_temp;
+    vec_temp.x = vertex_dome()[i].pos.x;
+    vec_temp.y = vertex_dome()[i].pos.y;
+    vec_temp.z = vertex_dome()[i].pos.z;
+
+    Normalize(vec_temp);
+
+    vertex_dome()[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+    vertex_dome()[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
 }
 
 void TexturedSkyDome::AdjustUVRanges() const {
@@ -170,4 +147,16 @@ void TexturedSkyDome::AdjustUVRanges() const {
             vertex_dome()[j + 1].uv.y += 1.0F;
         }
     }
+}
+
+unsigned int TexturedSkyDome::texture_id() const {
+    return texture_id_;
+}
+
+float TexturedSkyDome::h_tile() const {
+    return h_tile_;
+}
+
+float TexturedSkyDome::v_tile() const {
+    return v_tile_;
 }

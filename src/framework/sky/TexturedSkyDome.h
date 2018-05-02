@@ -10,11 +10,18 @@
 *	@date	09/May/2007
 */
 class TexturedSkyDome : public SkyDome {
-protected:
-
+private:
     unsigned int texture_id_;
     float h_tile_;
     float v_tile_;
+
+protected:
+    unsigned int texture_id() const;
+
+    float h_tile() const;
+
+    float v_tile() const;
+
     void Render(vector3f camera_position) override;
 
     void RenderDome(vector3f camera_position) override;
@@ -34,6 +41,8 @@ public:
     ~TexturedSkyDome() override;
 
     void AdjustUVRanges() const;
+
+    void CalculateUVForPolygon(int i) const;
 };
 
 

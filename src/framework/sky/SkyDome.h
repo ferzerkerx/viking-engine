@@ -37,7 +37,6 @@ private:
 
 
 protected:
-public:
     float dphi() const;
 
     float dtheta() const;
@@ -56,7 +55,6 @@ public:
 
     VertexDome *vertex_dome() const;
 
-protected:
     void CreateHemiSphere();
 
     virtual void RenderDome(vector3f camera_position) = 0;

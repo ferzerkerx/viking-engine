@@ -34,7 +34,6 @@ private:
     float roty_factor_;
     float wind_factor_x_;
     float wind_factor_y_;
-    unsigned int update_texture_in_milli_;
     unsigned int rot_texture_in_milli_;
     float texture_delta_x;
     float delta_texture_y_;
