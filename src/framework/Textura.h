@@ -39,11 +39,11 @@ public:
 
     void CrearTextura(unsigned int textureArray[], const char *strFileName, int textureID);
 
-    void CreaBMP(unsigned int textureArray[], const char *strFileName, int textureID);
+    void LoadBmp(unsigned int *textureArray, const char *strFileName, int textureID);
 
-    void CreaTGA(unsigned int textureArray[], const char *strFileName, int textureID);
+    void LoadTga(unsigned int *textureArray, const char *strFileName, int textureID);
 
-    tImageTGA *CargaTGA(const char *filename);
+    tImageTGA *LoadTga(const char *filename);
 };
 
 #endif

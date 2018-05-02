@@ -20,6 +20,10 @@ public:
     static void BBSphere(vector3f camera_position, float obj_pos_x, float obj_pos_y, float obj_pos_z);
 
     static void BBFin();
+
+    static vector3f ObjectCameraPositionBasedOnObject(const vector3f &camera_position, float obj_pos_x, float obj_pos_z);
+
+    static vector3f RotateBasedOnCameraPosition(const vector3f &camera_position, float obj_pos_x, float obj_pos_z);
 };
 
 #endif

@@ -28,9 +28,6 @@ private:
     UpdatableClouds *updatable_clouds_;
     TexturedSkyPlane *textured_sky_plane_;
     float cloud_cover_;
-
-    protected:
-    void Render(vector3f camera_position) override;
 };
 
 
