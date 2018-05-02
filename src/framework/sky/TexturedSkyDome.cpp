@@ -66,8 +66,10 @@ void TexturedSkyDome::CalculateUV() {
     int phi = 0;
     int theta = 0;
 
+    auto dtetha_aux = static_cast<int>(dtheta_);
+
     for (; phi <= 90 - dphi_; phi += (int) dphi_) {
-        for (theta = 0; theta <= 360 - dtheta_; theta += (int) dtheta_) {
+        for (theta = 0; theta <= 360 - dtetha_aux; theta += dtetha_aux) {
 
             vec_temp.x = vrtex_[i].pos.x;
             vec_temp.y = vrtex_[i].pos.y;
@@ -106,49 +108,65 @@ void TexturedSkyDome::CalculateUV() {
 
                 Normalize(vec_temp);
 
-                vrtex_[i].uv.x = h_tile_ * (float) (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
+                vrtex_[i].uv.x = h_tile_ * (std::atan2(vec_temp.x, vec_temp.z) / (PI * 2)) + 0.5F;
                 vrtex_[i].uv.y = v_tile_ * (asinf(vec_temp.y) / PI) + 0.5F;
                 i++;
             }
         }
     }
 
+    AdjustUVRanges();
+}
+
+void TexturedSkyDome::AdjustUVRanges() const {
     for (int j = 0; j < num_vertices_ - 3; j++) {
 
-        if (vrtex_[j].uv.x - vrtex_[j + 1].uv.x > 0.9F)
+        if (vrtex_[j].uv.x - vrtex_[j + 1].uv.x > 0.9F) {
             vrtex_[j + 1].uv.x += 1.0F;
+        }
 
-        if (vrtex_[j + 1].uv.x - vrtex_[j].uv.x > 0.9F)
+        if (vrtex_[j + 1].uv.x - vrtex_[j].uv.x > 0.9F) {
             vrtex_[j].uv.x += 1.0F;
+        }
 
-        if (vrtex_[j].uv.x - vrtex_[j + 2].uv.x > 0.9F)
+        if (vrtex_[j].uv.x - vrtex_[j + 2].uv.x > 0.9F) {
             vrtex_[j + 2].uv.x += 1.0F;
+        }
 
-        if (vrtex_[j + 2].uv.x - vrtex_[j].uv.x > 0.9F)
+        if (vrtex_[j + 2].uv.x - vrtex_[j].uv.x > 0.9F) {
             vrtex_[j].uv.x += 1.0F;
+        }
 
-        if (vrtex_[j + 1].uv.x - vrtex_[j + 2].uv.x > 0.9F)
+        if (vrtex_[j + 1].uv.x - vrtex_[j + 2].uv.x > 0.9F) {
             vrtex_[j + 2].uv.x += 1.0F;
+        }
 
-        if (vrtex_[j + 2].uv.x - vrtex_[j + 1].uv.x > 0.9F)
+        if (vrtex_[j + 2].uv.x - vrtex_[j + 1].uv.x > 0.9F) {
             vrtex_[j + 1].uv.x += 1.0F;
+        }
 
-        if (vrtex_[j].uv.y - vrtex_[j + 1].uv.y > 0.8F)
+        if (vrtex_[j].uv.y - vrtex_[j + 1].uv.y > 0.8F) {
             vrtex_[j + 1].uv.y += 1.0F;
+        }
 
-        if (vrtex_[j + 1].uv.y - vrtex_[j].uv.y > 0.8F)
+        if (vrtex_[j + 1].uv.y - vrtex_[j].uv.y > 0.8F) {
             vrtex_[j].uv.y += 1.0F;
+        }
 
-        if (vrtex_[j].uv.y - vrtex_[j + 2].uv.y > 0.8F)
+        if (vrtex_[j].uv.y - vrtex_[j + 2].uv.y > 0.8F) {
             vrtex_[j + 2].uv.y += 1.0F;
+        }
 
-        if (vrtex_[j + 2].uv.y - vrtex_[j].uv.y > 0.8F)
+        if (vrtex_[j + 2].uv.y - vrtex_[j].uv.y > 0.8F) {
             vrtex_[j].uv.y += 1.0F;
+        }
 
-        if (vrtex_[j + 1].uv.y - vrtex_[j + 2].uv.y > 0.8F)
+        if (vrtex_[j + 1].uv.y - vrtex_[j + 2].uv.y > 0.8F) {
             vrtex_[j + 2].uv.y += 1.0F;
+        }
 
-        if (vrtex_[j + 2].uv.y - vrtex_[j + 1].uv.y > 0.8F)
+        if (vrtex_[j + 2].uv.y - vrtex_[j + 1].uv.y > 0.8F) {
             vrtex_[j + 1].uv.y += 1.0F;
+        }
     }
 }

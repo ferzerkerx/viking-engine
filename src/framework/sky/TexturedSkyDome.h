@@ -33,6 +33,7 @@ public:
 
     ~TexturedSkyDome() override;
 
+    void AdjustUVRanges() const;
 };
 
 
