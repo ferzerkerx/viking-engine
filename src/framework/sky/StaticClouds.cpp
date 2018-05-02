@@ -19,23 +19,22 @@ StaticClouds::StaticClouds(float cover, float sharpness, int num_octavos, int wi
 StaticClouds::~StaticClouds() = default;
 
 void StaticClouds::CreateTexture() {
+    set_map(new float[text_width() * text_height()]);
+    set_RGBA_text(new char[text_width() * text_height() * 4]);
 
-    map_ = new float[text_width_ * text_height_];
-    RGBA_text_ = new char[text_width_ * text_height_ * 4];
-
-    Perlin::SetNoise(map32_);
-    Perlin::OverlapOctaves(map32_, map_, text_width_, text_height_);
-    Perlin::expFilter(map_, text_width_, text_height_, cover_, sharpness_);
+    Perlin::SetNoise(map32());
+    Perlin::OverlapOctaves(map32(), map(), text_width(), text_height());
+    Perlin::expFilter(map(), text_width(), text_height(), cover(), sharpness());
 
     Clouds::GeneraGLTexture();
 
-    if (map_ != nullptr) {
-        delete[] map_;
-        map_ = nullptr;
+    if (map() != nullptr) {
+        delete[] map();
+        set_map(nullptr);
     }
-    if (RGBA_text_ != nullptr) {
-        delete[] RGBA_text_;
-        RGBA_text_ = nullptr;
+    if (RGBA_text() != nullptr) {
+        delete[] RGBA_text();
+        set_RGBA_text(nullptr);
     }
 }
 

@@ -88,3 +88,47 @@ void Clouds::GeneraGLTexture() {
 char *Clouds::getData() {
     return RGBA_text_;
 }
+
+unsigned char Clouds::num_octaves() const {
+    return num_octaves_;
+}
+
+float Clouds::sharpness() const {
+    return sharpness_;
+}
+
+float Clouds::cover() const {
+    return cover_;
+}
+
+char *Clouds::RGBA_text() const {
+    return RGBA_text_;
+}
+
+float *Clouds::map32() {
+    return map32_;
+}
+
+float *Clouds::map() const {
+    return map_;
+}
+
+int Clouds::text_width() const {
+    return text_width_;
+}
+
+int Clouds::text_height() const {
+    return text_height_;
+}
+
+void Clouds::set_RGBA_text(char *RGBA_text_) {
+    Clouds::RGBA_text_ = RGBA_text_;
+}
+
+void Clouds::set_map(float *map_) {
+    Clouds::map_ = map_;
+}
+
+void Clouds::set_num_octaves(unsigned char num_octaves) {
+    Clouds::num_octaves_ = num_octaves;
+}

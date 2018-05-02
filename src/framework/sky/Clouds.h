@@ -29,16 +29,6 @@ public:
 protected:
     virtual ~Clouds();
 
-    unsigned char num_octaves_;    //define la cantidad de octavos de perlin que se desea
-    float sharpness_;                //define que tan delgadas son las nubes
-    float cover_;                    //define que tan nuboso debe estar el cielo
-    char *RGBA_text_;                //usado para generar la textura con alpha
-    float map32_[32 * 32];            //mapa de ruido
-    float *map_;                    //mapa que contiene la textura sin alpha
-    int text_width_;                //ancho de la textura deseada
-    int text_height_;                //height de la textura deseado
-    unsigned int texture_id_;            //identificador de la textura generada por openGL
-
     virtual void CreateTexture()= 0;
 
     virtual void ForceUpdate()=0;
@@ -46,6 +36,40 @@ protected:
     void CalculateAlpha();
 
     void GeneraGLTexture();
+
+    unsigned char num_octaves() const;
+
+    float sharpness() const;
+
+    float cover() const;
+
+    char *RGBA_text() const;
+
+    float *map32();
+
+    float *map() const;
+
+    int text_width() const;
+
+    int text_height() const;
+
+    void set_RGBA_text(char *RGBA_text_);
+
+    void set_map(float *map_);
+
+    virtual void set_num_octaves(unsigned char num_octaves);
+
+private:
+    unsigned char num_octaves_;
+    float sharpness_;
+    float cover_;
+    char *RGBA_text_;
+    float map32_[32 * 32];
+    float *map_;
+    int text_width_;
+    int text_height_;
+    unsigned int texture_id_;
+
 };
 
 #endif

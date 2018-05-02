@@ -36,10 +36,6 @@ public:
 
     void set_num_octaves(unsigned char number);
 
-    void set_cover(float cover);
-
-    void set_sharpness(float sharpness);
-
     void set_texture_resolution(int width, int height);
 
 private:
