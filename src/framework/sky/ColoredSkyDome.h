@@ -24,7 +24,7 @@ protected:
 
     void RenderDome(vector3f camera_position) override;
 
-    static void ColorDome(VertexDome *vertexDome, int num_verices) const;
+    static void ColorDome(VertexDome *vertexDome, int num_verices);
 };
 
 #endif

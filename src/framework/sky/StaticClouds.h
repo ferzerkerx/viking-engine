@@ -16,7 +16,7 @@ public:
 
     StaticClouds(float cover, float sharpness, int num_octavos, int width, int height);
 
-    ~StaticClouds();
+    ~StaticClouds() override;
 
     void ForceUpdate() override;
 

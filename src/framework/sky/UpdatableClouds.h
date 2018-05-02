@@ -34,7 +34,7 @@ public:
 
     void set_texture_update_time(int milliseconds);
 
-    void set_num_octaves(unsigned char number);
+    void set_num_octaves(unsigned char number) override;
 
     void set_texture_resolution(int width, int height);
 
@@ -46,7 +46,7 @@ private:
 
     octave *octaves_;
 
-    void CreateTexture() override;
+    void CreateTexture();
 
 };
 

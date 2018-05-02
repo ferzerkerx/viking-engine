@@ -1,18 +1,18 @@
-#include <cstdio>
+
 #include "StaticClouds.h"
 
 
 StaticClouds::StaticClouds() : Clouds() {
-    CreateTexture();
+
 }
 
 
-StaticClouds::StaticClouds(float cover, float sharpness, int num_octavos, int width, int height) : Clouds(cover,
-                                                                                                          sharpness,
-                                                                                                          num_octavos,
-                                                                                                          width,
-                                                                                                          height) {
-    CreateTexture();
+StaticClouds::StaticClouds(float cover, float sharpness, int num_octavos, int width, int height) :
+        Clouds(cover,
+               sharpness,
+               num_octavos,
+               width,
+               height) {
 }
 
 

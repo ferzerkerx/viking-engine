@@ -2,7 +2,7 @@
 #include <GL/glut.h>
 
 ColoredSkyDome::ColoredSkyDome(float r) : SkyDome(r) {
-    ColoredSkyDome::ColorDome(vertex_dome(), num_vertices())
+    ColoredSkyDome::ColorDome(vertex_dome(), num_vertices());
 }
 
 
@@ -44,7 +44,7 @@ void ColoredSkyDome::Update(vector3f camera_position) {
     Render(camera_position);
 }
 
-static void ColoredSkyDome::ColorDome(VertexDome *vertexDome, int num_verices) const {
+void ColoredSkyDome::ColorDome(VertexDome *vertexDome, int num_verices) {
     for (int i = 0; i < num_verices; i++) {
         vertexDome[i].color = color3f(0.0, 0.35F, 0.7F);
     }
