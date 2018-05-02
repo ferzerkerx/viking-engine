@@ -43,9 +43,15 @@ struct Object3D {
 */
 class Model3d {
 
-protected:
+private:
     std::vector<Material> materials_;
-    std::vector<Object3D> objects;
+    std::vector<Object3D> objects_;
+
+protected:
+    std::vector<Material> &materials();
+
+    std::vector<Object3D> & objects();
+
 
 public:
     virtual ~Model3d();

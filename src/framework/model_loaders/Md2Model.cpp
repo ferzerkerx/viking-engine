@@ -20,7 +20,7 @@ Md2Model::~Md2Model() {
 }
 
 void Md2Model::Render() {
-    if (objects.empty()) {
+    if (objects().empty()) {
         return;
     }
 
@@ -37,18 +37,18 @@ void Md2Model::Render() {
         }
     }
 
-    Object3D *frame = &objects[current_frame_];
-    Object3D *next_frame = &objects[next_frame_];
-    Object3D *first_frame = &objects[0];
+    Object3D *frame = &objects()[current_frame_];
+    Object3D *next_frame = &objects()[next_frame_];
+    Object3D *first_frame = &objects()[0];
 
     if (hasAnimation_) { interpolation_factor = CalculateInterpolationFactor(); }
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
-    if (!materials_.empty()) {
+    if (!materials().empty()) {
         glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(materials_[0].texture_id));
+        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(materials()[0].texture_id));
     }
 
     glBegin(GL_TRIANGLES);
@@ -61,7 +61,7 @@ void Md2Model::Render() {
                 glNormal3f(frame->normal[vertex_index].x, frame->normal[vertex_index].y, frame->normal[vertex_index].z);
             }
 
-            if (first_frame->texture_st && !materials_.empty()) {
+            if (first_frame->texture_st && !materials().empty()) {
                 glTexCoord2f(first_frame->texture_st[textture_index].s, first_frame->texture_st[textture_index].t);
             }
 
@@ -80,7 +80,7 @@ void Md2Model::Render() {
 
     glEnd();
 
-    if (!materials_.empty()) {
+    if (!materials().empty()) {
         glDisable(GL_TEXTURE_2D);
     }
     glDisable(GL_CULL_FACE);
@@ -153,7 +153,7 @@ void Md2Model::set_GlCommands(int *com, int num) {
 
 void Md2Model::RenderWithOpenGlCommands() {
 
-    if (objects.empty() || !glCommand_buffer_) return;
+    if (objects().empty() || !glCommand_buffer_) return;
 
     int *command_buffer_ = glCommand_buffer_;
     float interpolation_factor = 0.0F;
@@ -162,8 +162,8 @@ void Md2Model::RenderWithOpenGlCommands() {
         if (next_frame_ == 0) { next_frame_ = animations_[current_animation_].initial_frame; }
     }
 
-    Object3D *frame = &objects[current_frame_];
-    Object3D *next_frame = &objects[next_frame_];
+    Object3D *frame = &objects()[current_frame_];
+    Object3D *next_frame = &objects()[next_frame_];
 
     if (hasAnimation_) {
         interpolation_factor = CalculateInterpolationFactor();
@@ -172,9 +172,9 @@ void Md2Model::RenderWithOpenGlCommands() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
-    if (!materials_.empty()) {
+    if (!materials().empty()) {
         glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(materials_[0].texture_id));
+        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(materials()[0].texture_id));
     }
 
     while (int i = *(command_buffer_++)) {
@@ -188,7 +188,7 @@ void Md2Model::RenderWithOpenGlCommands() {
         int t_index = 1;
         int vertex_index = 2;
         for (; i > 0; i--, command_buffer_ += 3) {
-            if (!materials_.empty()) {
+            if (!materials().empty()) {
                 glTexCoord2f(((float *) command_buffer_)[s_index], 1.0F - ((float *) command_buffer_)[t_index]);
             }
 
@@ -218,7 +218,7 @@ void Md2Model::RenderWithOpenGlCommands() {
 
         glEnd();
     }
-    if (!materials_.empty()) {
+    if (!materials().empty()) {
         glDisable(GL_TEXTURE_2D);
     }
     glDisable(GL_CULL_FACE);
@@ -231,11 +231,11 @@ void Md2Model::updateNormalVector() {
     vector3f normal;
     vector3f polygon[3];
 
-    if (objects.empty()) return;
+    if (objects().empty()) return;
 
-    Object3D *first = &(objects[0]);
+    Object3D *first = &(objects()[0]);
 
-    for (auto &object : objects) {
+    for (auto &object : objects()) {
         Object3D *obj = &object;
         auto *normals = new vector3f[obj->num_faces];
         auto *temp_normals = new vector3f[obj->num_faces];
