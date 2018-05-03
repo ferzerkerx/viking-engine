@@ -29,8 +29,6 @@ public:
 protected:
     virtual ~Clouds();
 
-    virtual void CreateTexture()= 0;
-
     virtual void ForceUpdate()=0;
 
     void CalculateAlpha();

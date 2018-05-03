@@ -21,7 +21,7 @@ public:
     void ForceUpdate() override;
 
 private:
-    void CreateTexture() override;
+    void CreateTexture();
 
 };
 

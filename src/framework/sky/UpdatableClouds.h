@@ -46,7 +46,7 @@ private:
 
     octave *octaves_;
 
-    void CreateTexture() override;
+    void CreateTexture();
 
 };
 
